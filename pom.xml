@@ -6,7 +6,7 @@
 
     <groupId>io.github.zouzhiy</groupId>
     <artifactId>zouzhiy-excel</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.1-SNAPSHOT</version>
 
     <description>EXCEL导入导出工具</description>
     <url>https://github.com/zouzhiy/zouzhiy-excel</url>
