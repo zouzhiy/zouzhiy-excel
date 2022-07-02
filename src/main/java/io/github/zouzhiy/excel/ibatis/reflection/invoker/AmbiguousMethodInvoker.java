@@ -18,7 +18,6 @@ package io.github.zouzhiy.excel.ibatis.reflection.invoker;
 
 import io.github.zouzhiy.excel.exceptions.ExcelException;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public class AmbiguousMethodInvoker extends MethodInvoker {

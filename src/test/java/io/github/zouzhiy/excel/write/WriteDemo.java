@@ -20,6 +20,7 @@ import java.util.List;
 @ExcelClass(titleStyle = @ExcelStyle(font = @ExcelFont(bold = true, fontHeightInPoints = 16), horizontalAlignment = StyleHorizontalAlignment.CENTER))
 public class WriteDemo {
 
+
     @ExcelField(title = "name-覆盖")
     private String name;
 

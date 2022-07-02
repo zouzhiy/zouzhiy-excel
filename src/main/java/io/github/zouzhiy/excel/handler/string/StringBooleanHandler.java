@@ -13,10 +13,11 @@
  */
 package io.github.zouzhiy.excel.handler.string;
 
+import io.github.zouzhiy.excel.context.RowContext;
 import io.github.zouzhiy.excel.context.SheetContext;
 import io.github.zouzhiy.excel.enums.ExcelType;
 import io.github.zouzhiy.excel.handler.AbstractCellHandler;
-import io.github.zouzhiy.excel.metadata.CellResultSet;
+import io.github.zouzhiy.excel.metadata.CellResult;
 import io.github.zouzhiy.excel.metadata.ExcelFieldConfig;
 import org.apache.poi.ss.usermodel.Cell;
 
@@ -30,23 +31,18 @@ public class StringBooleanHandler extends AbstractCellHandler<String> {
 
 
     @Override
-    public ExcelType getExcelType() {
-        return ExcelType.BOOLEAN;
-    }
-
-    @Override
-    public String read(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResultSet cellResultSet) {
-        Boolean booleanValue = cellResultSet.getFirstCellResult().getBooleanValue();
+    protected String getCellValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResult firstCellResult) {
+        Boolean booleanValue = firstCellResult.getBooleanValue();
         return Boolean.toString(booleanValue);
     }
 
+    @Override
+    protected void setCellValue(RowContext rowContext, ExcelFieldConfig excelFieldConfig, Cell cell, String value) {
+        cell.setCellValue(TRUE_STR.equalsIgnoreCase(value));
+    }
 
     @Override
-    protected void setCellValue(Cell cell, String value) {
-        if (TRUE_STR.equalsIgnoreCase(value)) {
-            cell.setCellValue(Boolean.TRUE);
-        } else {
-            cell.setCellValue(Boolean.FALSE);
-        }
+    public ExcelType getExcelType() {
+        return ExcelType.BOOLEAN;
     }
 }

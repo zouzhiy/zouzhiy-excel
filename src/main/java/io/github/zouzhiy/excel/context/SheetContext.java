@@ -40,6 +40,8 @@ public interface SheetContext {
 
     MergedRegion getMergedRegion();
 
+    Drawing<?> getDrawing();
+
     int getMaxRowspan(int rowIndex);
 
     Row getRow(int rowIndex);

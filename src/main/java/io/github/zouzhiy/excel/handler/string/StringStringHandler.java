@@ -13,10 +13,11 @@
  */
 package io.github.zouzhiy.excel.handler.string;
 
+import io.github.zouzhiy.excel.context.RowContext;
 import io.github.zouzhiy.excel.context.SheetContext;
 import io.github.zouzhiy.excel.enums.ExcelType;
 import io.github.zouzhiy.excel.handler.AbstractCellHandler;
-import io.github.zouzhiy.excel.metadata.CellResultSet;
+import io.github.zouzhiy.excel.metadata.CellResult;
 import io.github.zouzhiy.excel.metadata.ExcelFieldConfig;
 import org.apache.poi.ss.usermodel.Cell;
 
@@ -26,19 +27,18 @@ import org.apache.poi.ss.usermodel.Cell;
  */
 public class StringStringHandler extends AbstractCellHandler<String> {
 
+    @Override
+    protected String getCellValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResult firstCellResult) {
+        return firstCellResult.getStringValue();
+    }
+
+    @Override
+    protected void setCellValue(RowContext rowContext, ExcelFieldConfig excelFieldConfig, Cell cell, String value) {
+        cell.setCellValue(value);
+    }
 
     @Override
     public ExcelType getExcelType() {
         return ExcelType.STRING;
-    }
-
-    @Override
-    public String read(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResultSet cellResultSet) {
-        return cellResultSet.getFirstCellResult().getStringValue();
-    }
-
-    @Override
-    protected void setCellValue(Cell cell, String value) {
-        cell.setCellValue(value);
     }
 }

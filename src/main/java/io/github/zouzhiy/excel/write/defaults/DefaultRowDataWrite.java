@@ -18,7 +18,7 @@ import io.github.zouzhiy.excel.context.SheetContext;
 import io.github.zouzhiy.excel.context.defualts.DefaultRowContext;
 import io.github.zouzhiy.excel.enums.ExcelType;
 import io.github.zouzhiy.excel.handler.CellHandler;
-import io.github.zouzhiy.excel.handler.registry.CellHandlerRegistry;
+import io.github.zouzhiy.excel.handler.CellHandlerRegistry;
 import io.github.zouzhiy.excel.ibatis.reflection.MetaObject;
 import io.github.zouzhiy.excel.metadata.Configuration;
 import io.github.zouzhiy.excel.metadata.ExcelClassConfig;

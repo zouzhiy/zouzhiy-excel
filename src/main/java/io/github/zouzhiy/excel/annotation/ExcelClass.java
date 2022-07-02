@@ -15,6 +15,7 @@ package io.github.zouzhiy.excel.annotation;
 
 import io.github.zouzhiy.excel.cellstyle.RowStyleRead;
 import io.github.zouzhiy.excel.cellstyle.defaults.DefaultRowStyleRead;
+import io.github.zouzhiy.excel.enums.StyleHorizontalAlignment;
 import io.github.zouzhiy.excel.handler.CellHandler;
 import io.github.zouzhiy.excel.read.RowFootRead;
 import io.github.zouzhiy.excel.read.RowHeadRead;
@@ -56,6 +57,6 @@ public @interface ExcelClass {
 
     String titleFormat() default CellHandler.DEFAULT_DATA_FORMAT_STRING;
 
-    ExcelStyle titleStyle() default @ExcelStyle(font = @ExcelFont(fontHeightInPoints = 16, bold = true));
+    ExcelStyle titleStyle() default @ExcelStyle(font = @ExcelFont(fontHeightInPoints = 16, bold = true), horizontalAlignment = StyleHorizontalAlignment.CENTER);
 
 }

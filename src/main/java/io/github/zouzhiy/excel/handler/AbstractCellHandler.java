@@ -16,6 +16,8 @@ package io.github.zouzhiy.excel.handler;
 import io.github.zouzhiy.excel.context.RowContext;
 import io.github.zouzhiy.excel.context.SheetContext;
 import io.github.zouzhiy.excel.exceptions.ExcelException;
+import io.github.zouzhiy.excel.metadata.CellResult;
+import io.github.zouzhiy.excel.metadata.CellResultSet;
 import io.github.zouzhiy.excel.metadata.ExcelFieldConfig;
 import io.github.zouzhiy.excel.utils.RegionUtils;
 import org.apache.poi.ss.usermodel.Cell;
@@ -43,13 +45,24 @@ public abstract class AbstractCellHandler<T> implements CellHandler<T> {
     }
 
     @Override
+    public final T read(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResultSet cellResultSet) {
+        CellResult firstCellResult = cellResultSet.getFirstCellResult();
+        if (firstCellResult.isBlank() || firstCellResult.isNone()) {
+            return null;
+        }
+        return getCellValue(sheetContext, excelFieldConfig, firstCellResult);
+    }
+
+    @Override
     public final void write(RowContext rowContext, Integer columnIndex, ExcelFieldConfig excelFieldConfig, T value) {
         Row row = rowContext.getRowList().get(0);
         Cell cell = row.createCell(columnIndex);
-        this.setCellValue(cell, value);
+        if (value != null) {
+            this.setCellValue(rowContext, excelFieldConfig, cell, value);
+        }
 
         SheetContext sheetContext = rowContext.getSheetContext();
-        CellStyle cellStyle = sheetContext.getDataCellStyle(excelFieldConfig, DEFAULT_DATA_FORMAT_STRING);
+        CellStyle cellStyle = sheetContext.getDataCellStyle(excelFieldConfig, this.getDefaultExcelFormat());
         cell.setCellStyle(cellStyle);
 
         int rowspan = rowContext.getRowspan();
@@ -58,7 +71,9 @@ public abstract class AbstractCellHandler<T> implements CellHandler<T> {
         RegionUtils.addMergedRegionIfPresent(sheetContext, cellStyle, rowIndex, rowIndex + rowspan - 1, columnIndex, columnIndex + colspan - 1);
     }
 
-    protected abstract void setCellValue(Cell cell, T value);
+    protected abstract T getCellValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResult firstCellResult);
+
+    protected abstract void setCellValue(RowContext rowContext, ExcelFieldConfig excelFieldConfig, Cell cell, T value);
 
     private Class<T> getSuperclassTypeParameter(Class<?> clazz) {
         Type genericSuperclass = clazz.getGenericSuperclass();
@@ -80,5 +95,14 @@ public abstract class AbstractCellHandler<T> implements CellHandler<T> {
 
         //noinspection unchecked
         return (Class<T>) rawType;
+    }
+
+    protected String getJavaFormat(ExcelFieldConfig excelFieldConfig) {
+        String javaFormat = excelFieldConfig.getJavaFormat();
+        if (javaFormat.length() > 0) {
+            return javaFormat;
+        } else {
+            return this.getDefaultJavaFormat();
+        }
     }
 }

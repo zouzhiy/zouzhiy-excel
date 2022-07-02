@@ -37,6 +37,8 @@ public class DefaultSheetContext implements SheetContext {
 
     private MergedRegion mergedRegion;
 
+    private Drawing<?> drawing;
+
 
     public DefaultSheetContext(WorkbookContext workbookContext, ExcelClassConfig excelClassConfig, SheetParameter sheetParameter) {
         this.workbookContext = workbookContext;
@@ -135,6 +137,14 @@ public class DefaultSheetContext implements SheetContext {
             maxRowspan = Math.max(maxRowspan, cellSpan.getRowspan());
         }
         return maxRowspan;
+    }
+
+    @Override
+    public Drawing<?> getDrawing() {
+        if (drawing == null) {
+            drawing = this.sheet.createDrawingPatriarch();
+        }
+        return drawing;
     }
 
     @Override

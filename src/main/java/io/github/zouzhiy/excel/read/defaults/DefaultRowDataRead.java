@@ -17,7 +17,7 @@ import io.github.zouzhiy.excel.context.SheetContext;
 import io.github.zouzhiy.excel.enums.ExcelType;
 import io.github.zouzhiy.excel.exceptions.ExcelException;
 import io.github.zouzhiy.excel.handler.CellHandler;
-import io.github.zouzhiy.excel.handler.registry.CellHandlerRegistry;
+import io.github.zouzhiy.excel.handler.CellHandlerRegistry;
 import io.github.zouzhiy.excel.ibatis.reflection.MetaClass;
 import io.github.zouzhiy.excel.ibatis.reflection.invoker.Invoker;
 import io.github.zouzhiy.excel.metadata.*;

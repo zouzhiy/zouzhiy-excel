@@ -123,7 +123,7 @@ public class ExcelAnnotationParse {
 
     private ExcelFieldConfig convert(Field field) {
         ExcelField excelField = field.getAnnotation(ExcelField.class);
-        if (excelField == null) {
+        if (excelField == null || excelField.ignore()) {
             return null;
         }
 
@@ -132,14 +132,16 @@ public class ExcelAnnotationParse {
 
         return ExcelFieldConfig
                 .builder()
-                .title(excelField.title())
+                .title(excelField.title().length() == 0 ? propertyName : excelField.title())
                 .propertyName(propertyName)
                 .javaType(javaType)
                 .excelType(excelField.excelType())
                 .cellHandler(excelField.cellHandler())
                 .colspan(excelField.colspan())
                 .headFormat(excelField.headFormat())
-                .dataFormat(excelField.dataFormat())
+                .javaFormat(excelField.javaFormat())
+                .excelFormat(excelField.excelFormat())
+                .sort(excelField.sort())
                 .headStyle(ExcelStyleConfig.buildByExcelStyle(excelField.headStyle()))
                 .dataStyle(ExcelStyleConfig.buildByExcelStyle(excelField.dataStyle()))
                 .build();

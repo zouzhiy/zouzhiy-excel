@@ -39,11 +39,15 @@ public @interface ExcelField {
 
     String headFormat() default CellHandler.DEFAULT_DATA_FORMAT_STRING;
 
-    String dataFormat() default "";
+    String javaFormat() default "";
+
+    String excelFormat() default "";
 
     long sort() default 0;
 
     ExcelStyle headStyle() default @ExcelStyle(font = @ExcelFont(fontHeightInPoints = 13, bold = true), horizontalAlignment = StyleHorizontalAlignment.CENTER);
 
     ExcelStyle dataStyle() default @ExcelStyle();
+
+    boolean ignore() default false;
 }

@@ -54,7 +54,10 @@ public class ExcelFieldConfig {
     private final String headFormat = "@";
 
     @Builder.Default
-    private final String dataFormat = "";
+    private final String javaFormat = "";
+
+    @Builder.Default
+    private final String excelFormat = "";
 
     @Builder.Default
     private final long sort = 0L;

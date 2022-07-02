@@ -14,7 +14,7 @@
 package io.github.zouzhiy.excel.metadata;
 
 import io.github.zouzhiy.excel.cellstyle.registry.RowStyleReadRegistry;
-import io.github.zouzhiy.excel.handler.registry.CellHandlerRegistry;
+import io.github.zouzhiy.excel.handler.CellHandlerRegistry;
 import io.github.zouzhiy.excel.ibatis.reflection.DefaultReflectorFactory;
 import io.github.zouzhiy.excel.ibatis.reflection.MetaClass;
 import io.github.zouzhiy.excel.ibatis.reflection.MetaObject;

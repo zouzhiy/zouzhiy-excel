@@ -31,6 +31,8 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 public class CellResult {
 
+    private Cell cell;
+
     private Integer rowIndex;
 
     private Integer columnIndex;
@@ -48,6 +50,7 @@ public class CellResult {
     private Boolean booleanValue;
 
     private LocalDateTime dateValue;
+
 
     private CellResult() {
     }
@@ -104,6 +107,7 @@ public class CellResult {
     }
 
     private void setCell(Cell cell, CellSpan cellSpan) {
+        this.cell = cell;
         this.rowIndex = cell.getRowIndex();
         this.columnIndex = cell.getColumnIndex();
         this.rowspan = cellSpan.getRowspan();

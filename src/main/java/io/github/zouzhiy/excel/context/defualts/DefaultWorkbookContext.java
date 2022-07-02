@@ -148,8 +148,8 @@ public class DefaultWorkbookContext implements WorkbookContext {
     private CellStyle createDataCellStyle(ExcelFieldConfig excelFieldConfig, String defaultDataFormat) {
         CellStyle cellStyle = this.getWorkbook().createCellStyle();
 
-        String formatStr = excelFieldConfig.getDataFormat();
-        String realFormat = formatStr != null && formatStr.trim().length() > 0 ? formatStr.trim() : defaultDataFormat.trim();
+        String excelFormat = excelFieldConfig.getExcelFormat();
+        String realFormat = excelFormat != null && excelFormat.trim().length() > 0 ? excelFormat.trim() : defaultDataFormat.trim();
         if (realFormat.length() > 0) {
             DataFormat dataFormat = this.getDataFormat();
             short dataFormatFormat = dataFormat.getFormat(realFormat);

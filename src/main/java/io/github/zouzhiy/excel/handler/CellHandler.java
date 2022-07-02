@@ -42,4 +42,13 @@ public interface CellHandler<T> {
         return 1;
     }
 
+    default String getDefaultJavaFormat() {
+        return "";
+    }
+
+    default String getDefaultExcelFormat() {
+        return "";
+    }
+
+
 }

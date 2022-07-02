@@ -25,6 +25,10 @@ public class ExcelException extends RuntimeException {
         super(message);
     }
 
+    public ExcelException(String messageFormat, Object... args) {
+        super(String.format(messageFormat, args));
+    }
+
     public ExcelException(String message, Throwable cause) {
         super(message, cause);
     }
