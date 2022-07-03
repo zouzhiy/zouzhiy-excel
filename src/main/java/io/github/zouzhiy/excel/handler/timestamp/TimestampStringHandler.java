@@ -19,8 +19,7 @@ import io.github.zouzhiy.excel.enums.ExcelType;
 import io.github.zouzhiy.excel.handler.AbstractWriteStringCellHandler;
 import io.github.zouzhiy.excel.metadata.CellResult;
 import io.github.zouzhiy.excel.metadata.ExcelFieldConfig;
-import io.github.zouzhiy.excel.utils.ExcelDateUtil;
-import org.apache.poi.ss.usermodel.DateUtil;
+import io.github.zouzhiy.excel.utils.ExcelDateUtils;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -39,7 +38,7 @@ public class TimestampStringHandler extends AbstractWriteStringCellHandler<Times
     @Override
     protected Timestamp getCellValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResult firstCellResult) {
         String value = firstCellResult.getStringValue();
-        LocalDateTime localDateTime = ExcelDateUtil.parseDateTime(value, this.getJavaFormat(excelFieldConfig));
+        LocalDateTime localDateTime = ExcelDateUtils.parseDateTime(value, this.getJavaFormat(excelFieldConfig));
         return Timestamp.valueOf(localDateTime);
     }
 

@@ -70,7 +70,7 @@ public class DefaultRowDataRead implements RowDataRead {
     }
 
     private <T> void setValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, T item, MetaClass metaClass, CellResultSet cellResultSet) {
-        if (cellResultSet.isBlank()) {
+        if (cellResultSet.isBlank() && !excelFieldConfig.getExcelType().equals(ExcelType.NONE)) {
             return;
         }
         Class<? extends CellHandler<?>> cellHandlerClazz = excelFieldConfig.getCellHandler();

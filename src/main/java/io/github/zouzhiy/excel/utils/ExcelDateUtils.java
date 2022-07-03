@@ -32,7 +32,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author zouzhiy
  * @since 2022/7/2
  */
-public class ExcelDateUtil {
+public class ExcelDateUtils {
 
     private final static Map<String, DateTimeFormatter> DATE_TIME_FORMATTER_MAP = new ConcurrentHashMap<>(16);
 
@@ -45,7 +45,6 @@ public class ExcelDateUtil {
             .appendPattern("yyyy-MM-dd")
             .parseDefaulting(ChronoField.YEAR_OF_ERA, LocaleUtil.getLocaleCalendar().get(Calendar.YEAR))
             .toFormatter(LocaleUtil.getUserLocale());
-
 
 
     public static LocalDateTime parseDateTime(String str, String pattern) {

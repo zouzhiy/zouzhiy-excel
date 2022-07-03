@@ -19,16 +19,21 @@ import io.github.zouzhiy.excel.enums.ExcelType;
 import io.github.zouzhiy.excel.handler.bytes.ByteArrayBoxStringHandler;
 import io.github.zouzhiy.excel.handler.bytes.ByteArrayStringHandler;
 import io.github.zouzhiy.excel.handler.image.ImageByteCellHandler;
+import io.github.zouzhiy.excel.handler.image.ImageFileCellHandler;
 import io.github.zouzhiy.excel.handler.image.ImageUrlCellHandler;
 import lombok.Data;
 import org.apache.commons.compress.utils.IOUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.poi.ss.usermodel.DateUtil;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -146,14 +151,13 @@ public class Demo {
     @ExcelField(excelType = ExcelType.STRING)
     private Float boxFloatString = random.nextBoolean() ? null : random.nextFloat();
 
-    @ExcelField(excelType = ExcelType.STRING, cellHandler = ImageUrlCellHandler.class, ignore = true)
-    private String imageUrl = "";
-    @ExcelField(excelType = ExcelType.NUMERIC, cellHandler = ImageByteCellHandler.class)
+    @ExcelField(cellHandler = ImageUrlCellHandler.class)
+    private String imageUrl = "http://127.0.0.1/test.jpg";
+    @ExcelField(excelType = ExcelType.NONE, cellHandler = ImageByteCellHandler.class)
     private byte[] imageByte;
 
     {
         try {
-//            String exportTemplateFileName = "103.png";
             String exportTemplateFileName = "jpg1.jpg";
             String exportTemplateFilePath = "statics/image/" + exportTemplateFileName;
             InputStream exportTemplateInputStream = this.getClass().getClassLoader().getResourceAsStream(exportTemplateFilePath);
@@ -164,6 +168,31 @@ public class Demo {
         }
     }
 
+    @ExcelField(cellHandler = ImageFileCellHandler.class)
+    private File imageFile;
+
+    {
+        try {
+            String exportTemplateFileName = "jpg1.jpg";
+            String exportTemplateFilePath = "statics/image/" + exportTemplateFileName;
+
+            InputStream exportTemplateInputStream = this.getClass().getClassLoader().getResourceAsStream(exportTemplateFilePath);
+
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HHmmss");
+            String outputFileName = simpleDateFormat.format(new Date()) + ".jpg";
+            URL url = this.getClass().getResource("/");
+
+            assert url != null;
+            String filePath = url.getFile();
+            String outputFilePath = filePath + File.separator + "output" + File.separator + "file" + File.separator + outputFileName;
+
+            assert exportTemplateInputStream != null;
+            imageFile = new File(outputFilePath);
+            FileUtils.copyToFile(exportTemplateInputStream, imageFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @ExcelField(excelType = ExcelType.BOOLEAN)
     private int unboxIntegerBoolean = random.nextInt();

@@ -15,6 +15,7 @@ package io.github.zouzhiy.excel.handler;
 
 import io.github.zouzhiy.excel.context.RowContext;
 import io.github.zouzhiy.excel.context.SheetContext;
+import io.github.zouzhiy.excel.enums.ExcelType;
 import io.github.zouzhiy.excel.exceptions.ExcelException;
 import io.github.zouzhiy.excel.metadata.CellResult;
 import io.github.zouzhiy.excel.metadata.CellResultSet;
@@ -48,7 +49,9 @@ public abstract class AbstractCellHandler<T> implements CellHandler<T> {
     public final T read(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResultSet cellResultSet) {
         CellResult firstCellResult = cellResultSet.getFirstCellResult();
         if (firstCellResult.isBlank() || firstCellResult.isNone()) {
-            return null;
+            if (!excelFieldConfig.getExcelType().equals(ExcelType.NONE)) {
+                return null;
+            }
         }
         return getCellValue(sheetContext, excelFieldConfig, firstCellResult);
     }

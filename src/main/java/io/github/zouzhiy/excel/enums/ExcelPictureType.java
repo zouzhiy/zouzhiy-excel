@@ -14,36 +14,27 @@
 package io.github.zouzhiy.excel.enums;
 
 import lombok.Getter;
-import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Workbook;
 
 /**
  * @author zouzhiy
- * @since 2022/7/2
+ * @since 2022/7/3
  */
-public enum ExcelType {
-
+public enum ExcelPictureType {
     /**
-     * 该类型下单元格的值都是none
+     * 图片格式
      */
-    NONE(CellType._NONE),
-
-    NUMERIC(CellType.NUMERIC),
-
-    STRING(CellType.STRING),
-
-    DATE(CellType.NUMERIC),
-
-    BOOLEAN(CellType.BOOLEAN),
-    /**
-     * 该类型下单元格的值存在，但是可能为空
-     */
-    BLANK(CellType.BLANK);
+    PICTURE_TYPE_EMF(Workbook.PICTURE_TYPE_EMF),
+    PICTURE_TYPE_WMF(Workbook.PICTURE_TYPE_WMF),
+    PICTURE_TYPE_PICT(Workbook.PICTURE_TYPE_PICT),
+    PICTURE_TYPE_JPEG(Workbook.PICTURE_TYPE_JPEG),
+    PICTURE_TYPE_PNG(Workbook.PICTURE_TYPE_PNG),
+    PICTURE_TYPE_DIB(Workbook.PICTURE_TYPE_DIB);
 
     @Getter
-    private final CellType cellType;
+    private final int value;
 
-    ExcelType(CellType cellType) {
-        this.cellType = cellType;
+    ExcelPictureType(int value) {
+        this.value = value;
     }
-
 }

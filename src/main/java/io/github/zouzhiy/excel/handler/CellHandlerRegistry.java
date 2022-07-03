@@ -40,6 +40,8 @@ import io.github.zouzhiy.excel.handler.floats.FloatNumberHandler;
 import io.github.zouzhiy.excel.handler.floats.FloatStringHandler;
 import io.github.zouzhiy.excel.handler.head.HeadStringHandler;
 import io.github.zouzhiy.excel.handler.image.ImageByteCellHandler;
+import io.github.zouzhiy.excel.handler.image.ImageFileCellHandler;
+import io.github.zouzhiy.excel.handler.image.ImageUrlCellHandler;
 import io.github.zouzhiy.excel.handler.ints.IntegerBooleanHandler;
 import io.github.zouzhiy.excel.handler.ints.IntegerNumberHandler;
 import io.github.zouzhiy.excel.handler.ints.IntegerStringHandler;
@@ -196,7 +198,10 @@ public class CellHandlerRegistry {
         register(new ByteArrayStringHandler());
 
         register(new HeadStringHandler());
+
         register(new ImageByteCellHandler());
+        register(new ImageUrlCellHandler());
+        register(new ImageFileCellHandler());
     }
 
     public void register(CellHandler<?> cellHandler) {

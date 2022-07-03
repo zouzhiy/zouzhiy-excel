@@ -42,7 +42,7 @@ public class ExcelFieldConfig {
     private final Class<?> javaType = Object.class;
 
     @Builder.Default
-    private final ExcelType excelType = ExcelType.NONE;
+    private final ExcelType excelType = ExcelType.BLANK;
 
     @Builder.Default
     private final Class<? extends CellHandler<?>> cellHandler = NoneCellHandler.class;

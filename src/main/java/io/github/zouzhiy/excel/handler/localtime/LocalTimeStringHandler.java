@@ -19,7 +19,7 @@ import io.github.zouzhiy.excel.enums.ExcelType;
 import io.github.zouzhiy.excel.handler.AbstractWriteStringCellHandler;
 import io.github.zouzhiy.excel.metadata.CellResult;
 import io.github.zouzhiy.excel.metadata.ExcelFieldConfig;
-import io.github.zouzhiy.excel.utils.ExcelDateUtil;
+import io.github.zouzhiy.excel.utils.ExcelDateUtils;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -38,7 +38,7 @@ public class LocalTimeStringHandler extends AbstractWriteStringCellHandler<Local
     @Override
     protected LocalTime getCellValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResult firstCellResult) {
         String value = firstCellResult.getStringValue();
-        LocalDateTime localDateTime = ExcelDateUtil.parseDateTime(value, this.getJavaFormat(excelFieldConfig));
+        LocalDateTime localDateTime = ExcelDateUtils.parseDateTime(value, this.getJavaFormat(excelFieldConfig));
         return localDateTime.toLocalTime();
     }
 

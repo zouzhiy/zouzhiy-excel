@@ -16,54 +16,88 @@ package io.github.zouzhiy.excel.handler.image;
 import io.github.zouzhiy.excel.context.RowContext;
 import io.github.zouzhiy.excel.context.SheetContext;
 import io.github.zouzhiy.excel.enums.ExcelType;
-import io.github.zouzhiy.excel.exceptions.ExcelException;
-import io.github.zouzhiy.excel.handler.AbstractCellHandler;
 import io.github.zouzhiy.excel.metadata.CellResult;
 import io.github.zouzhiy.excel.metadata.ExcelFieldConfig;
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
+import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.ooxml.POIXMLDocumentPart;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.PictureData;
+import org.apache.poi.xssf.usermodel.*;
+
+import java.util.List;
 
 /**
  * @author zouzhiy
  * @since 2022/7/2
  */
-public class ImageByteCellHandler extends AbstractCellHandler<byte[]> {
+public class ImageByteCellHandler extends AbstractImageCellHandler<byte[]> {
 
     @Override
     protected byte[] getCellValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResult firstCellResult) {
-        throw new ExcelException("暂时不支持图片读取");
-    }
-
-    @Override
-    protected void setCellValue(RowContext rowContext, ExcelFieldConfig excelFieldConfig, Cell cell, byte[] value) {
-        Workbook workbook = rowContext.getSheetContext().getWorkbook();
-        Drawing<?> drawing = rowContext.getSheetContext().getDrawing();
-
-        CreationHelper creationHelper = workbook.getCreationHelper();
-        ClientAnchor clientAnchor = creationHelper.createClientAnchor();
-        clientAnchor.setRow1(cell.getRowIndex());
-        clientAnchor.setRow2(cell.getRowIndex());
-        clientAnchor.setCol1(cell.getColumnIndex());
-        clientAnchor.setCol2(cell.getColumnIndex());
-        int x1 = 0;
-        int y1 = 0;
-
-        int x2 = 10240;
-        int y2 = 10240;
-        if (clientAnchor instanceof XSSFClientAnchor) {
-            x2 = x2 * 100;
-            y2 = y2 * 100;
+        Cell cell = firstCellResult.getCell();
+        PictureData pictureData = this.getPictureData(cell);
+        if (pictureData == null) {
+            return new byte[0];
+        } else {
+            return pictureData.getData();
         }
-
-        clientAnchor.setDx1(x1);
-        clientAnchor.setDx2(x2);
-        clientAnchor.setDy1(y1);
-        clientAnchor.setDy2(y2);
-        drawing.createPicture(clientAnchor, workbook.addPicture(value, Workbook.PICTURE_TYPE_EMF));
     }
 
     @Override
-    public ExcelType getExcelType() {
-        return ExcelType.STRING;
+    protected byte[] toImageUrlResource(RowContext rowContext, ExcelFieldConfig excelFieldConfig, byte[] value) {
+        return value;
+    }
+
+    @Override
+    public final ExcelType getExcelType() {
+        return ExcelType.NONE;
+    }
+
+    protected PictureData getPictureData(Cell cell) {
+        if (cell instanceof HSSFCell) {
+            return getPictureData((HSSFCell) cell);
+        } else if (cell instanceof XSSFCell) {
+            return getPictureData((XSSFCell) cell);
+        }
+        return null;
+    }
+
+    private PictureData getPictureData(HSSFCell hssfCell) {
+        HSSFSheet sheet = hssfCell.getSheet();
+        HSSFPatriarch hssfShapes = sheet.getDrawingPatriarch();
+        List<HSSFShape> hssfShapeList = hssfShapes.getChildren();
+
+        for (HSSFShape hssfShape : hssfShapeList) {
+            if (!(hssfShape instanceof HSSFPicture)) {
+                continue;
+            }
+            HSSFClientAnchor hssfAnchor = (HSSFClientAnchor) hssfShape.getAnchor();
+            if (hssfAnchor.getRow1() == hssfCell.getRowIndex() && hssfAnchor.getCol1() == hssfCell.getColumnIndex()) {
+                return ((HSSFPicture) hssfShape).getPictureData();
+            }
+        }
+        return null;
+    }
+
+    private PictureData getPictureData(XSSFCell xssfCell) {
+        XSSFSheet sheet = xssfCell.getSheet();
+        List<POIXMLDocumentPart> relations = sheet.getRelations();
+
+        for (POIXMLDocumentPart documentPart : relations) {
+            if (!(documentPart instanceof XSSFDrawing)) {
+                continue;
+            }
+
+            XSSFDrawing xssfDrawing = (XSSFDrawing) documentPart;
+            List<XSSFShape> xssfShapeList = xssfDrawing.getShapes();
+            for (XSSFShape xssfShape : xssfShapeList) {
+                XSSFPicture xssfPicture = (XSSFPicture) xssfShape;
+                XSSFClientAnchor xssfAnchor = (XSSFClientAnchor) xssfPicture.getAnchor();
+                if (xssfAnchor.getRow1() == xssfCell.getRowIndex() && xssfAnchor.getCol1() == xssfCell.getColumnIndex()) {
+                    return xssfPicture.getPictureData();
+                }
+            }
+        }
+        return null;
     }
 }

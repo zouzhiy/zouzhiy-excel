@@ -31,7 +31,7 @@ public @interface ExcelField {
 
     String title() default "";
 
-    ExcelType excelType() default ExcelType.NONE;
+    ExcelType excelType() default ExcelType.BLANK;
 
     Class<? extends CellHandler<?>> cellHandler() default NoneCellHandler.class;
 

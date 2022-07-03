@@ -21,24 +21,25 @@ import io.github.zouzhiy.excel.metadata.CellResult;
 import io.github.zouzhiy.excel.metadata.ExcelFieldConfig;
 import org.apache.commons.io.IOUtils;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.URL;
 
 /**
  * @author zouzhiy
  * @since 2022/7/2
  */
-public class ImageUrlCellHandler extends AbstractImageCellHandler<String> {
+public class ImageFileCellHandler extends AbstractImageCellHandler<File> {
 
     @Override
-    protected String getCellValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResult firstCellResult) {
+    protected File getCellValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResult firstCellResult) {
         throw new ExcelException("不支持的方法");
     }
 
     @Override
-    protected byte[] toImageUrlResource(RowContext rowContext, ExcelFieldConfig excelFieldConfig, String value) {
+    protected byte[] toImageUrlResource(RowContext rowContext, ExcelFieldConfig excelFieldConfig, File value) {
         try {
-            return IOUtils.toByteArray(new URL(value));
+            return IOUtils.toByteArray(new FileInputStream(value));
         } catch (IOException e) {
             throw new ExcelException("读取图片失败");
         }

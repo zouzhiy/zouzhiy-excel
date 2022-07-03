@@ -100,7 +100,7 @@ public class ExcelAnnotationParse {
 
             for (int i = fields.length - 1; i >= 0; i--) {
                 Field field = fields[i];
-                if (Modifier.isStatic(field.getModifiers())){
+                if (Modifier.isStatic(field.getModifiers())) {
                     continue;
                 }
                 String fieldName = field.getName();
