@@ -15,13 +15,13 @@ package io.github.zouzhiy.excel.parsing;
 
 import io.github.zouzhiy.excel.annotation.ExcelClass;
 import io.github.zouzhiy.excel.annotation.ExcelField;
-import io.github.zouzhiy.excel.exceptions.ExcelException;
 import io.github.zouzhiy.excel.metadata.Configuration;
 import io.github.zouzhiy.excel.metadata.ExcelClassConfig;
 import io.github.zouzhiy.excel.metadata.ExcelFieldConfig;
 import io.github.zouzhiy.excel.metadata.ExcelStyleConfig;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -61,11 +61,6 @@ public class ExcelAnnotationParse {
 
     private ExcelClassConfig parseForClass(Class<?> clazz) {
 
-        ExcelClass excelClass = clazz.getAnnotation(ExcelClass.class);
-        if (excelClass == null) {
-            throw new ExcelException("未配置的类");
-        }
-
         List<Field> fieldList = this.listAllDeclaredField(clazz);
         List<ExcelFieldConfig> excelFieldConfigList = fieldList
                 .stream()
@@ -74,18 +69,23 @@ public class ExcelAnnotationParse {
                 .sorted(Comparator.comparing(ExcelFieldConfig::getSort))
                 .collect(Collectors.toList());
 
-        return ExcelClassConfig.builder()
-                .rowTitleWrite(excelClass.rowTitleWrite())
-                .rowHeadWrite(excelClass.rowHeadWrite())
-                .rowFootWrite(excelClass.rowFootWrite())
-                .rowTitleRead(excelClass.rowTitleRead())
-                .rowHeadRead(excelClass.rowHeadRead())
-                .rowFootRead(excelClass.rowFootRead())
-                .titleStyle(ExcelStyleConfig.buildByExcelStyle(excelClass.titleStyle()))
-                .cellStyleRead(excelClass.rowStyleRead())
-                .titleFormat(excelClass.titleFormat())
-                .itemList(excelFieldConfigList)
-                .build();
+        ExcelClass excelClass = clazz.getAnnotation(ExcelClass.class);
+        if (excelClass == null) {
+            return ExcelClassConfig.getDefaultExcelFieldConfig(excelFieldConfigList);
+        } else {
+            return ExcelClassConfig.builder()
+                    .rowTitleWrite(excelClass.rowTitleWrite())
+                    .rowHeadWrite(excelClass.rowHeadWrite())
+                    .rowFootWrite(excelClass.rowFootWrite())
+                    .rowTitleRead(excelClass.rowTitleRead())
+                    .rowHeadRead(excelClass.rowHeadRead())
+                    .rowFootRead(excelClass.rowFootRead())
+                    .titleStyle(ExcelStyleConfig.buildByExcelStyle(excelClass.titleStyle()))
+                    .cellStyleRead(excelClass.rowStyleRead())
+                    .titleFormat(excelClass.titleFormat())
+                    .itemList(excelFieldConfigList)
+                    .build();
+        }
     }
 
 
@@ -100,6 +100,9 @@ public class ExcelAnnotationParse {
 
             for (int i = fields.length - 1; i >= 0; i--) {
                 Field field = fields[i];
+                if (Modifier.isStatic(field.getModifiers())){
+                    continue;
+                }
                 String fieldName = field.getName();
                 if (fieldNameSet.contains(fieldName)) {
                     continue;
@@ -122,29 +125,31 @@ public class ExcelAnnotationParse {
 
 
     private ExcelFieldConfig convert(Field field) {
-        ExcelField excelField = field.getAnnotation(ExcelField.class);
-        if (excelField == null || excelField.ignore()) {
-            return null;
-        }
-
         String propertyName = field.getName();
         Class<?> javaType = field.getType();
-
-        return ExcelFieldConfig
-                .builder()
-                .title(excelField.title().length() == 0 ? propertyName : excelField.title())
-                .propertyName(propertyName)
-                .javaType(javaType)
-                .excelType(excelField.excelType())
-                .cellHandler(excelField.cellHandler())
-                .colspan(excelField.colspan())
-                .headFormat(excelField.headFormat())
-                .javaFormat(excelField.javaFormat())
-                .excelFormat(excelField.excelFormat())
-                .sort(excelField.sort())
-                .headStyle(ExcelStyleConfig.buildByExcelStyle(excelField.headStyle()))
-                .dataStyle(ExcelStyleConfig.buildByExcelStyle(excelField.dataStyle()))
-                .build();
+        ExcelField excelField = field.getAnnotation(ExcelField.class);
+        if (excelField != null && excelField.ignore()) {
+            return null;
+        }
+        if (excelField == null) {
+            return ExcelFieldConfig.getDefaultExcelFieldConfig(propertyName, javaType);
+        } else {
+            return ExcelFieldConfig
+                    .builder()
+                    .title(excelField.title().length() == 0 ? propertyName : excelField.title())
+                    .propertyName(propertyName)
+                    .javaType(javaType)
+                    .excelType(excelField.excelType())
+                    .cellHandler(excelField.cellHandler())
+                    .colspan(excelField.colspan())
+                    .headFormat(excelField.headFormat())
+                    .javaFormat(excelField.javaFormat())
+                    .excelFormat(excelField.excelFormat())
+                    .sort(excelField.sort())
+                    .headStyle(ExcelStyleConfig.buildByExcelStyle(excelField.headStyle()))
+                    .dataStyle(ExcelStyleConfig.buildByExcelStyle(excelField.dataStyle()))
+                    .build();
+        }
     }
 
 

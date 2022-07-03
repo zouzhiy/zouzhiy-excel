@@ -39,6 +39,7 @@ import io.github.zouzhiy.excel.handler.floats.FloatBooleanHandler;
 import io.github.zouzhiy.excel.handler.floats.FloatNumberHandler;
 import io.github.zouzhiy.excel.handler.floats.FloatStringHandler;
 import io.github.zouzhiy.excel.handler.head.HeadStringHandler;
+import io.github.zouzhiy.excel.handler.image.ImageByteCellHandler;
 import io.github.zouzhiy.excel.handler.ints.IntegerBooleanHandler;
 import io.github.zouzhiy.excel.handler.ints.IntegerNumberHandler;
 import io.github.zouzhiy.excel.handler.ints.IntegerStringHandler;
@@ -195,6 +196,7 @@ public class CellHandlerRegistry {
         register(new ByteArrayStringHandler());
 
         register(new HeadStringHandler());
+        register(new ImageByteCellHandler());
     }
 
     public void register(CellHandler<?> cellHandler) {
@@ -213,7 +215,7 @@ public class CellHandlerRegistry {
     public CellHandler<?> getMappingCellHandler(Class<? extends CellHandler<?>> cellHandlerClazz) {
         CellHandler<?> cellHandler = cellHandlerMap.get(cellHandlerClazz);
         if (cellHandler == null) {
-            throw new ExcelException("不存在的CellHandler");
+            throw new ExcelException("不存在的CellHandler:%s", cellHandlerClazz);
         }
         return cellHandler;
     }
@@ -244,7 +246,6 @@ public class CellHandlerRegistry {
             return this.getCellHandler(javaType, excelType);
         }
     }
-
 
     private Class<?> getBoxClazz(Class<?> clazz) {
         if (!clazz.isPrimitive()) {

@@ -68,4 +68,13 @@ public class ExcelFieldConfig {
     @Builder.Default
     private final ExcelStyleConfig dataStyle = ExcelStyleConfig.getDefaultExcelStyleConfigData();
 
+
+    public static ExcelFieldConfig getDefaultExcelFieldConfig(String propertyName, Class<?> javaType) {
+        return ExcelFieldConfig.builder()
+                .title(propertyName)
+                .propertyName(propertyName)
+                .javaType(javaType)
+                .build();
+    }
+
 }

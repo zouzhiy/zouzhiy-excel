@@ -18,9 +18,14 @@ import io.github.zouzhiy.excel.annotation.ExcelField;
 import io.github.zouzhiy.excel.enums.ExcelType;
 import io.github.zouzhiy.excel.handler.bytes.ByteArrayBoxStringHandler;
 import io.github.zouzhiy.excel.handler.bytes.ByteArrayStringHandler;
+import io.github.zouzhiy.excel.handler.image.ImageByteCellHandler;
+import io.github.zouzhiy.excel.handler.image.ImageUrlCellHandler;
 import lombok.Data;
+import org.apache.commons.compress.utils.IOUtils;
 import org.apache.poi.ss.usermodel.DateUtil;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
@@ -141,18 +146,23 @@ public class Demo {
     @ExcelField(excelType = ExcelType.STRING)
     private Float boxFloatString = random.nextBoolean() ? null : random.nextFloat();
 
-//    @ExcelField(excelType = ExcelType.STRING, cellHandler = ImageUrlCellHandler.class)
-//    private String imageUrl = "d:\\Users\\ludi\\Pictures\\微信图片_20200229172634.jpg";
-//    @ExcelField(excelType = ExcelType.NUMERIC, cellHandler = ImageByteCellHandler.class, ignore = true)
-//    private byte[] imageByte;
-//
-//    {
-//        try {
-//            imageByte = IOUtils.toByteArray(new FileInputStream("d:\\Users\\ludi\\Pictures\\微信图片_20200229172634.jpg"));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    @ExcelField(excelType = ExcelType.STRING, cellHandler = ImageUrlCellHandler.class, ignore = true)
+    private String imageUrl = "";
+    @ExcelField(excelType = ExcelType.NUMERIC, cellHandler = ImageByteCellHandler.class)
+    private byte[] imageByte;
+
+    {
+        try {
+//            String exportTemplateFileName = "103.png";
+            String exportTemplateFileName = "jpg1.jpg";
+            String exportTemplateFilePath = "statics/image/" + exportTemplateFileName;
+            InputStream exportTemplateInputStream = this.getClass().getClassLoader().getResourceAsStream(exportTemplateFilePath);
+            assert exportTemplateInputStream != null;
+            imageByte = IOUtils.toByteArray(exportTemplateInputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     @ExcelField(excelType = ExcelType.BOOLEAN)
