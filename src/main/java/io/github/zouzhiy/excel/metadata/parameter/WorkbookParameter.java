@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.zouzhiy.excel.metadata;
+package io.github.zouzhiy.excel.metadata.parameter;
 
 import io.github.zouzhiy.excel.callback.CellStyleConsumer;
 import io.github.zouzhiy.excel.exceptions.ExcelException;
@@ -107,7 +107,7 @@ public class WorkbookParameter {
         }
 
         public WorkbookParameterBuilder output(String outputFileName) {
-            this.outputFileName = outputFileName;
+            this.output(new File(outputFileName));
             return this;
         }
 

@@ -11,8 +11,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.zouzhiy.excel.metadata;
+package io.github.zouzhiy.excel.metadata.result;
 
+import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.poi.ss.usermodel.CellStyle;

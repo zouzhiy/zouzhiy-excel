@@ -14,7 +14,7 @@
 package io.github.zouzhiy.excel.handler;
 
 import io.github.zouzhiy.excel.context.RowContext;
-import io.github.zouzhiy.excel.metadata.ExcelFieldConfig;
+import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
 
 import java.text.DecimalFormat;
 import java.util.Map;

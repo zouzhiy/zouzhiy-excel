@@ -16,10 +16,10 @@ package io.github.zouzhiy.excel.cellstyle.defaults;
 import io.github.zouzhiy.excel.cellstyle.CellStyleRead;
 import io.github.zouzhiy.excel.cellstyle.RowStyleRead;
 import io.github.zouzhiy.excel.context.SheetContext;
-import io.github.zouzhiy.excel.metadata.CellStyleResultSet;
-import io.github.zouzhiy.excel.metadata.ExcelClassConfig;
-import io.github.zouzhiy.excel.metadata.ExcelFieldConfig;
-import io.github.zouzhiy.excel.metadata.SheetParameter;
+import io.github.zouzhiy.excel.metadata.config.ExcelClassConfig;
+import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
+import io.github.zouzhiy.excel.metadata.parameter.SheetParameter;
+import io.github.zouzhiy.excel.metadata.result.CellStyleResultSet;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
 
@@ -35,7 +35,7 @@ public class DefaultRowStyleRead implements RowStyleRead {
     @Override
     public CellStyle readTitle(SheetContext sheetContext) {
         SheetParameter sheetParameter = sheetContext.getSheetParameter();
-        Integer titleRowIndex = sheetParameter.getTitleRowIndex();
+        Integer titleRowIndex = sheetParameter.getTitleRowStartIndex();
 
         Row row = sheetContext.getRow(titleRowIndex);
         Integer titleColumnIndex = sheetParameter.getTitleColumnStartIndex();

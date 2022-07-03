@@ -13,8 +13,9 @@
  */
 package io.github.zouzhiy.excel.builder;
 
-import io.github.zouzhiy.excel.metadata.ExcelClassConfig;
-import io.github.zouzhiy.excel.metadata.WorkbookParameter;
+import io.github.zouzhiy.excel.metadata.Configuration;
+import io.github.zouzhiy.excel.metadata.config.ExcelClassConfig;
+import io.github.zouzhiy.excel.metadata.parameter.WorkbookParameter;
 import io.github.zouzhiy.excel.read.WorkbookRead;
 import io.github.zouzhiy.excel.write.WorkbookWrite;
 
@@ -23,6 +24,8 @@ import io.github.zouzhiy.excel.write.WorkbookWrite;
  * @since 2022/7/2
  */
 public interface ZouzhiyExcelFactory {
+
+    Configuration getConfiguration();
 
     WorkbookRead getWorkbookRead(WorkbookParameter workbookParameter, Class<?> clazz);
 

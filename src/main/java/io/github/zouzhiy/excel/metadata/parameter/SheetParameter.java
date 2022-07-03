@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.zouzhiy.excel.metadata;
+package io.github.zouzhiy.excel.metadata.parameter;
 
 import io.github.zouzhiy.excel.callback.SheetReadConsumer;
 import io.github.zouzhiy.excel.callback.SheetWriteConsumer;
@@ -40,7 +40,7 @@ public class SheetParameter {
 
     private String title;
 
-    private Integer titleRowIndex;
+    private Integer titleRowStartIndex;
 
     private Integer titleColumnStartIndex;
 
@@ -57,7 +57,7 @@ public class SheetParameter {
     private List<SheetWriteConsumer<?>> sheetWriteConsumerList;
 
     private SheetParameter(Integer sheetIndex, String sheetName
-            , String title, Integer titleRowIndex, Integer titleColumnStartIndex
+            , String title, Integer titleRowStartIndex, Integer titleColumnStartIndex
             , Integer headRowStartIndex, Integer headColumnStartIndex
             , Integer dataRowStartIndex, Integer dataColumnStartIndex
             , List<SheetReadConsumer<?>> sheetReadConsumerList
@@ -65,7 +65,7 @@ public class SheetParameter {
         this.sheetIndex = sheetIndex;
         this.sheetName = sheetName;
         this.title = title;
-        this.titleRowIndex = titleRowIndex;
+        this.titleRowStartIndex = titleRowStartIndex;
         this.titleColumnStartIndex = titleColumnStartIndex;
         this.headRowStartIndex = headRowStartIndex;
         this.headColumnStartIndex = headColumnStartIndex;

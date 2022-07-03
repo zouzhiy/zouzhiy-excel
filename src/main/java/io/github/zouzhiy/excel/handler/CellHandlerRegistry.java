@@ -68,6 +68,7 @@ import io.github.zouzhiy.excel.handler.timestamp.TimestampDateHandler;
 import io.github.zouzhiy.excel.handler.timestamp.TimestampNumberHandler;
 import io.github.zouzhiy.excel.handler.timestamp.TimestampStringHandler;
 import io.github.zouzhiy.excel.metadata.Configuration;
+import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -83,7 +84,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since 2022/7/2
  */
 public class CellHandlerRegistry {
-
 
     private static final ConcurrentHashMap<Class<?>, ExcelType> STANDARD_MAPPING;
 
@@ -119,9 +119,10 @@ public class CellHandlerRegistry {
         STANDARD_MAPPING.put(URL.class, ExcelType.STRING);
     }
 
+    @Getter
     private final Configuration configuration;
 
-    private final Map<Class<?>, Map<ExcelType, List<CellHandler<?>>>> cellHandlerListMapMap = new ConcurrentHashMap<>(32);
+    private final Map<Class<?>, List<CellHandler<?>>> cellHandlerListMap = new ConcurrentHashMap<>(32);
 
     private final Map<Class<? extends CellHandler<?>>, CellHandler<?>> cellHandlerMap = new ConcurrentHashMap<>(64);
 
@@ -206,12 +207,12 @@ public class CellHandlerRegistry {
 
     public void register(CellHandler<?> cellHandler) {
         Class<?> javaType = cellHandler.getJavaType();
-        ExcelType excelType = cellHandler.getExcelType();
-        Map<ExcelType, List<CellHandler<?>>> cellHandlerListMap = cellHandlerListMapMap.computeIfAbsent(javaType, key -> new ConcurrentHashMap<>(16));
-        List<CellHandler<?>> cellHandlerList = cellHandlerListMap.computeIfAbsent(excelType, key -> Collections.synchronizedList(new ArrayList<>(5)));
-        if (!cellHandlerList.contains(cellHandler)) {
-            cellHandlerList.add(cellHandler);
+        List<CellHandler<?>> cellHandlerList = cellHandlerListMap.computeIfAbsent(javaType, key -> new ArrayList<>(16));
+        if (cellHandlerList.contains(cellHandler)) {
+            return;
         }
+        cellHandlerList.add(cellHandler);
+
         //noinspection unchecked
         Class<? extends CellHandler<?>> cellHandlerClazz = (Class<? extends CellHandler<?>>) cellHandler.getClass();
         cellHandlerMap.put(cellHandlerClazz, cellHandler);
@@ -227,16 +228,20 @@ public class CellHandlerRegistry {
 
     public <T> CellHandler<T> getCellHandler(Class<T> javaType, ExcelType excelType) {
         Class<?> boxClazz = getBoxClazz(javaType);
-        Map<ExcelType, List<CellHandler<?>>> cellHandlerListMap = cellHandlerListMapMap.get(boxClazz);
-        if (cellHandlerListMap == null) {
-            throw new ExcelException("不存在的CellHandler,%s,%s", javaType, excelType);
-        }
-        if (excelType == null || excelType.equals(ExcelType.NONE) || excelType.equals(ExcelType.BLANK)) {
-            excelType = STANDARD_MAPPING.getOrDefault(javaType, ExcelType.STRING);
-        }
-        List<CellHandler<?>> cellHandlerList = cellHandlerListMap.get(excelType);
+        List<CellHandler<?>> cellHandlerList = cellHandlerListMap.get(boxClazz);
         if (cellHandlerList == null || cellHandlerList.isEmpty()) {
             throw new ExcelException("不存在的CellHandler,%s,%s", javaType, excelType);
+        }
+        if (excelType == null || excelType.equals(ExcelType.BLANK)) {
+            excelType = STANDARD_MAPPING.getOrDefault(javaType, ExcelType.NONE);
+        }
+
+        for (CellHandler<?> cellHandler : cellHandlerList) {
+            ExcelType cellHandlerExcelType = cellHandler.getExcelType();
+            if (cellHandlerExcelType.equals(excelType)) {
+                //noinspection unchecked
+                return (CellHandler<T>) cellHandler;
+            }
         }
 
         //noinspection unchecked

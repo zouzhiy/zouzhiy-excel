@@ -16,8 +16,8 @@ package io.github.zouzhiy.excel.handler;
 import io.github.zouzhiy.excel.context.RowContext;
 import io.github.zouzhiy.excel.context.SheetContext;
 import io.github.zouzhiy.excel.enums.ExcelType;
-import io.github.zouzhiy.excel.metadata.CellResultSet;
-import io.github.zouzhiy.excel.metadata.ExcelFieldConfig;
+import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
+import io.github.zouzhiy.excel.metadata.result.CellResultSet;
 
 /**
  * @author zouzhiy

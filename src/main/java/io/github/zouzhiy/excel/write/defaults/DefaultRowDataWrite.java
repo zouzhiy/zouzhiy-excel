@@ -21,8 +21,8 @@ import io.github.zouzhiy.excel.handler.CellHandler;
 import io.github.zouzhiy.excel.handler.CellHandlerRegistry;
 import io.github.zouzhiy.excel.ibatis.reflection.MetaObject;
 import io.github.zouzhiy.excel.metadata.Configuration;
-import io.github.zouzhiy.excel.metadata.ExcelClassConfig;
-import io.github.zouzhiy.excel.metadata.ExcelFieldConfig;
+import io.github.zouzhiy.excel.metadata.config.ExcelClassConfig;
+import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
 import io.github.zouzhiy.excel.write.RowDataWrite;
 import org.apache.poi.ss.usermodel.Row;
 

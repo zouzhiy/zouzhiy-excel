@@ -46,7 +46,7 @@ public class RowFootWriteRegistry {
         rowFootWriteMap.put(rowFootWrite.getClass(), rowFootWrite);
     }
 
-    public RowFootWrite getMappingRowFootWrite(Class<? extends RowFootWrite> rowFootWriteClazz) {
+    public RowFootWrite getMappingRowWrite(Class<? extends RowFootWrite> rowFootWriteClazz) {
         RowFootWrite rowFootWrite = rowFootWriteMap.get(rowFootWriteClazz);
         if (rowFootWrite == null) {
             throw new ExcelException("不存在的：RowFootWrite");

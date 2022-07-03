@@ -46,7 +46,7 @@ public class RowTitleReadRegistry {
         rowTitleReadMap.put(rowTitleRead.getClass(), rowTitleRead);
     }
 
-    public RowTitleRead getMappingRowTitleRead(Class<? extends RowTitleRead> rowTitleReadClazz) {
+    public RowTitleRead getMappingRowRead(Class<? extends RowTitleRead> rowTitleReadClazz) {
         RowTitleRead rowTitleRead = rowTitleReadMap.get(rowTitleReadClazz);
         if (rowTitleRead == null) {
             throw new ExcelException("不存在的：RowTitleRead");

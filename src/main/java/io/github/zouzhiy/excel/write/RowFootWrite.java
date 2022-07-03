@@ -21,7 +21,7 @@ import java.util.List;
  * @author zouzhiy
  * @since 2022/7/2
  */
-public interface RowFootWrite {
+public interface RowFootWrite extends RowWrite {
 
     int write(SheetContext sheetContext, List<?> dataList);
 

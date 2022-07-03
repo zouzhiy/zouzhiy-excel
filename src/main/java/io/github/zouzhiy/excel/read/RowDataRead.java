@@ -14,7 +14,7 @@
 package io.github.zouzhiy.excel.read;
 
 import io.github.zouzhiy.excel.context.SheetContext;
-import io.github.zouzhiy.excel.metadata.RowResultSet;
+import io.github.zouzhiy.excel.metadata.result.RowResultSet;
 
 /**
  * @author zouzhiy

@@ -14,8 +14,8 @@
 package io.github.zouzhiy.excel.read.defaults;
 
 import io.github.zouzhiy.excel.context.SheetContext;
-import io.github.zouzhiy.excel.metadata.CellResultSet;
-import io.github.zouzhiy.excel.metadata.SheetParameter;
+import io.github.zouzhiy.excel.metadata.parameter.SheetParameter;
+import io.github.zouzhiy.excel.metadata.result.CellResultSet;
 import io.github.zouzhiy.excel.read.CellDataRead;
 import io.github.zouzhiy.excel.read.RowHeadRead;
 import org.apache.poi.ss.usermodel.Row;

@@ -15,7 +15,7 @@ package io.github.zouzhiy.excel.handler.image;
 
 import io.github.zouzhiy.excel.context.RowContext;
 import io.github.zouzhiy.excel.handler.AbstractCellHandler;
-import io.github.zouzhiy.excel.metadata.ExcelFieldConfig;
+import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
 

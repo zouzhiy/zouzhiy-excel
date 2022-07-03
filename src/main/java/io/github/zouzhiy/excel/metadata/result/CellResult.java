@@ -11,9 +11,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.zouzhiy.excel.metadata;
+package io.github.zouzhiy.excel.metadata.result;
 
 import io.github.zouzhiy.excel.enums.ExcelType;
+import io.github.zouzhiy.excel.metadata.CellSpan;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;

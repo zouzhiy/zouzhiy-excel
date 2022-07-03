@@ -46,7 +46,7 @@ public class RowTitleWriteRegistry {
         rowTitleWriteMap.put(rowTitleWrite.getClass(), rowTitleWrite);
     }
 
-    public RowTitleWrite getMappingRowTitleWrite(Class<? extends RowTitleWrite> rowTitleWriteClazz) {
+    public RowTitleWrite getMappingRowWrite(Class<? extends RowTitleWrite> rowTitleWriteClazz) {
         RowTitleWrite rowTitleWrite = rowTitleWriteMap.get(rowTitleWriteClazz);
         if (rowTitleWrite == null) {
             throw new ExcelException("不存在的：RowTitleWrite");

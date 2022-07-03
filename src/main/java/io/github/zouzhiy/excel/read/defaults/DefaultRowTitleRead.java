@@ -14,8 +14,8 @@
 package io.github.zouzhiy.excel.read.defaults;
 
 import io.github.zouzhiy.excel.context.SheetContext;
-import io.github.zouzhiy.excel.metadata.CellResultSet;
-import io.github.zouzhiy.excel.metadata.SheetParameter;
+import io.github.zouzhiy.excel.metadata.parameter.SheetParameter;
+import io.github.zouzhiy.excel.metadata.result.CellResultSet;
 import io.github.zouzhiy.excel.read.CellDataRead;
 import io.github.zouzhiy.excel.read.RowTitleRead;
 import org.apache.poi.ss.usermodel.Row;
@@ -31,7 +31,7 @@ public class DefaultRowTitleRead implements RowTitleRead {
     @Override
     public CellResultSet read(SheetContext sheetContext) {
         SheetParameter sheetParameter = sheetContext.getSheetParameter();
-        Integer titleRowIndex = sheetParameter.getTitleRowIndex();
+        Integer titleRowIndex = sheetParameter.getTitleRowStartIndex();
 
         Row row = this.getRow(sheetContext, titleRowIndex);
         Integer titleColumnIndex = sheetParameter.getTitleColumnStartIndex();

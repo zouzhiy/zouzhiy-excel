@@ -14,7 +14,7 @@
 package io.github.zouzhiy.excel.cellstyle;
 
 import io.github.zouzhiy.excel.context.SheetContext;
-import io.github.zouzhiy.excel.metadata.CellStyleResultSet;
+import io.github.zouzhiy.excel.metadata.result.CellStyleResultSet;
 import org.apache.poi.ss.usermodel.CellStyle;
 
 /**

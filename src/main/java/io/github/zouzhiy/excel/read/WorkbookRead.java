@@ -14,6 +14,7 @@
 package io.github.zouzhiy.excel.read;
 
 import io.github.zouzhiy.excel.context.WorkbookContext;
+import io.github.zouzhiy.excel.metadata.config.ExcelClassConfig;
 
 import java.util.List;
 
@@ -24,6 +25,8 @@ import java.util.List;
 public interface WorkbookRead extends AutoCloseable {
 
     WorkbookContext getWorkbookContext();
+
+    ExcelClassConfig getExcelClassConfig();
 
     <T> List<T> read(Class<T> clazz);
 

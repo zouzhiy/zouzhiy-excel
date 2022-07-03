@@ -1,7 +1,7 @@
 package io.github.zouzhiy.excel.parsing;
 
 import io.github.zouzhiy.excel.metadata.Configuration;
-import io.github.zouzhiy.excel.metadata.ExcelClassConfig;
+import io.github.zouzhiy.excel.metadata.config.ExcelClassConfig;
 import io.github.zouzhiy.excel.write.WriteDemo;
 import org.junit.jupiter.api.Test;
 

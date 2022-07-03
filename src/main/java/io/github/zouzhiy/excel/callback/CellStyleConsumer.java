@@ -13,8 +13,8 @@
  */
 package io.github.zouzhiy.excel.callback;
 
-import io.github.zouzhiy.excel.metadata.ExcelClassConfig;
-import io.github.zouzhiy.excel.metadata.ExcelFieldConfig;
+import io.github.zouzhiy.excel.metadata.config.ExcelClassConfig;
+import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
 import org.apache.poi.ss.usermodel.CellStyle;
 
 /**

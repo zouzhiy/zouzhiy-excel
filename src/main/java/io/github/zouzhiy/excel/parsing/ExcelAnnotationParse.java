@@ -16,9 +16,10 @@ package io.github.zouzhiy.excel.parsing;
 import io.github.zouzhiy.excel.annotation.ExcelClass;
 import io.github.zouzhiy.excel.annotation.ExcelField;
 import io.github.zouzhiy.excel.metadata.Configuration;
-import io.github.zouzhiy.excel.metadata.ExcelClassConfig;
-import io.github.zouzhiy.excel.metadata.ExcelFieldConfig;
-import io.github.zouzhiy.excel.metadata.ExcelStyleConfig;
+import io.github.zouzhiy.excel.metadata.config.ExcelClassConfig;
+import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
+import io.github.zouzhiy.excel.metadata.config.ExcelStyleConfig;
+import lombok.Getter;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -32,6 +33,7 @@ import java.util.stream.Collectors;
  */
 public class ExcelAnnotationParse {
 
+    @Getter
     private final Configuration configuration;
 
     private boolean configCacheEnabled = true;

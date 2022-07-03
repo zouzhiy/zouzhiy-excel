@@ -18,9 +18,9 @@ import io.github.zouzhiy.excel.context.defualts.DefaultSheetContext;
 import io.github.zouzhiy.excel.context.defualts.DefaultWorkbookContext;
 import io.github.zouzhiy.excel.exceptions.ExcelException;
 import io.github.zouzhiy.excel.metadata.Configuration;
-import io.github.zouzhiy.excel.metadata.ExcelClassConfig;
-import io.github.zouzhiy.excel.metadata.SheetParameter;
-import io.github.zouzhiy.excel.metadata.WorkbookParameter;
+import io.github.zouzhiy.excel.metadata.config.ExcelClassConfig;
+import io.github.zouzhiy.excel.metadata.parameter.SheetParameter;
+import io.github.zouzhiy.excel.metadata.parameter.WorkbookParameter;
 import io.github.zouzhiy.excel.write.SheetWrite;
 import io.github.zouzhiy.excel.write.WorkbookWrite;
 
@@ -49,6 +49,11 @@ public class DefaultWorkbookWrite implements WorkbookWrite {
     @Override
     public WorkbookContext getWorkbookContext() {
         return workbookContext;
+    }
+
+    @Override
+    public ExcelClassConfig getExcelClassConfig() {
+        return excelClassConfig;
     }
 
     @Override

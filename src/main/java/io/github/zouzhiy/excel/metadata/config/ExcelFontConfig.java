@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.zouzhiy.excel.metadata;
+package io.github.zouzhiy.excel.metadata.config;
 
 import io.github.zouzhiy.excel.annotation.ExcelFont;
 import io.github.zouzhiy.excel.enums.FontTypeOffset;

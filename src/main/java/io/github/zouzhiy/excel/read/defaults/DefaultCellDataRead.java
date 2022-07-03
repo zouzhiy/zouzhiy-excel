@@ -15,10 +15,10 @@ package io.github.zouzhiy.excel.read.defaults;
 
 import io.github.zouzhiy.excel.context.SheetContext;
 import io.github.zouzhiy.excel.exceptions.ExcelException;
-import io.github.zouzhiy.excel.metadata.CellResult;
-import io.github.zouzhiy.excel.metadata.CellResultSet;
 import io.github.zouzhiy.excel.metadata.CellSpan;
 import io.github.zouzhiy.excel.metadata.MergedRegion;
+import io.github.zouzhiy.excel.metadata.result.CellResult;
+import io.github.zouzhiy.excel.metadata.result.CellResultSet;
 import io.github.zouzhiy.excel.read.CellDataRead;
 import org.apache.poi.ss.usermodel.*;
 

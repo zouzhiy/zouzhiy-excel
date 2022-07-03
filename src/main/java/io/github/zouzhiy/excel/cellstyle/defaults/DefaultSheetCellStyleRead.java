@@ -17,7 +17,7 @@ import io.github.zouzhiy.excel.cellstyle.RowStyleRead;
 import io.github.zouzhiy.excel.cellstyle.SheetCellStyleRead;
 import io.github.zouzhiy.excel.cellstyle.registry.RowStyleReadRegistry;
 import io.github.zouzhiy.excel.context.SheetContext;
-import io.github.zouzhiy.excel.metadata.CellStyleResultSet;
+import io.github.zouzhiy.excel.metadata.result.CellStyleResultSet;
 import org.apache.poi.ss.usermodel.CellStyle;
 
 /**
@@ -41,7 +41,7 @@ public class DefaultSheetCellStyleRead implements SheetCellStyleRead {
     public void read() {
         SheetContext sheetContext = this.getSheetContext();
 
-        Integer titleRowIndex = this.sheetContext.getSheetParameter().getTitleRowIndex();
+        Integer titleRowIndex = this.sheetContext.getSheetParameter().getTitleRowStartIndex();
         if (titleRowIndex == -1) {
             return;
         }

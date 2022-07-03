@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.zouzhiy.excel.metadata;
+package io.github.zouzhiy.excel.metadata.config;
 
 import io.github.zouzhiy.excel.cellstyle.RowStyleRead;
 import io.github.zouzhiy.excel.cellstyle.defaults.DefaultRowStyleRead;
@@ -46,7 +46,7 @@ import java.util.List;
 public class ExcelClassConfig {
 
     @Builder.Default
-    private Class<? extends RowTitleWrite> rowTitleWrite = DefaultRowTitleWrite.class;
+    private final Class<? extends RowTitleWrite> rowTitleWrite = DefaultRowTitleWrite.class;
 
     @Builder.Default
     private final Class<? extends RowHeadWrite> rowHeadWrite = DefaultRowHeadWrite.class;

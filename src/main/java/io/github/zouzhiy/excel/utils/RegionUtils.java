@@ -27,6 +27,9 @@ import org.apache.poi.ss.util.RegionUtil;
 public class RegionUtils {
 
     public static void addMergedRegionIfPresent(SheetContext sheetContext, CellStyle cellStyle, int firstRow, int lastRow, int firstCol, int lastCol) {
+        if (lastRow < 0 || lastCol < 0) {
+            return;
+        }
         if (lastRow - firstRow == 0 && lastCol - firstCol == 0) {
             return;
         }

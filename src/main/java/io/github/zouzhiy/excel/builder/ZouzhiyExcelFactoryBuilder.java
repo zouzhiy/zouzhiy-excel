@@ -55,22 +55,26 @@ public class ZouzhiyExcelFactoryBuilder {
 
     public ZouzhiyExcelFactoryBuilder register(RowWrite rowWrite) {
         if (rowWrite instanceof RowTitleWrite) {
-            return this.register((RowTitleWrite) rowWrite);
-        } else if (rowWrite instanceof RowHeadWrite) {
-            return this.register((RowHeadWrite) rowWrite);
-        } else if (rowWrite instanceof RowFootWrite) {
-            return this.register((RowFootWrite) rowWrite);
+            this.register((RowTitleWrite) rowWrite);
+        }
+        if (rowWrite instanceof RowHeadWrite) {
+            this.register((RowHeadWrite) rowWrite);
+        }
+        if (rowWrite instanceof RowFootWrite) {
+            this.register((RowFootWrite) rowWrite);
         }
         return this;
     }
 
     public ZouzhiyExcelFactoryBuilder register(RowRead rowRead) {
         if (rowRead instanceof RowTitleRead) {
-            return this.register((RowTitleRead) rowRead);
-        } else if (rowRead instanceof RowHeadRead) {
-            return this.register((RowHeadRead) rowRead);
-        } else if (rowRead instanceof RowFootRead) {
-            return this.register((RowFootRead) rowRead);
+            this.register((RowTitleRead) rowRead);
+        }
+        if (rowRead instanceof RowHeadRead) {
+            this.register((RowHeadRead) rowRead);
+        }
+        if (rowRead instanceof RowFootRead) {
+            this.register((RowFootRead) rowRead);
         }
         return this;
     }

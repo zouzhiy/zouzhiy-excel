@@ -14,7 +14,7 @@
 package io.github.zouzhiy.excel.read;
 
 import io.github.zouzhiy.excel.context.SheetContext;
-import io.github.zouzhiy.excel.metadata.ExcelClassConfig;
+import io.github.zouzhiy.excel.metadata.config.ExcelClassConfig;
 
 import java.util.List;
 

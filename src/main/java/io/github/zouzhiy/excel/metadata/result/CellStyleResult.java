@@ -11,31 +11,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.zouzhiy.excel.metadata;
+package io.github.zouzhiy.excel.metadata.result;
 
-import lombok.EqualsAndHashCode;
+import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
 import lombok.Getter;
-import lombok.ToString;
+import org.apache.poi.ss.usermodel.CellStyle;
 
 /**
  * @author zouzhiy
  * @since 2022/7/2
  */
 @Getter
-@ToString
-@EqualsAndHashCode
-public class RowResultSet<T> {
+public class CellStyleResult {
 
-    private T data;
+    private final ExcelFieldConfig excelFieldConfig;
 
-    private int rowspan;
+    private final CellStyle cellStyle;
 
-    public static <T> RowResultSet<T> newInstance(T data, int rowspan) {
-        RowResultSet<T> rowResultSet = new RowResultSet<>();
-        rowResultSet.data = data;
-        rowResultSet.rowspan = rowspan;
-
-        return rowResultSet;
+    private CellStyleResult(ExcelFieldConfig excelFieldConfig, CellStyle cellStyle) {
+        this.excelFieldConfig = excelFieldConfig;
+        this.cellStyle = cellStyle;
     }
 
+    public static CellStyleResult newInstance(ExcelFieldConfig excelFieldConfig, CellStyle cellStyle) {
+        return new CellStyleResult(excelFieldConfig, cellStyle);
+    }
 }

@@ -14,6 +14,7 @@
 package io.github.zouzhiy.excel.write;
 
 import io.github.zouzhiy.excel.context.WorkbookContext;
+import io.github.zouzhiy.excel.metadata.config.ExcelClassConfig;
 
 import java.util.List;
 
@@ -24,6 +25,8 @@ import java.util.List;
 public interface WorkbookWrite extends AutoCloseable {
 
     WorkbookContext getWorkbookContext();
+
+    ExcelClassConfig getExcelClassConfig();
 
     <T> void write(List<T> itemList);
 

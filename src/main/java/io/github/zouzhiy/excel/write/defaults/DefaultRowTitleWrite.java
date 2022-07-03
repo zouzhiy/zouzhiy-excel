@@ -14,9 +14,9 @@
 package io.github.zouzhiy.excel.write.defaults;
 
 import io.github.zouzhiy.excel.context.SheetContext;
-import io.github.zouzhiy.excel.metadata.ExcelClassConfig;
-import io.github.zouzhiy.excel.metadata.ExcelFieldConfig;
-import io.github.zouzhiy.excel.metadata.SheetParameter;
+import io.github.zouzhiy.excel.metadata.config.ExcelClassConfig;
+import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
+import io.github.zouzhiy.excel.metadata.parameter.SheetParameter;
 import io.github.zouzhiy.excel.utils.RegionUtils;
 import io.github.zouzhiy.excel.write.RowTitleWrite;
 import org.apache.poi.ss.usermodel.Cell;
@@ -37,7 +37,7 @@ public class DefaultRowTitleWrite implements RowTitleWrite {
         List<ExcelFieldConfig> itemList = excelClassConfig.getItemList();
 
         SheetParameter sheetParameter = sheetContext.getSheetParameter();
-        int titleRowIndex = sheetParameter.getTitleRowIndex();
+        int titleRowIndex = sheetParameter.getTitleRowStartIndex();
         int titleColumnIndex = sheetParameter.getTitleColumnStartIndex();
 
         Row row = this.createRow(sheetContext, titleRowIndex);

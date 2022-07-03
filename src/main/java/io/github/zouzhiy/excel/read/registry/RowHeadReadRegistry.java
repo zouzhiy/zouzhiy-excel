@@ -46,7 +46,7 @@ public class RowHeadReadRegistry {
         rowHeadReadMap.put(rowHeadRead.getClass(), rowHeadRead);
     }
 
-    public RowHeadRead getMappingRowHeadRead(Class<? extends RowHeadRead> rowHeadReadClazz) {
+    public RowHeadRead getMappingRowRead(Class<? extends RowHeadRead> rowHeadReadClazz) {
         RowHeadRead rowHeadRead = rowHeadReadMap.get(rowHeadReadClazz);
         if (rowHeadRead == null) {
             throw new ExcelException("不存在的：RowHeadRead");

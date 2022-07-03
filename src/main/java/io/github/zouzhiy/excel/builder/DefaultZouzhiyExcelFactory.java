@@ -14,8 +14,8 @@
 package io.github.zouzhiy.excel.builder;
 
 import io.github.zouzhiy.excel.metadata.Configuration;
-import io.github.zouzhiy.excel.metadata.ExcelClassConfig;
-import io.github.zouzhiy.excel.metadata.WorkbookParameter;
+import io.github.zouzhiy.excel.metadata.config.ExcelClassConfig;
+import io.github.zouzhiy.excel.metadata.parameter.WorkbookParameter;
 import io.github.zouzhiy.excel.read.WorkbookRead;
 import io.github.zouzhiy.excel.read.defaults.DefaultWorkbookRead;
 import io.github.zouzhiy.excel.write.WorkbookWrite;
@@ -31,6 +31,11 @@ public class DefaultZouzhiyExcelFactory implements ZouzhiyExcelFactory {
 
     public DefaultZouzhiyExcelFactory(Configuration configuration) {
         this.configuration = configuration;
+    }
+
+    @Override
+    public Configuration getConfiguration() {
+        return configuration;
     }
 
     @Override

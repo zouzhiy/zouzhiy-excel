@@ -46,7 +46,7 @@ public class RowHeadWriteRegistry {
         rowHeadWriteMap.put(rowHeadWrite.getClass(), rowHeadWrite);
     }
 
-    public RowHeadWrite getMappingRowHeadWrite(Class<? extends RowHeadWrite> rowHeadWriteClazz) {
+    public RowHeadWrite getMappingRowWrite(Class<? extends RowHeadWrite> rowHeadWriteClazz) {
         RowHeadWrite rowHeadWrite = rowHeadWriteMap.get(rowHeadWriteClazz);
         if (rowHeadWrite == null) {
             throw new ExcelException("不存在的：RowHeadWrite");

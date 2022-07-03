@@ -16,8 +16,8 @@ package io.github.zouzhiy.excel.handler.biginteger;
 import io.github.zouzhiy.excel.context.SheetContext;
 import io.github.zouzhiy.excel.enums.ExcelType;
 import io.github.zouzhiy.excel.handler.AbstractNumberWriteStringCellHandler;
-import io.github.zouzhiy.excel.metadata.CellResult;
-import io.github.zouzhiy.excel.metadata.ExcelFieldConfig;
+import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
+import io.github.zouzhiy.excel.metadata.result.CellResult;
 
 import java.math.BigInteger;
 

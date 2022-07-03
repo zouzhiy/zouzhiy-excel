@@ -17,8 +17,8 @@ import io.github.zouzhiy.excel.context.RowContext;
 import io.github.zouzhiy.excel.context.SheetContext;
 import io.github.zouzhiy.excel.enums.ExcelType;
 import io.github.zouzhiy.excel.exceptions.ExcelException;
-import io.github.zouzhiy.excel.metadata.CellResult;
-import io.github.zouzhiy.excel.metadata.ExcelFieldConfig;
+import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
+import io.github.zouzhiy.excel.metadata.result.CellResult;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
@@ -40,7 +40,7 @@ public class ImageUrlCellHandler extends AbstractImageCellHandler<String> {
         try {
             return IOUtils.toByteArray(new URL(value));
         } catch (IOException e) {
-            throw new ExcelException("读取图片失败");
+            throw new ExcelException("读取图片失败:%s", value);
         }
     }
 

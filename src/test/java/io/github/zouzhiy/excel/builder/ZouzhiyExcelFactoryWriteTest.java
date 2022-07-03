@@ -1,7 +1,7 @@
 package io.github.zouzhiy.excel.builder;
 
-import io.github.zouzhiy.excel.metadata.SheetParameter;
-import io.github.zouzhiy.excel.metadata.WorkbookParameter;
+import io.github.zouzhiy.excel.metadata.parameter.SheetParameter;
+import io.github.zouzhiy.excel.metadata.parameter.WorkbookParameter;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -16,7 +16,7 @@ import java.util.Random;
  * @author zouzhiy
  * @since 2022/7/2
  */
-class ZouzhiyExcelFactoryTest {
+class ZouzhiyExcelFactoryWriteTest {
 
     private final ZouzhiyExcelFactory zouzhiyExcelFactory = ZouzhiyExcelFactoryBuilder.builder().build();
 

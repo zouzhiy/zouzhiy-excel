@@ -15,10 +15,10 @@ package io.github.zouzhiy.excel.read.defaults;
 
 import io.github.zouzhiy.excel.callback.SheetReadConsumer;
 import io.github.zouzhiy.excel.context.SheetContext;
-import io.github.zouzhiy.excel.metadata.CellResultSet;
-import io.github.zouzhiy.excel.metadata.ExcelClassConfig;
-import io.github.zouzhiy.excel.metadata.RowResultSet;
-import io.github.zouzhiy.excel.metadata.SheetParameter;
+import io.github.zouzhiy.excel.metadata.config.ExcelClassConfig;
+import io.github.zouzhiy.excel.metadata.parameter.SheetParameter;
+import io.github.zouzhiy.excel.metadata.result.CellResultSet;
+import io.github.zouzhiy.excel.metadata.result.RowResultSet;
 import io.github.zouzhiy.excel.read.*;
 import io.github.zouzhiy.excel.read.registry.RowFootReadRegistry;
 import io.github.zouzhiy.excel.read.registry.RowHeadReadRegistry;
@@ -78,7 +78,7 @@ public class DefaultSheetRead implements SheetRead {
         SheetParameter sheetParameter = sheetContext.getSheetParameter();
         List<SheetReadConsumer<?>> sheetReadConsumerList = sheetParameter.getSheetReadConsumerList();
 
-        Integer titleRowIndex = sheetParameter.getTitleRowIndex();
+        Integer titleRowIndex = sheetParameter.getTitleRowStartIndex();
         if (titleRowIndex == -1) {
             sheetReadConsumerList.forEach(item -> item.acceptReadTitle(sheetContext, CellResultSet.empty()));
             return null;
@@ -87,7 +87,7 @@ public class DefaultSheetRead implements SheetRead {
         if (rowTitleReadClazz == null) {
             rowTitleReadClazz = RowTitleReadRegistry.DEFAULT_ROW_TITLE_READ_CLASS;
         }
-        RowTitleRead rowTitleRead = this.getSheetContext().getConfiguration().getRowTitleReadRegistry().getMappingRowTitleRead(rowTitleReadClazz);
+        RowTitleRead rowTitleRead = this.getSheetContext().getConfiguration().getRowTitleReadRegistry().getMappingRowRead(rowTitleReadClazz);
         CellResultSet titleCellResultSet = rowTitleRead.read(sheetContext);
 
         sheetReadConsumerList.forEach(item -> item.acceptReadTitle(sheetContext, titleCellResultSet));
@@ -108,7 +108,7 @@ public class DefaultSheetRead implements SheetRead {
         if (rowHeadReadClazz == null) {
             rowHeadReadClazz = RowHeadReadRegistry.DEFAULT_ROW_HEAD_READ_CLASS;
         }
-        RowHeadRead rowHeadRead = this.getSheetContext().getConfiguration().getRowHeadReadRegistry().getMappingRowHeadRead(rowHeadReadClazz);
+        RowHeadRead rowHeadRead = this.getSheetContext().getConfiguration().getRowHeadReadRegistry().getMappingRowRead(rowHeadReadClazz);
         List<CellResultSet> headCellResultSetList = rowHeadRead.read(sheetContext);
 
         sheetReadConsumerList.forEach(item -> item.acceptReadHead(sheetContext, headCellResultSetList));
@@ -155,7 +155,7 @@ public class DefaultSheetRead implements SheetRead {
         if (rowFootReadClazz == null) {
             rowFootReadClazz = RowFootReadRegistry.DEFAULT_ROW_FOOT_READ_CLASS;
         }
-        RowFootRead rowFootRead = this.getSheetContext().getConfiguration().getRowFootReadRegistry().getMappingRowFootRead(rowFootReadClazz);
+        RowFootRead rowFootRead = this.getSheetContext().getConfiguration().getRowFootReadRegistry().getMappingRowRead(rowFootReadClazz);
         List<CellResultSet> footCellResultSetList = rowFootRead.read(sheetContext);
 
         sheetReadConsumerList.forEach(item -> item.acceptReadFoot(sheetContext, footCellResultSetList));

@@ -17,7 +17,13 @@ import io.github.zouzhiy.excel.context.WorkbookContext;
 import io.github.zouzhiy.excel.enums.StyleHorizontalAlignment;
 import io.github.zouzhiy.excel.enums.StyleVerticalAlignment;
 import io.github.zouzhiy.excel.exceptions.ExcelException;
-import io.github.zouzhiy.excel.metadata.*;
+import io.github.zouzhiy.excel.metadata.Configuration;
+import io.github.zouzhiy.excel.metadata.config.ExcelClassConfig;
+import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
+import io.github.zouzhiy.excel.metadata.config.ExcelFontConfig;
+import io.github.zouzhiy.excel.metadata.config.ExcelStyleConfig;
+import io.github.zouzhiy.excel.metadata.parameter.WorkbookParameter;
+import io.github.zouzhiy.excel.metadata.result.CellStyleResultSet;
 import org.apache.poi.ss.usermodel.*;
 
 import java.io.IOException;

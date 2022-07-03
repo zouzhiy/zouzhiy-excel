@@ -14,7 +14,7 @@
 package io.github.zouzhiy.excel.read;
 
 import io.github.zouzhiy.excel.context.SheetContext;
-import io.github.zouzhiy.excel.metadata.CellResultSet;
+import io.github.zouzhiy.excel.metadata.result.CellResultSet;
 
 import java.util.List;
 

@@ -46,7 +46,7 @@ public class RowFootReadRegistry {
         rowFootReadMap.put(rowFootRead.getClass(), rowFootRead);
     }
 
-    public RowFootRead getMappingRowFootRead(Class<? extends RowFootRead> rowFootReadClazz) {
+    public RowFootRead getMappingRowRead(Class<? extends RowFootRead> rowFootReadClazz) {
         RowFootRead rowFootRead = rowFootReadMap.get(rowFootReadClazz);
         if (rowFootRead == null) {
             throw new ExcelException("不存在的：RowFootRead");

@@ -17,9 +17,9 @@ import io.github.zouzhiy.excel.context.WorkbookContext;
 import io.github.zouzhiy.excel.context.defualts.DefaultSheetContext;
 import io.github.zouzhiy.excel.context.defualts.DefaultWorkbookContext;
 import io.github.zouzhiy.excel.metadata.Configuration;
-import io.github.zouzhiy.excel.metadata.ExcelClassConfig;
-import io.github.zouzhiy.excel.metadata.SheetParameter;
-import io.github.zouzhiy.excel.metadata.WorkbookParameter;
+import io.github.zouzhiy.excel.metadata.config.ExcelClassConfig;
+import io.github.zouzhiy.excel.metadata.parameter.SheetParameter;
+import io.github.zouzhiy.excel.metadata.parameter.WorkbookParameter;
 import io.github.zouzhiy.excel.read.SheetRead;
 import io.github.zouzhiy.excel.read.WorkbookRead;
 
@@ -33,9 +33,10 @@ import java.util.List;
  */
 public class DefaultWorkbookRead implements WorkbookRead {
 
-    private final ExcelClassConfig excelClassConfig;
 
     private final WorkbookContext workbookContext;
+
+    private final ExcelClassConfig excelClassConfig;
 
     private SheetRead sheetRead;
 
@@ -47,6 +48,11 @@ public class DefaultWorkbookRead implements WorkbookRead {
     @Override
     public WorkbookContext getWorkbookContext() {
         return workbookContext;
+    }
+
+    @Override
+    public ExcelClassConfig getExcelClassConfig() {
+        return excelClassConfig;
     }
 
     @Override

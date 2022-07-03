@@ -17,8 +17,8 @@ import io.github.zouzhiy.excel.callback.SheetWriteConsumer;
 import io.github.zouzhiy.excel.cellstyle.SheetCellStyleRead;
 import io.github.zouzhiy.excel.cellstyle.defaults.DefaultSheetCellStyleRead;
 import io.github.zouzhiy.excel.context.SheetContext;
-import io.github.zouzhiy.excel.metadata.ExcelClassConfig;
-import io.github.zouzhiy.excel.metadata.SheetParameter;
+import io.github.zouzhiy.excel.metadata.config.ExcelClassConfig;
+import io.github.zouzhiy.excel.metadata.parameter.SheetParameter;
 import io.github.zouzhiy.excel.write.*;
 import io.github.zouzhiy.excel.write.registry.RowFootWriteRegistry;
 import io.github.zouzhiy.excel.write.registry.RowHeadWriteRegistry;
@@ -96,7 +96,7 @@ public class DefaultSheetWrite implements SheetWrite {
         //noinspection unchecked
         sheetWriteConsumerList.forEach(item -> ((SheetWriteConsumer<T>) item).beforeWriteTitle(sheetContext, itemList));
 
-        Integer titleRowIndex = sheetParameter.getTitleRowIndex();
+        Integer titleRowIndex = sheetParameter.getTitleRowStartIndex();
         if (titleRowIndex == -1) {
             //noinspection unchecked
             sheetWriteConsumerList.forEach(item -> ((SheetWriteConsumer<T>) item).afterWriteTitle(sheetContext, itemList));
@@ -106,7 +106,7 @@ public class DefaultSheetWrite implements SheetWrite {
         if (rowTitleWriteClazz == null) {
             rowTitleWriteClazz = RowTitleWriteRegistry.DEFAULT_ROW_TITLE_WRITE_CLASS;
         }
-        RowTitleWrite rowTitleWrite = sheetContext.getConfiguration().getRowTitleWriteRegistry().getMappingRowTitleWrite(rowTitleWriteClazz);
+        RowTitleWrite rowTitleWrite = sheetContext.getConfiguration().getRowTitleWriteRegistry().getMappingRowWrite(rowTitleWriteClazz);
         rowTitleWrite.write(sheetContext, itemList);
 
         //noinspection unchecked
@@ -131,7 +131,7 @@ public class DefaultSheetWrite implements SheetWrite {
         if (rowHeadWriteClazz == null) {
             rowHeadWriteClazz = RowHeadWriteRegistry.DEFAULT_ROW_HEAD_WRITE_CLASS;
         }
-        RowHeadWrite rowHeadWrite = sheetContext.getConfiguration().getRowHeadWriteRegistry().getMappingRowHeadWrite(rowHeadWriteClazz);
+        RowHeadWrite rowHeadWrite = sheetContext.getConfiguration().getRowHeadWriteRegistry().getMappingRowWrite(rowHeadWriteClazz);
         rowHeadWrite.write(sheetContext, itemList);
 
         //noinspection unchecked
@@ -173,7 +173,7 @@ public class DefaultSheetWrite implements SheetWrite {
         if (rowFootWriteClazz == null) {
             rowFootWriteClazz = RowFootWriteRegistry.DEFAULT_ROW_FOOT_WRITE_CLASS;
         }
-        RowFootWrite rowFootWrite = sheetContext.getConfiguration().getRowFootWriteRegistry().getMappingRowFootWrite(rowFootWriteClazz);
+        RowFootWrite rowFootWrite = sheetContext.getConfiguration().getRowFootWriteRegistry().getMappingRowWrite(rowFootWriteClazz);
         rowFootWrite.write(sheetContext, itemList);
 
         //noinspection unchecked
