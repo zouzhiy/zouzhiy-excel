@@ -14,7 +14,6 @@
 package io.github.zouzhiy.excel.handler.shorts;
 
 import io.github.zouzhiy.excel.context.SheetContext;
-import io.github.zouzhiy.excel.enums.ExcelType;
 import io.github.zouzhiy.excel.handler.AbstractNumberWriteStringCellHandler;
 import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
 import io.github.zouzhiy.excel.metadata.result.CellResult;
@@ -29,11 +28,5 @@ public class ShortStringHandler extends AbstractNumberWriteStringCellHandler<Sho
     protected Short getCellValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResult firstCellResult) {
         String value = firstCellResult.getStringValue();
         return Short.parseShort(value);
-    }
-
-
-    @Override
-    public ExcelType getExcelType() {
-        return ExcelType.STRING;
     }
 }

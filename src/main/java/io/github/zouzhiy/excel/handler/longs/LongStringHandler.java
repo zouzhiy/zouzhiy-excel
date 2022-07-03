@@ -14,7 +14,6 @@
 package io.github.zouzhiy.excel.handler.longs;
 
 import io.github.zouzhiy.excel.context.SheetContext;
-import io.github.zouzhiy.excel.enums.ExcelType;
 import io.github.zouzhiy.excel.handler.AbstractNumberWriteStringCellHandler;
 import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
 import io.github.zouzhiy.excel.metadata.result.CellResult;
@@ -31,8 +30,4 @@ public class LongStringHandler extends AbstractNumberWriteStringCellHandler<Long
         return Long.parseLong(value);
     }
 
-    @Override
-    public ExcelType getExcelType() {
-        return ExcelType.STRING;
-    }
 }

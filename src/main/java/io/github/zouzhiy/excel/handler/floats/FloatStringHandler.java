@@ -14,7 +14,6 @@
 package io.github.zouzhiy.excel.handler.floats;
 
 import io.github.zouzhiy.excel.context.SheetContext;
-import io.github.zouzhiy.excel.enums.ExcelType;
 import io.github.zouzhiy.excel.handler.AbstractNumberWriteStringCellHandler;
 import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
 import io.github.zouzhiy.excel.metadata.result.CellResult;
@@ -32,9 +31,4 @@ public class FloatStringHandler extends AbstractNumberWriteStringCellHandler<Flo
         return Float.parseFloat(value);
     }
 
-
-    @Override
-    public ExcelType getExcelType() {
-        return ExcelType.STRING;
-    }
 }

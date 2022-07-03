@@ -14,7 +14,6 @@
 package io.github.zouzhiy.excel.handler.bigdecimal;
 
 import io.github.zouzhiy.excel.context.SheetContext;
-import io.github.zouzhiy.excel.enums.ExcelType;
 import io.github.zouzhiy.excel.handler.AbstractNumberWriteStringCellHandler;
 import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
 import io.github.zouzhiy.excel.metadata.result.CellResult;
@@ -33,8 +32,4 @@ public class BigDecimalStringHandler extends AbstractNumberWriteStringCellHandle
         return new BigDecimal(value);
     }
 
-    @Override
-    public ExcelType getExcelType() {
-        return ExcelType.STRING;
-    }
 }

@@ -32,7 +32,7 @@ public abstract class AbstractWriteStringCellHandler<T> extends AbstractCellHand
     protected abstract String format(RowContext rowContext, ExcelFieldConfig excelFieldConfig, T value);
 
     @Override
-    public ExcelType getExcelType() {
+    public final ExcelType getExcelType() {
         return ExcelType.STRING;
     }
 

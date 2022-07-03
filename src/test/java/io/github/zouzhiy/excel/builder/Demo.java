@@ -33,6 +33,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -267,5 +268,13 @@ public class Demo {
     private String stringString = random.nextBoolean() ? null : "12334";
     @ExcelField(excelType = ExcelType.NUMERIC, sort = 1)
     private String stringNumber = random.nextBoolean() ? null : String.valueOf(random.nextDouble());
+
+    @ExcelField(excelType = ExcelType.DATE)
+    private Timestamp timestampDate = random.nextBoolean() ? null : new Timestamp(System.currentTimeMillis());
+    @ExcelField(excelType = ExcelType.NUMERIC)
+    private Timestamp timestampNumber = random.nextBoolean() ? null : new Timestamp(System.currentTimeMillis());
+    @ExcelField(excelType = ExcelType.STRING)
+    private Timestamp timestampString = random.nextBoolean() ? null : new Timestamp(System.currentTimeMillis());
+
 
 }

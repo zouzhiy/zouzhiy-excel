@@ -15,7 +15,6 @@ package io.github.zouzhiy.excel.handler.bytes;
 
 import io.github.zouzhiy.excel.context.RowContext;
 import io.github.zouzhiy.excel.context.SheetContext;
-import io.github.zouzhiy.excel.enums.ExcelType;
 import io.github.zouzhiy.excel.handler.AbstractWriteStringCellHandler;
 import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
 import io.github.zouzhiy.excel.metadata.result.CellResult;
@@ -41,10 +40,6 @@ public class ByteArrayBoxStringHandler extends AbstractWriteStringCellHandler<By
         return new String(this.unbox(value), StandardCharsets.UTF_8);
     }
 
-    @Override
-    public ExcelType getExcelType() {
-        return ExcelType.STRING;
-    }
 
     private byte[] unbox(Byte[] bytes) {
         byte[] newBytes = new byte[bytes.length];
