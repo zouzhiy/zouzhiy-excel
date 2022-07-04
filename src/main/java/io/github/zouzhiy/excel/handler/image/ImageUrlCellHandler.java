@@ -40,7 +40,7 @@ public class ImageUrlCellHandler extends AbstractImageCellHandler<String> {
         try {
             return IOUtils.toByteArray(new URL(value));
         } catch (IOException e) {
-            throw new ExcelException("读取图片失败:%s", value);
+            throw new ExcelException(e, "读取图片失败:%s", value);
         }
     }
 

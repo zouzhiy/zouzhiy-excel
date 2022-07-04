@@ -65,7 +65,7 @@ public class CellResultSet {
         return this.getFirstCellResult().getExcelType();
     }
 
-    public boolean isBlank() {
+    public boolean isNone() {
         if (cellResultListList == null || cellResultListList.isEmpty()) {
             return true;
         }

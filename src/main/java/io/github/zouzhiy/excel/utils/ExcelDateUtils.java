@@ -124,7 +124,7 @@ public class ExcelDateUtils {
 
     private static LocalDateTime queryByYear(TemporalAccessor temporalAccessor) {
         Year year = temporalAccessor.query(temporal -> {
-            if (temporal.isSupported(ChronoField.YEAR_OF_ERA)) {
+            if (temporal.isSupported(ChronoField.YEAR)) {
                 return Year.from(temporal);
             } else {
                 return null;

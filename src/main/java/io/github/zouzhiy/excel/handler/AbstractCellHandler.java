@@ -15,7 +15,6 @@ package io.github.zouzhiy.excel.handler;
 
 import io.github.zouzhiy.excel.context.RowContext;
 import io.github.zouzhiy.excel.context.SheetContext;
-import io.github.zouzhiy.excel.enums.ExcelType;
 import io.github.zouzhiy.excel.exceptions.ExcelException;
 import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
 import io.github.zouzhiy.excel.metadata.result.CellResult;
@@ -48,10 +47,10 @@ public abstract class AbstractCellHandler<T> implements CellHandler<T> {
     @Override
     public final T read(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResultSet cellResultSet) {
         CellResult firstCellResult = cellResultSet.getFirstCellResult();
-        if (firstCellResult.isBlank() || firstCellResult.isNone()) {
-            if (!excelFieldConfig.getExcelType().equals(ExcelType.NONE)) {
-                return null;
-            }
+        if (cellResultSet.isNone() || firstCellResult.isNone()) {
+            return null;
+        } else if (firstCellResult.isBlank()) {
+            return this.getBlankValue();
         }
         return getCellValue(sheetContext, excelFieldConfig, firstCellResult);
     }
@@ -77,6 +76,10 @@ public abstract class AbstractCellHandler<T> implements CellHandler<T> {
     protected abstract T getCellValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResult firstCellResult);
 
     protected abstract void setCellValue(RowContext rowContext, ExcelFieldConfig excelFieldConfig, Cell cell, T value);
+
+    protected T getBlankValue() {
+        return null;
+    }
 
     private Class<T> getSuperclassTypeParameter(Class<?> clazz) {
         Type genericSuperclass = clazz.getGenericSuperclass();

@@ -45,6 +45,8 @@ import io.github.zouzhiy.excel.handler.image.ImageUrlCellHandler;
 import io.github.zouzhiy.excel.handler.ints.IntegerBooleanHandler;
 import io.github.zouzhiy.excel.handler.ints.IntegerNumberHandler;
 import io.github.zouzhiy.excel.handler.ints.IntegerStringHandler;
+import io.github.zouzhiy.excel.handler.list.ListStringStringJoinHandler;
+import io.github.zouzhiy.excel.handler.list.ListStringStringSplitHandler;
 import io.github.zouzhiy.excel.handler.localdate.LocalDateDateHandler;
 import io.github.zouzhiy.excel.handler.localdate.LocalDateNumberHandler;
 import io.github.zouzhiy.excel.handler.localdate.LocalDateStringHandler;
@@ -165,6 +167,9 @@ public class CellHandlerRegistry {
         register(new IntegerBooleanHandler());
         register(new IntegerNumberHandler());
         register(new IntegerStringHandler());
+
+        register(new ListStringStringJoinHandler());
+        register(new ListStringStringSplitHandler());
 
         register(new LocalDateDateHandler());
         register(new LocalDateNumberHandler());

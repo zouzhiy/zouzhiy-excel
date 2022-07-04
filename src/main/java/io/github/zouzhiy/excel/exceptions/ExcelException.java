@@ -33,9 +33,14 @@ public class ExcelException extends RuntimeException {
         super(message, cause);
     }
 
+    public ExcelException(Throwable cause, String messageFormat, Object... args) {
+        super(String.format(messageFormat, args), cause);
+    }
+
     public ExcelException(Throwable cause) {
         super(cause);
     }
+
 
     public ExcelException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
