@@ -75,7 +75,7 @@ public class ExcelClassConfig {
     @Builder.Default
     private final List<ExcelFieldConfig> itemList = Collections.emptyList();
 
-    public static ExcelClassConfig getDefaultExcelFieldConfig(List<ExcelFieldConfig> itemList) {
+    public static ExcelClassConfig getDefaultExcelClassConfig(List<ExcelFieldConfig> itemList) {
         return ExcelClassConfig.builder()
                 .itemList(itemList)
                 .build();

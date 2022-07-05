@@ -73,7 +73,7 @@ public class ExcelAnnotationParse {
 
         ExcelClass excelClass = clazz.getAnnotation(ExcelClass.class);
         if (excelClass == null) {
-            return ExcelClassConfig.getDefaultExcelFieldConfig(excelFieldConfigList);
+            return ExcelClassConfig.getDefaultExcelClassConfig(excelFieldConfigList);
         } else {
             return ExcelClassConfig.builder()
                     .rowTitleWrite(excelClass.rowTitleWrite())
