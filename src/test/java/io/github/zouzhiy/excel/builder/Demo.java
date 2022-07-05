@@ -153,7 +153,7 @@ public class Demo {
     private Float boxFloatString = random.nextBoolean() ? null : random.nextFloat();
 
     @ExcelField(cellHandler = ImageUrlCellHandler.class)
-    private String imageUrl = "http://127.0.0.1/test.jpg";
+    private String imageUrl = "https://www.people.com.cn/favicon.ico";
     @ExcelField(excelType = ExcelType.NONE, cellHandler = ImageByteCellHandler.class)
     private byte[] imageByte;
 
