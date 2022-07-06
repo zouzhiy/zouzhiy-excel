@@ -57,7 +57,9 @@ public class DefaultWorkbookRead implements WorkbookRead {
 
     @Override
     public <T> List<T> read(Class<T> clazz) {
-        return read(clazz, 0);
+        List<T> dataList = read(clazz, 0);
+        this.close();
+        return dataList;
     }
 
     private <T> List<T> read(Class<T> clazz, @SuppressWarnings("SameParameterValue") int sheetIndex) {

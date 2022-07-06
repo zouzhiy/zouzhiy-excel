@@ -74,6 +74,7 @@ public class DefaultWorkbookWrite implements WorkbookWrite {
     public void commit() {
         try {
             this.workbookContext.getWorkbook().write(workbookContext.getWorkbookParameter().getOutputStream());
+            this.close();
         } catch (IOException e) {
             throw new ExcelException("工作簿写入失败");
         }

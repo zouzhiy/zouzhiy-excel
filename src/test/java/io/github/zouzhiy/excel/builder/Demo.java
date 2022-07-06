@@ -21,6 +21,7 @@ import io.github.zouzhiy.excel.handler.bytes.ByteArrayStringHandler;
 import io.github.zouzhiy.excel.handler.image.ImageByteCellHandler;
 import io.github.zouzhiy.excel.handler.image.ImageFileCellHandler;
 import io.github.zouzhiy.excel.handler.image.ImageUrlCellHandler;
+import io.github.zouzhiy.excel.http.ImageHttpServer;
 import lombok.Data;
 import org.apache.commons.compress.utils.IOUtils;
 import org.apache.commons.io.FileUtils;
@@ -50,6 +51,10 @@ import java.util.Random;
 @Data
 @ExcelClass
 public class Demo {
+
+    static {
+        ImageHttpServer.getInstance().start();
+    }
 
     private final static Random random = new Random(System.currentTimeMillis());
 
@@ -153,7 +158,8 @@ public class Demo {
     private Float boxFloatString = random.nextBoolean() ? null : random.nextFloat();
 
     @ExcelField(cellHandler = ImageUrlCellHandler.class)
-    private String imageUrl = "https://www.people.com.cn/favicon.ico";
+    private String imageUrl = "http://localhost:18080/jpg1.jpg";
+
     @ExcelField(excelType = ExcelType.NONE, cellHandler = ImageByteCellHandler.class)
     private byte[] imageByte;
 

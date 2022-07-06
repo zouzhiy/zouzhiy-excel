@@ -19,6 +19,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+
 /**
  * @author zouzhiy
  * @since 2022/7/4

@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+
 /**
  * @author zouzhiy
  * @since 2022/7/4
@@ -71,7 +72,7 @@ public abstract class AbstractListSplitHandler<E> extends AbstractListHandler<E>
         for (int i = 0; i < valueList.size(); i++) {
             E item = valueList.get(i);
             Row row = rowList.get(i);
-            cellHandler.write(new DefaultRowContext(rowContext.getSheetContext(),rowContext.getRowData(), Collections.singletonList(row), 1), columnIndex, excelFieldConfig, item);
+            cellHandler.write(new DefaultRowContext(rowContext.getSheetContext(), rowContext.getRowData(), Collections.singletonList(row), 1), columnIndex, excelFieldConfig, item);
         }
     }
 
