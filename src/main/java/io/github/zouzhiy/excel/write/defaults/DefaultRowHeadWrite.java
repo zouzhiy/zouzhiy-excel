@@ -43,9 +43,11 @@ public class DefaultRowHeadWrite implements RowHeadWrite {
         int headColumnIndex = sheetParameter.getHeadColumnStartIndex();
         Row row = this.createRow(sheetContext, titleRowIndex);
 
-        RowContext rowContext = new DefaultRowContext(sheetContext, Collections.singletonList(row), 1);
+        RowContext rowContext = new DefaultRowContext(sheetContext, dataList,  Collections.singletonList(row), 1);
         //noinspection unchecked
-        CellHandler<String> headHandler = (CellHandler<String>) sheetContext.getConfiguration().getCellHandlerRegistry().getMappingCellHandler(HeadStringHandler.class);
+        CellHandler<String> headHandler = (CellHandler<String>) sheetContext.getConfiguration()
+                .getCellHandlerRegistry()
+                .getMappingCellHandler(HeadStringHandler.class);
 
         int curColumnIndex = headColumnIndex;
         for (ExcelFieldConfig excelFieldConfig : itemList) {

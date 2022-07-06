@@ -47,7 +47,7 @@ public class DefaultRowDataWrite implements RowDataWrite {
             Row row = this.createRow(sheetContext, rowIndex + i);
             rowList.add(row);
         }
-        RowContext rowContext = new DefaultRowContext(sheetContext, rowList, rowspan);
+        RowContext rowContext = new DefaultRowContext(sheetContext,item, rowList, rowspan);
 
         List<ExcelFieldConfig> writeMainConfigItemList = excelClassConfig.getItemList();
         int curColumnIndex = 0;

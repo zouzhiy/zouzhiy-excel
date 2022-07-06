@@ -27,13 +27,16 @@ public class DefaultRowContext implements RowContext {
 
     private final SheetContext sheetContext;
 
+    private final Object rowData;
+
     private final List<Row> rowList;
 
     private final int rowspan;
 
 
-    public DefaultRowContext(SheetContext sheetContext, List<Row> rowList, int rowspan) {
+    public DefaultRowContext(SheetContext sheetContext, Object rowData, List<Row> rowList, int rowspan) {
         this.sheetContext = sheetContext;
+        this.rowData = rowData;
         this.rowList = rowList;
         this.rowspan = rowspan;
     }
@@ -41,6 +44,11 @@ public class DefaultRowContext implements RowContext {
     @Override
     public SheetContext getSheetContext() {
         return sheetContext;
+    }
+
+    @Override
+    public Object getRowData() {
+        return rowData;
     }
 
     @Override

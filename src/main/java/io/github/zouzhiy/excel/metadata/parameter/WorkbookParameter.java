@@ -93,16 +93,16 @@ public class WorkbookParameter {
         private List<CellStyleConsumer> cellStyleConsumerList;
 
 
-        public WorkbookParameterBuilder input(File templateFile) {
-            this.inputFileName = templateFile.getName();
-            this.inputFilePath = templateFile.getAbsolutePath();
-            this.inputFile = templateFile;
+        public WorkbookParameterBuilder input(File inputFile) {
+            this.inputFileName = inputFile.getName();
+            this.inputFilePath = inputFile.getAbsolutePath();
+            this.inputFile = inputFile;
             this.xssf(this.inputFileName);
             return this;
         }
 
-        public WorkbookParameterBuilder input(InputStream templateInputStream) {
-            this.inputStream = templateInputStream;
+        public WorkbookParameterBuilder input(InputStream inputStream) {
+            this.inputStream = inputStream;
             return this;
         }
 

@@ -25,7 +25,10 @@ public interface RowContext {
 
     SheetContext getSheetContext();
 
+    Object getRowData();
+
     List<Row> getRowList();
 
     int getRowspan();
+
 }

@@ -71,7 +71,7 @@ public abstract class AbstractListSplitHandler<E> extends AbstractListHandler<E>
         for (int i = 0; i < valueList.size(); i++) {
             E item = valueList.get(i);
             Row row = rowList.get(i);
-            cellHandler.write(new DefaultRowContext(rowContext.getSheetContext(), Collections.singletonList(row), 1), columnIndex, excelFieldConfig, item);
+            cellHandler.write(new DefaultRowContext(rowContext.getSheetContext(),rowContext.getRowData(), Collections.singletonList(row), 1), columnIndex, excelFieldConfig, item);
         }
     }
 
