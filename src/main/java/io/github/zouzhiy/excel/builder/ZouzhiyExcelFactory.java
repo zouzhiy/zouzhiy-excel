@@ -19,6 +19,10 @@ import io.github.zouzhiy.excel.metadata.parameter.WorkbookParameter;
 import io.github.zouzhiy.excel.read.WorkbookRead;
 import io.github.zouzhiy.excel.write.WorkbookWrite;
 
+import java.io.File;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 /**
  * @author zouzhiy
  * @since 2022/7/2
@@ -34,4 +38,16 @@ public interface ZouzhiyExcelFactory {
     WorkbookWrite getWorkbookWrite(WorkbookParameter workbookParameter, Class<?> clazz);
 
     WorkbookWrite getWorkbookWrite(WorkbookParameter workbookParameter, ExcelClassConfig excelClassConfig);
+
+    WorkbookReadBuilder read();
+
+    WorkbookReadBuilder read(File inputFile);
+
+    WorkbookReadBuilder read(InputStream inputStream);
+
+    WorkbookWriteBuilder write();
+
+    WorkbookWriteBuilder write(File outputFile);
+
+    WorkbookWriteBuilder write(OutputStream outputStream);
 }
