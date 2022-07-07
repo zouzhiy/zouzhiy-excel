@@ -24,6 +24,7 @@ import io.github.zouzhiy.excel.read.SheetRead;
 import io.github.zouzhiy.excel.read.WorkbookRead;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 
@@ -88,7 +89,10 @@ public class DefaultWorkbookRead implements WorkbookRead {
         try {
             this.workbookContext.getWorkbook().close();
             WorkbookParameter workbookParameter = this.workbookContext.getWorkbookParameter();
-            workbookParameter.getInputStream().close();
+            InputStream inputStream = workbookParameter.getInputStream();
+            if (inputStream != null){
+                inputStream.close();
+            }
             OutputStream outputStream = workbookParameter.getOutputStream();
             if (outputStream != null) {
                 outputStream.close();

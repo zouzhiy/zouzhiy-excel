@@ -1,70 +1,206 @@
-/*
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package io.github.zouzhiy.excel.builder;
 
+import io.github.zouzhiy.excel.exceptions.ExcelException;
 import io.github.zouzhiy.excel.metadata.Configuration;
 import io.github.zouzhiy.excel.metadata.config.ExcelClassConfig;
 import io.github.zouzhiy.excel.metadata.parameter.WorkbookParameter;
 import io.github.zouzhiy.excel.read.WorkbookRead;
+import io.github.zouzhiy.excel.support.metadata.DemoDefault;
+import io.github.zouzhiy.excel.support.utils.TestFileUtils;
 import io.github.zouzhiy.excel.write.WorkbookWrite;
 import org.junit.jupiter.api.Test;
 
-/**
- * @author zouzhiy
- * @since 2022/7/3
- */
-class DefaultZouzhiyExcelFactoryTest {
+import java.io.*;
+import java.util.Collections;
+import java.util.List;
 
-    private final ZouzhiyExcelFactory zouzhiyExcelFactory = ZouzhiyExcelFactoryBuilder.builder().build();
+import static org.junit.jupiter.api.Assertions.*;
+
+
+class DefaultZouzhiyExcelFactoryTest {
 
     @Test
     void getConfiguration() {
-        Configuration configuration = zouzhiyExcelFactory.getConfiguration();
-
-        assert configuration != null;
+        Configuration configuration = new Configuration();
+        DefaultZouzhiyExcelFactory defaultZouzhiyExcelFactory = new DefaultZouzhiyExcelFactory(configuration);
+        assertEquals(configuration, defaultZouzhiyExcelFactory.getConfiguration());
     }
 
     @Test
     void getWorkbookRead() {
+        DefaultZouzhiyExcelFactory defaultZouzhiyExcelFactory = new DefaultZouzhiyExcelFactory(new Configuration());
         WorkbookParameter workbookParameter = WorkbookParameter.builder().build();
-        WorkbookRead workbookRead = zouzhiyExcelFactory.getWorkbookRead(workbookParameter, Demo.class);
-        assert workbookRead.getWorkbookContext().getWorkbookParameter().equals(workbookParameter);
+        WorkbookRead workbookRead = defaultZouzhiyExcelFactory.getWorkbookRead(workbookParameter, DemoDefault.class);
+
+        assertEquals(workbookParameter, workbookRead.getWorkbookContext().getWorkbookParameter());
     }
 
     @Test
-    void testGetWorkbookRead() {
+    void getWorkbookRead2() {
+        DefaultZouzhiyExcelFactory defaultZouzhiyExcelFactory = new DefaultZouzhiyExcelFactory(new Configuration());
         WorkbookParameter workbookParameter = WorkbookParameter.builder().build();
-        ExcelClassConfig excelClassConfig = zouzhiyExcelFactory.getConfiguration().getExcelAnnotationParse().findForClass(Demo.class);
-        WorkbookRead workbookRead = zouzhiyExcelFactory.getWorkbookRead(workbookParameter, excelClassConfig);
-        assert workbookRead.getWorkbookContext().getWorkbookParameter().equals(workbookParameter);
-        assert workbookRead.getExcelClassConfig().equals(excelClassConfig);
+        WorkbookRead workbookRead = defaultZouzhiyExcelFactory.getWorkbookRead(workbookParameter, defaultZouzhiyExcelFactory.getConfiguration().getExcelAnnotationParse().findForClass(DemoDefault.class));
+
+        assertEquals(workbookParameter, workbookRead.getWorkbookContext().getWorkbookParameter());
     }
 
     @Test
-    void getWorkbookWrite() {
+    void getWorkbookRead3() {
+        DefaultZouzhiyExcelFactory defaultZouzhiyExcelFactory = new DefaultZouzhiyExcelFactory(new Configuration());
         WorkbookParameter workbookParameter = WorkbookParameter.builder().build();
-        WorkbookWrite workbookWrite = zouzhiyExcelFactory.getWorkbookWrite(workbookParameter, Demo.class);
-        assert workbookWrite.getWorkbookContext().getWorkbookParameter().equals(workbookParameter);
+        WorkbookRead workbookRead1 = defaultZouzhiyExcelFactory.getWorkbookRead(workbookParameter, DemoDefault.class);
+        WorkbookRead workbookRead2 = defaultZouzhiyExcelFactory.getWorkbookRead(workbookParameter, defaultZouzhiyExcelFactory.getConfiguration().getExcelAnnotationParse().findForClass(DemoDefault.class));
+
+        ExcelClassConfig excelClassConfig1 = workbookRead1.getExcelClassConfig();
+        ExcelClassConfig excelClassConfig2 = workbookRead2.getExcelClassConfig();
+
+        assertEquals(excelClassConfig1, excelClassConfig2);
     }
 
     @Test
-    void testGetWorkbookWrite() {
-
+    void getWorkbookWrite1() {
+        DefaultZouzhiyExcelFactory defaultZouzhiyExcelFactory = new DefaultZouzhiyExcelFactory(new Configuration());
         WorkbookParameter workbookParameter = WorkbookParameter.builder().build();
-        ExcelClassConfig excelClassConfig = zouzhiyExcelFactory.getConfiguration().getExcelAnnotationParse().findForClass(Demo.class);
-        WorkbookWrite workbookWrite = zouzhiyExcelFactory.getWorkbookWrite(workbookParameter, excelClassConfig);
-        assert workbookWrite.getWorkbookContext().getWorkbookParameter().equals(workbookParameter);
-        assert workbookWrite.getExcelClassConfig().equals(excelClassConfig);
+        WorkbookWrite workbookWrite = defaultZouzhiyExcelFactory.getWorkbookWrite(workbookParameter, DemoDefault.class);
+
+        assertEquals(workbookParameter, workbookWrite.getWorkbookContext().getWorkbookParameter());
+    }
+
+    @Test
+    void getWorkbookWrite2() {
+
+        DefaultZouzhiyExcelFactory defaultZouzhiyExcelFactory = new DefaultZouzhiyExcelFactory(new Configuration());
+        WorkbookParameter workbookParameter = WorkbookParameter.builder().build();
+        WorkbookWrite workbookWrite = defaultZouzhiyExcelFactory.getWorkbookWrite(workbookParameter, defaultZouzhiyExcelFactory.getConfiguration().getExcelAnnotationParse().findForClass(DemoDefault.class));
+
+        assertEquals(workbookParameter, workbookWrite.getWorkbookContext().getWorkbookParameter());
+    }
+
+    @Test
+    void getWorkbookWrite3() {
+        DefaultZouzhiyExcelFactory defaultZouzhiyExcelFactory = new DefaultZouzhiyExcelFactory(new Configuration());
+        WorkbookParameter workbookParameter = WorkbookParameter.builder().build();
+        WorkbookWrite workbookWrite1 = defaultZouzhiyExcelFactory.getWorkbookWrite(workbookParameter, DemoDefault.class);
+        WorkbookWrite workbookWrite2 = defaultZouzhiyExcelFactory.getWorkbookWrite(workbookParameter, defaultZouzhiyExcelFactory.getConfiguration().getExcelAnnotationParse().findForClass(DemoDefault.class));
+
+        assertEquals(workbookWrite1.getExcelClassConfig(), workbookWrite2.getExcelClassConfig());
+    }
+
+    @Test
+    void read1() {
+        DefaultZouzhiyExcelFactory defaultZouzhiyExcelFactory = new DefaultZouzhiyExcelFactory(new Configuration()) {
+            @Override
+            public WorkbookRead getWorkbookRead(WorkbookParameter workbookParameter, Class<?> excelClassConfig) {
+                assertNull(workbookParameter.getInputFileName());
+                assertNull(workbookParameter.getInputFilePath());
+                assertNull(workbookParameter.getInputFile());
+                assertNull(workbookParameter.getInputStream());
+                return super.getWorkbookRead(workbookParameter, excelClassConfig);
+            }
+        };
+        List<DemoDefault> demoDefaultList = defaultZouzhiyExcelFactory.read().sheet().read(DemoDefault.class);
+
+        assertTrue(demoDefaultList.isEmpty());
+    }
+
+    @Test
+    void read2() {
+        File writeXlsxFile = TestFileUtils.writeXlsxFile(TestFileUtils.getInputStream(TestFileUtils.getEmptyXlsxFilePath()));
+        DefaultZouzhiyExcelFactory defaultZouzhiyExcelFactory = new DefaultZouzhiyExcelFactory(new Configuration()) {
+            @Override
+            public WorkbookRead getWorkbookRead(WorkbookParameter workbookParameter, Class<?> clazz) {
+                assertNotNull(workbookParameter.getInputFileName());
+                assertNotNull(workbookParameter.getInputFilePath());
+                assertNotNull(workbookParameter.getInputFile());
+                assertNotNull(workbookParameter.getInputStream());
+                assertEquals(workbookParameter.getInputFileName(), writeXlsxFile.getName());
+                assertEquals(workbookParameter.getInputFilePath(), writeXlsxFile.getAbsolutePath());
+                assertEquals(writeXlsxFile, workbookParameter.getInputFile());
+                return super.getWorkbookRead(workbookParameter, clazz);
+            }
+        };
+
+        List<DemoDefault> demoDefaultList = defaultZouzhiyExcelFactory.read(writeXlsxFile).sheet().read(DemoDefault.class);
+        assertTrue(demoDefaultList.isEmpty());
+    }
+
+    @Test
+    void read3() {
+        InputStream inputStream = TestFileUtils.getInputStream(TestFileUtils.getEmptyXlsxFilePath());
+        DefaultZouzhiyExcelFactory defaultZouzhiyExcelFactory = new DefaultZouzhiyExcelFactory(new Configuration()) {
+            @Override
+            public WorkbookRead getWorkbookRead(WorkbookParameter workbookParameter, Class<?> clazz) {
+                assertNull(workbookParameter.getInputFileName());
+                assertNull(workbookParameter.getInputFilePath());
+                assertNull(workbookParameter.getInputFile());
+                assertNotNull(workbookParameter.getInputStream());
+                assertEquals(inputStream, workbookParameter.getInputStream());
+                return super.getWorkbookRead(workbookParameter, clazz);
+            }
+        };
+        List<DemoDefault> demoDefaultList = defaultZouzhiyExcelFactory.read(inputStream).sheet().read(DemoDefault.class);
+        assertTrue(demoDefaultList.isEmpty());
+    }
+
+
+    @Test
+    void write1() {
+        DefaultZouzhiyExcelFactory defaultZouzhiyExcelFactory = new DefaultZouzhiyExcelFactory(new Configuration()) {
+            @Override
+            public WorkbookWrite getWorkbookWrite(WorkbookParameter workbookParameter, Class<?> excelClassConfig) {
+                assertNull(workbookParameter.getOutputFileName());
+                assertNull(workbookParameter.getOutputFilePath());
+                assertNull(workbookParameter.getOutputFile());
+                assertNull(workbookParameter.getOutputStream());
+                return super.getWorkbookWrite(workbookParameter, excelClassConfig);
+            }
+
+        };
+        try {
+            defaultZouzhiyExcelFactory.write().sheet().write(Collections.emptyList(), DemoDefault.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        assert true;
+    }
+
+    @Test
+    void write2() {
+        File file = TestFileUtils.getEmptyXlsxFile();
+        DefaultZouzhiyExcelFactory defaultZouzhiyExcelFactory = new DefaultZouzhiyExcelFactory(new Configuration()) {
+            @Override
+            public WorkbookWrite getWorkbookWrite(WorkbookParameter workbookParameter, Class<?> excelClassConfig) {
+                assertNotNull(workbookParameter.getOutputFileName());
+                assertNotNull(workbookParameter.getOutputFilePath());
+                assertNotNull(workbookParameter.getOutputFile());
+                assertNotNull(workbookParameter.getOutputStream());
+                return super.getWorkbookWrite(workbookParameter, excelClassConfig);
+            }
+
+        };
+        defaultZouzhiyExcelFactory.write(file).sheet().write(Collections.emptyList(), DemoDefault.class);
+
+        assert true;
+    }
+
+    @Test
+    void write3() throws FileNotFoundException {
+        File file = TestFileUtils.getEmptyXlsFile();
+        OutputStream outputStream = new FileOutputStream(file);
+        DefaultZouzhiyExcelFactory defaultZouzhiyExcelFactory = new DefaultZouzhiyExcelFactory(new Configuration()) {
+            @Override
+            public WorkbookWrite getWorkbookWrite(WorkbookParameter workbookParameter, Class<?> excelClassConfig) {
+                assertNull(workbookParameter.getOutputFileName());
+                assertNull(workbookParameter.getOutputFilePath());
+                assertNull(workbookParameter.getOutputFile());
+                assertNotNull(workbookParameter.getOutputStream());
+                return super.getWorkbookWrite(workbookParameter, excelClassConfig);
+            }
+
+        };
+        defaultZouzhiyExcelFactory.write(outputStream).sheet().write(Collections.emptyList(), DemoDefault.class);
+
+        assert true;
     }
 }
