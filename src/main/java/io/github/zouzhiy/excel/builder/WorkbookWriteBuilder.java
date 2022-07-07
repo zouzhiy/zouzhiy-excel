@@ -100,12 +100,12 @@ public class WorkbookWriteBuilder {
         }
 
         public WorkSheetWriteBuilder titleColumnStartIndex(Integer titleColumnStartIndex) {
-            sheetParameterBuilder.titleRowStartIndex(titleColumnStartIndex);
+            sheetParameterBuilder.titleColumnStartIndex(titleColumnStartIndex);
             return this;
         }
 
         public WorkSheetWriteBuilder headRowStartIndex(Integer headRowStartIndex) {
-            sheetParameterBuilder.titleRowStartIndex(headRowStartIndex);
+            sheetParameterBuilder.headRowStartIndex(headRowStartIndex);
             return this;
         }
 

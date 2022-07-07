@@ -82,12 +82,12 @@ public class WorkbookReadBuilder {
         }
 
         public WorkSheetReadBuilder titleColumnStartIndex(Integer titleColumnStartIndex) {
-            sheetParameterBuilder.titleRowStartIndex(titleColumnStartIndex);
+            sheetParameterBuilder.titleColumnStartIndex(titleColumnStartIndex);
             return this;
         }
 
         public WorkSheetReadBuilder headRowStartIndex(Integer headRowStartIndex) {
-            sheetParameterBuilder.titleRowStartIndex(headRowStartIndex);
+            sheetParameterBuilder.headRowStartIndex(headRowStartIndex);
             return this;
         }
 
