@@ -8,7 +8,7 @@
     <artifactId>zouzhiy-excel</artifactId>
     <name>zouzhiy-excel</name>
     <packaging>jar</packaging>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
 
     <description>EXCEL导入导出工具</description>
     <url>https://github.com/zouzhiy/zouzhiy-excel</url>
