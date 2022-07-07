@@ -24,15 +24,21 @@ import java.util.List;
  */
 public interface SheetReadConsumer<T> {
 
-    void beforeRead(SheetContext sheetContext);
+    default void beforeRead(SheetContext sheetContext) {
+    }
 
-    void acceptReadTitle(SheetContext sheetContext, CellResultSet titleCellResultSet);
+    default void acceptReadTitle(SheetContext sheetContext, CellResultSet titleCellResultSet) {
+    }
 
-    void acceptReadHead(SheetContext sheetContext, List<CellResultSet> headCellResultSetList);
+    default void acceptReadHead(SheetContext sheetContext, List<CellResultSet> headCellResultSetList) {
+    }
 
-    void acceptReadData(SheetContext sheetContext, List<T> dataList);
+    default void acceptReadData(SheetContext sheetContext, List<T> dataList) {
+    }
 
-    void acceptReadFoot(SheetContext sheetContext, List<CellResultSet> footCellResultSetList);
+    default void acceptReadFoot(SheetContext sheetContext, List<CellResultSet> footCellResultSetList) {
+    }
 
-    void afterRead(SheetContext sheetContext, CellResultSet titleCellResultSet, List<CellResultSet> headCellResultSetList, List<T> dataList, List<CellResultSet> footCellResultSetList);
+    default void afterRead(SheetContext sheetContext, CellResultSet titleCellResultSet, List<CellResultSet> headCellResultSetList, List<T> dataList, List<CellResultSet> footCellResultSetList) {
+    }
 }

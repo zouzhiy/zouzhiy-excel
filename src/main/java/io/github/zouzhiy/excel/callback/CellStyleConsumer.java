@@ -23,9 +23,12 @@ import org.apache.poi.ss.usermodel.CellStyle;
  */
 public interface CellStyleConsumer {
 
-    void afterCreateTitleCellStyle(ExcelClassConfig excelClassConfig, CellStyle titleCellStyle);
+    default void afterCreateTitleCellStyle(ExcelClassConfig excelClassConfig, CellStyle titleCellStyle) {
+    }
 
-    void afterCreateHeadCellStyle(ExcelFieldConfig excelFieldConfig, CellStyle headCellStyle);
+    default void afterCreateHeadCellStyle(ExcelFieldConfig excelFieldConfig, CellStyle headCellStyle) {
+    }
 
-    void afterCreateDataCellStyle(ExcelFieldConfig excelFieldConfig, String defaultDataFormat, CellStyle dataCellStyle);
+    default void afterCreateDataCellStyle(ExcelFieldConfig excelFieldConfig, String defaultDataFormat, CellStyle dataCellStyle) {
+    }
 }

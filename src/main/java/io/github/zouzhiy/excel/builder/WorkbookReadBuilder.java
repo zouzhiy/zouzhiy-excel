@@ -1,5 +1,6 @@
 package io.github.zouzhiy.excel.builder;
 
+import io.github.zouzhiy.excel.callback.CellStyleConsumer;
 import io.github.zouzhiy.excel.callback.SheetReadConsumer;
 import io.github.zouzhiy.excel.callback.SheetWriteConsumer;
 import io.github.zouzhiy.excel.metadata.parameter.SheetParameter;
@@ -32,6 +33,11 @@ public class WorkbookReadBuilder {
 
     public WorkbookReadBuilder input(InputStream inputStream) {
         workbookParameterBuilder.input(inputStream);
+        return this;
+    }
+
+    public WorkbookReadBuilder cellStyleConsumer(CellStyleConsumer cellStyleConsumer) {
+        workbookParameterBuilder.cellStyleConsumer(cellStyleConsumer);
         return this;
     }
 

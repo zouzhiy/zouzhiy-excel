@@ -23,23 +23,33 @@ import java.util.List;
  */
 public interface SheetWriteConsumer<T> {
 
-    void beforeWrite(SheetContext sheetContext, List<T> dataList);
+    default void beforeWrite(SheetContext sheetContext, List<T> dataList) {
+    }
 
-    void beforeWriteTitle(SheetContext sheetContext, List<T> dataList);
+    default void beforeWriteTitle(SheetContext sheetContext, List<T> dataList) {
+    }
 
-    void afterWriteTitle(SheetContext sheetContext, List<T> dataList);
+    default void afterWriteTitle(SheetContext sheetContext, List<T> dataList) {
+    }
 
-    void beforeWriteHead(SheetContext sheetContext, List<T> dataList);
+    default void beforeWriteHead(SheetContext sheetContext, List<T> dataList) {
+    }
 
-    void afterWriteHead(SheetContext sheetContext, List<T> dataList);
+    default void afterWriteHead(SheetContext sheetContext, List<T> dataList) {
+    }
 
-    void beforeWriteData(SheetContext sheetContext, List<T> dataList);
+    default void beforeWriteData(SheetContext sheetContext, List<T> dataList) {
+    }
 
-    void afterWriteData(SheetContext sheetContext, List<T> dataList);
+    default void afterWriteData(SheetContext sheetContext, List<T> dataList) {
+    }
 
-    void beforeWriteFoot(SheetContext sheetContext, List<T> dataList);
+    default void beforeWriteFoot(SheetContext sheetContext, List<T> dataList) {
+    }
 
-    void afterWriteFoot(SheetContext sheetContext, List<T> dataList);
+    default void afterWriteFoot(SheetContext sheetContext, List<T> dataList) {
+    }
 
-    void afterWrite(SheetContext sheetContext, List<T> dataList);
+    default void afterWrite(SheetContext sheetContext, List<T> dataList) {
+    }
 }
