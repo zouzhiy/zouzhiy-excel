@@ -85,7 +85,7 @@ public class WorkbookWriteBuilder {
         }
 
         public WorkSheetWriteBuilder title(String title) {
-            sheetParameterBuilder.sheet(title);
+            sheetParameterBuilder.title(title);
             return this;
         }
 

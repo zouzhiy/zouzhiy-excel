@@ -66,7 +66,7 @@ public class WorkbookReadBuilder {
         }
 
         public WorkSheetReadBuilder title(String title) {
-            sheetParameterBuilder.sheet(title);
+            sheetParameterBuilder.title(title);
             return this;
         }
 
