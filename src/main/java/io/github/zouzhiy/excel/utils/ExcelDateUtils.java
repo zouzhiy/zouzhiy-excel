@@ -18,7 +18,6 @@ import io.github.zouzhiy.excel.exceptions.ExcelException;
 import java.text.ParsePosition;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoField;
 import java.time.temporal.TemporalAccessor;
 import java.time.temporal.TemporalQueries;
@@ -64,7 +63,7 @@ public class ExcelDateUtils {
                 if (parsePosition.getIndex() == str.length()) {
                     return localDateTime;
                 }
-            } catch (DateTimeParseException | IndexOutOfBoundsException ignore) {
+            } catch (ExcelException ignore) {
             }
             parsePosition.setIndex(0);
             parsePosition.setErrorIndex(-1);
@@ -76,21 +75,26 @@ public class ExcelDateUtils {
 
     private static LocalDateTime parseDateTime(String str, String pattern, ParsePosition parsePosition) {
 
-        DateTimeFormatter dateTimeFormatter = DATE_TIME_FORMATTER_MAP.computeIfAbsent(pattern, DateTimeFormatter::ofPattern);
-        TemporalAccessor temporalAccessor = dateTimeFormatter.parse(str, parsePosition);
+        try {
+            DateTimeFormatter dateTimeFormatter = DATE_TIME_FORMATTER_MAP.computeIfAbsent(pattern, DateTimeFormatter::ofPattern);
+            TemporalAccessor temporalAccessor = dateTimeFormatter.parse(str, parsePosition);
 
-        LocalDateTime localDateTime = queryByDateAndTime(temporalAccessor);
-        if (localDateTime == null) {
-            localDateTime = queryByYearMonth(temporalAccessor);
+            LocalDateTime localDateTime = queryByDateAndTime(temporalAccessor);
+            if (localDateTime == null) {
+                localDateTime = queryByYearMonth(temporalAccessor);
+            }
+            if (localDateTime == null) {
+                localDateTime = queryByYear(temporalAccessor);
+            }
+            if (localDateTime == null) {
+                throw new ExcelException("日期转换失败：%s", str);
+            }
+            return localDateTime;
+        } catch (ExcelException excelException) {
+            throw excelException;
+        } catch (Exception e) {
+            throw new ExcelException(e, "日期转换失败：%s", str);
         }
-        if (localDateTime == null) {
-            localDateTime = queryByYear(temporalAccessor);
-        }
-        if (localDateTime == null) {
-            throw new ExcelException("日期转换失败：%s", str);
-        }
-
-        return localDateTime;
     }
 
     private static LocalDateTime queryByDateAndTime(TemporalAccessor temporalAccessor) {

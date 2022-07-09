@@ -31,7 +31,7 @@ public class RowStyleReadRegistry {
 
     private final Configuration configuration;
 
-    private final Map<Class<? extends RowStyleRead>, RowStyleRead> cellStyleReadMap = new ConcurrentHashMap<>(16);
+    private final Map<Class<? extends RowStyleRead>, RowStyleRead> rowStyleReadMap = new ConcurrentHashMap<>(16);
 
     public Configuration getConfiguration() {
         return configuration;
@@ -43,11 +43,11 @@ public class RowStyleReadRegistry {
     }
 
     public void register(RowStyleRead rowStyleRead) {
-        cellStyleReadMap.put(rowStyleRead.getClass(), rowStyleRead);
+        rowStyleReadMap.put(rowStyleRead.getClass(), rowStyleRead);
     }
 
-    public RowStyleRead getMappingRowStyleRead(Class<? extends RowStyleRead> cellStyleReadClazz) {
-        RowStyleRead rowStyleRead = cellStyleReadMap.get(cellStyleReadClazz);
+    public RowStyleRead getMappingRowStyleRead(Class<? extends RowStyleRead> rowStyleReadClazz) {
+        RowStyleRead rowStyleRead = rowStyleReadMap.get(rowStyleReadClazz);
         if (rowStyleRead == null) {
             throw new ExcelException("不存在的：CellStyleRead");
         }

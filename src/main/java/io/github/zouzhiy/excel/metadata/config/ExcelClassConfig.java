@@ -70,7 +70,7 @@ public class ExcelClassConfig {
     private final ExcelStyleConfig titleStyle = ExcelStyleConfig.getDefaultExcelStyleConfigTitle();
 
     @Builder.Default
-    private final Class<? extends RowStyleRead> cellStyleRead = DefaultRowStyleRead.class;
+    private final Class<? extends RowStyleRead> rowStyleRead = DefaultRowStyleRead.class;
 
     @Builder.Default
     private final List<ExcelFieldConfig> itemList = Collections.emptyList();

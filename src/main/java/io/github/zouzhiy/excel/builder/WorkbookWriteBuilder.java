@@ -40,7 +40,6 @@ public class WorkbookWriteBuilder {
 
     public WorkbookWriteBuilder output(File outputFile) {
         workbookParameterBuilder.output(outputFile);
-
         return this;
     }
 

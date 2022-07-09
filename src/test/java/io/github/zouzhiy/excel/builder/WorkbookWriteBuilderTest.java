@@ -23,8 +23,8 @@ import java.util.function.BiConsumer;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * @author 陆迪
- * @date 2022/7/7
+ * @author zouzhiy
+ * @since 2022/7/9
  */
 class WorkbookWriteBuilderTest {
 
@@ -46,7 +46,7 @@ class WorkbookWriteBuilderTest {
             assertTrue(workbookParameter.isXssf());
 
         });
-        workbookWriteBuilder.template(templateFile).output(TestFileUtils.getOutputStream()).sheet().write(Collections.emptyList(), DemoDefault.class);
+        workbookWriteBuilder.template(templateFile).output(TestFileUtils.getXlsxOutputStream()).sheet().write(Collections.emptyList(), DemoDefault.class);
     }
 
     @Test
@@ -61,7 +61,7 @@ class WorkbookWriteBuilderTest {
             assertTrue(workbookParameter.isXssf());
 
         });
-        workbookWriteBuilder.template(templateInputStream).output(TestFileUtils.getOutputStream()).sheet().write(Collections.emptyList(), DemoDefault.class);
+        workbookWriteBuilder.template(templateInputStream).output(TestFileUtils.getXlsxOutputStream()).sheet().write(Collections.emptyList(), DemoDefault.class);
     }
 
     @Test
@@ -106,13 +106,15 @@ class WorkbookWriteBuilderTest {
             assertEquals(outputFile, workbookParameter.getOutputFile());
             assertNotNull(workbookParameter.getOutputStream());
 
+            assertFalse(workbookParameter.isXssf());
+
         });
         workbookWriteBuilder.output(outputFile).sheet().write(Collections.emptyList(), DemoDefault.class);
     }
 
     @Test
     void output3() {
-        OutputStream outputStream = TestFileUtils.getOutputStream();
+        OutputStream outputStream = TestFileUtils.getXlsxOutputStream();
 
         WorkbookWriteBuilder workbookWriteBuilder = this.getWorkbookWriteBuilder((workbookParameter, aClass) -> {
             assertNull(workbookParameter.getInputFileName());
@@ -134,10 +136,51 @@ class WorkbookWriteBuilderTest {
 
 
     @Test
+    void xssf1() {
+        OutputStream outputStream = TestFileUtils.getXlsxOutputStream();
+
+        boolean xssf = true;
+        WorkbookWriteBuilder workbookWriteBuilder = this.getWorkbookWriteBuilder((workbookParameter, aClass) -> {
+            assertNull(workbookParameter.getInputFileName());
+            assertNull(workbookParameter.getInputFilePath());
+            assertNull(workbookParameter.getInputFile());
+            assertNull(workbookParameter.getInputStream());
+
+
+            assertNull(workbookParameter.getOutputFileName());
+            assertNull(workbookParameter.getOutputFilePath());
+            assertNull(workbookParameter.getOutputFile());
+            assertNotNull(workbookParameter.getOutputStream());
+
+            assertTrue(workbookParameter.isXssf());
+
+            assertTrue(workbookParameter.getCellStyleConsumerList().isEmpty());
+
+        });
+        workbookWriteBuilder.output(outputStream).xssf(xssf).sheet().write(Collections.emptyList(), DemoDefault.class);
+    }
+
+    @Test
+    void xssf2() {
+        File outputFile = TestFileUtils.getEmptyXlsFile();
+
+        WorkbookWriteBuilder workbookWriteBuilder = this.getWorkbookWriteBuilder((workbookParameter, aClass) -> {
+
+        });
+        try {
+            workbookWriteBuilder.output(outputFile).xssf(true).sheet().write(Collections.emptyList(), DemoDefault.class);
+            assert false;
+        } catch (ExcelException e) {
+            e.printStackTrace();
+            assert true;
+        }
+    }
+
+    @Test
     void cellStyleConsumer1() {
         CellStyleConsumer cellStyleConsumer = new CellStyleConsumer() {
         };
-        OutputStream outputStream = TestFileUtils.getOutputStream();
+        OutputStream outputStream = TestFileUtils.getXlsxOutputStream();
 
         WorkbookWriteBuilder workbookReadBuilder = this.getWorkbookWriteBuilder((workbookParameter, aClass) -> {
             assertEquals(workbookParameter.getSheetParameter().getSheetIndex(), 0);
@@ -173,7 +216,7 @@ class WorkbookWriteBuilderTest {
             cellStyleConsumerList.add(cellStyleConsumer);
         }
 
-        OutputStream outputStream = TestFileUtils.getOutputStream();
+        OutputStream outputStream = TestFileUtils.getXlsxOutputStream();
 
         WorkbookWriteBuilder workbookReadBuilder = this.getWorkbookWriteBuilder((workbookParameter, aClass) -> {
 
@@ -202,7 +245,7 @@ class WorkbookWriteBuilderTest {
 
     @Test
     void sheet1() {
-        OutputStream outputStream = TestFileUtils.getOutputStream();
+        OutputStream outputStream = TestFileUtils.getXlsxOutputStream();
 
         WorkbookWriteBuilder workbookReadBuilder = this.getWorkbookWriteBuilder((workbookParameter, aClass) -> {
             assertEquals(workbookParameter.getSheetParameter().getSheetIndex(), 0);
@@ -226,7 +269,7 @@ class WorkbookWriteBuilderTest {
     @Test
     void sheet2() {
         String sheetName = new Random(System.currentTimeMillis()).nextInt(999) + "name";
-        OutputStream outputStream = TestFileUtils.getOutputStream();
+        OutputStream outputStream = TestFileUtils.getXlsxOutputStream();
 
         WorkbookWriteBuilder workbookReadBuilder = this.getWorkbookWriteBuilder((workbookParameter, aClass) -> {
             assertNull(workbookParameter.getSheetParameter().getSheetIndex());
@@ -250,7 +293,7 @@ class WorkbookWriteBuilderTest {
     @Test
     void sheet3() {
         Integer sheetIndex = new Random(System.currentTimeMillis()).nextInt(999);
-        OutputStream outputStream = TestFileUtils.getOutputStream();
+        OutputStream outputStream = TestFileUtils.getXlsxOutputStream();
 
         WorkbookWriteBuilder workbookReadBuilder = this.getWorkbookWriteBuilder((workbookParameter, aClass) -> {
             assertEquals(workbookParameter.getSheetParameter().getSheetIndex(), sheetIndex);
@@ -275,7 +318,7 @@ class WorkbookWriteBuilderTest {
     void title() {
         String title = new Random(System.currentTimeMillis()).nextInt(999) + "title";
 
-        OutputStream outputStream = TestFileUtils.getOutputStream();
+        OutputStream outputStream = TestFileUtils.getXlsxOutputStream();
 
         WorkbookWriteBuilder workbookReadBuilder = this.getWorkbookWriteBuilder((workbookParameter, aClass) -> {
             assertEquals(workbookParameter.getSheetParameter().getSheetIndex(), 0);
@@ -300,7 +343,7 @@ class WorkbookWriteBuilderTest {
     @Test
     void titleRowStartIndex() {
         Integer titleRowStartIndex = random.nextInt(88);
-        OutputStream outputStream = TestFileUtils.getOutputStream();
+        OutputStream outputStream = TestFileUtils.getXlsxOutputStream();
 
         WorkbookWriteBuilder workbookReadBuilder = this.getWorkbookWriteBuilder((workbookParameter, aClass) -> {
             assertEquals(workbookParameter.getSheetParameter().getSheetIndex(), 0);
@@ -327,7 +370,7 @@ class WorkbookWriteBuilderTest {
     @Test
     void titleColumnStartIndex() {
         Integer titleColumnStartIndex = random.nextInt(88);
-        OutputStream outputStream = TestFileUtils.getOutputStream();
+        OutputStream outputStream = TestFileUtils.getXlsxOutputStream();
 
         WorkbookWriteBuilder workbookReadBuilder = this.getWorkbookWriteBuilder((workbookParameter, aClass) -> {
             assertEquals(workbookParameter.getSheetParameter().getSheetIndex(), 0);
@@ -355,7 +398,7 @@ class WorkbookWriteBuilderTest {
     @Test
     void headRowStartIndex() {
         Integer headRowStartIndex = random.nextInt(88);
-        OutputStream outputStream = TestFileUtils.getOutputStream();
+        OutputStream outputStream = TestFileUtils.getXlsxOutputStream();
 
         WorkbookWriteBuilder workbookReadBuilder = this.getWorkbookWriteBuilder((workbookParameter, aClass) -> {
             assertEquals(workbookParameter.getSheetParameter().getSheetIndex(), 0);
@@ -382,7 +425,7 @@ class WorkbookWriteBuilderTest {
     @Test
     void headColumnStartIndex() {
         Integer headColumnStartIndex = random.nextInt(88);
-        OutputStream outputStream = TestFileUtils.getOutputStream();
+        OutputStream outputStream = TestFileUtils.getXlsxOutputStream();
 
         WorkbookWriteBuilder workbookReadBuilder = this.getWorkbookWriteBuilder((workbookParameter, aClass) -> {
             assertEquals(workbookParameter.getSheetParameter().getSheetIndex(), 0);
@@ -410,7 +453,7 @@ class WorkbookWriteBuilderTest {
     void dataRowStartIndex() {
         for (int i = 0; i < random.nextInt(20); i++) {
             final int dataRowStartIndex = i;
-            OutputStream outputStream = TestFileUtils.getOutputStream();
+            OutputStream outputStream = TestFileUtils.getXlsxOutputStream();
 
             WorkbookWriteBuilder workbookReadBuilder = this.getWorkbookWriteBuilder((workbookParameter, aClass) -> {
                 assertEquals(workbookParameter.getSheetParameter().getSheetIndex(), 0);
@@ -441,7 +484,7 @@ class WorkbookWriteBuilderTest {
     void dataColumnStartIndex() {
         for (int i = 0; i < random.nextInt(20); i++) {
             final int dataColumnStartIndex = i;
-            OutputStream outputStream = TestFileUtils.getOutputStream();
+            OutputStream outputStream = TestFileUtils.getXlsxOutputStream();
 
             WorkbookWriteBuilder workbookReadBuilder = this.getWorkbookWriteBuilder((workbookParameter, aClass) -> {
                 assertEquals(workbookParameter.getSheetParameter().getSheetIndex(), 0);
@@ -471,7 +514,7 @@ class WorkbookWriteBuilderTest {
 
         SheetReadConsumer<DemoDefault> sheetReadConsumer = new SheetReadConsumer<DemoDefault>() {
         };
-        OutputStream outputStream = TestFileUtils.getOutputStream();
+        OutputStream outputStream = TestFileUtils.getXlsxOutputStream();
 
         WorkbookWriteBuilder workbookReadBuilder = this.getWorkbookWriteBuilder((workbookParameter, aClass) -> {
             assertEquals(workbookParameter.getSheetParameter().getSheetIndex(), 0);
@@ -507,7 +550,7 @@ class WorkbookWriteBuilderTest {
             sheetReadConsumerList.add(sheetReadConsumer);
         }
 
-        OutputStream outputStream = TestFileUtils.getOutputStream();
+        OutputStream outputStream = TestFileUtils.getXlsxOutputStream();
 
         WorkbookWriteBuilder workbookReadBuilder = this.getWorkbookWriteBuilder((workbookParameter, aClass) -> {
             assertEquals(workbookParameter.getSheetParameter().getSheetIndex(), 0);
@@ -537,7 +580,7 @@ class WorkbookWriteBuilderTest {
     void sheetWriteConsumer1() {
         SheetWriteConsumer<DemoDefault> sheetWriteConsumer = new SheetWriteConsumer<DemoDefault>() {
         };
-        OutputStream outputStream = TestFileUtils.getOutputStream();
+        OutputStream outputStream = TestFileUtils.getXlsxOutputStream();
 
         WorkbookWriteBuilder workbookReadBuilder = this.getWorkbookWriteBuilder((workbookParameter, aClass) -> {
             assertEquals(workbookParameter.getSheetParameter().getSheetIndex(), 0);
@@ -573,7 +616,7 @@ class WorkbookWriteBuilderTest {
             sheetWriteConsumerList.add(sheetReadConsumer);
         }
 
-        OutputStream outputStream = TestFileUtils.getOutputStream();
+        OutputStream outputStream = TestFileUtils.getXlsxOutputStream();
 
         WorkbookWriteBuilder workbookReadBuilder = this.getWorkbookWriteBuilder((workbookParameter, aClass) -> {
             assertEquals(workbookParameter.getSheetParameter().getSheetIndex(), 0);
@@ -602,7 +645,7 @@ class WorkbookWriteBuilderTest {
 
     @Test
     void write() {
-        OutputStream outputStream = TestFileUtils.getOutputStream();
+        OutputStream outputStream = TestFileUtils.getXlsxOutputStream();
         WorkbookWriteBuilder workbookReadBuilder = this.getWorkbookWriteBuilder((workbookParameter, aClass) -> {
             assertEquals(workbookParameter.getSheetParameter().getSheetIndex(), 0);
             assertNull(workbookParameter.getSheetParameter().getSheetName());

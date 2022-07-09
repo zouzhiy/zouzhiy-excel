@@ -15,10 +15,10 @@ package io.github.zouzhiy.excel.old.example.example2.handler;
 
 import io.github.zouzhiy.excel.context.RowContext;
 import io.github.zouzhiy.excel.context.SheetContext;
-import io.github.zouzhiy.excel.old.example.example2.matedata.Item;
 import io.github.zouzhiy.excel.handler.AbstractWriteStringCellHandler;
 import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
 import io.github.zouzhiy.excel.metadata.result.CellResult;
+import io.github.zouzhiy.excel.old.example.example2.matedata.Item;
 
 import java.util.function.Supplier;
 

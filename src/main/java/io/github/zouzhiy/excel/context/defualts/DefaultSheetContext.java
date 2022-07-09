@@ -129,6 +129,7 @@ public class DefaultSheetContext implements SheetContext {
     public int getMaxRowspan(int rowIndex) {
         SheetParameter sheetParameter = this.getSheetParameter();
         MergedRegion mergedRegion = this.getMergedRegion();
+        Sheet sheet = this.getSheet();
         Row row = sheet.getRow(rowIndex);
         if (row == null) {
             return 1;
@@ -148,7 +149,7 @@ public class DefaultSheetContext implements SheetContext {
     @Override
     public Drawing<?> getDrawing() {
         if (drawing == null) {
-            drawing = this.sheet.createDrawingPatriarch();
+            drawing = this.getSheet().createDrawingPatriarch();
         }
         return drawing;
     }
@@ -161,6 +162,7 @@ public class DefaultSheetContext implements SheetContext {
     @Override
     public List<Row> getRowList(int firstRowIndex, int lastRowIndex) {
         List<Row> rowList = new ArrayList<>();
+        Sheet sheet = this.getSheet();
         for (int i = firstRowIndex; i <= lastRowIndex; i++) {
             Row row = sheet.getRow(i);
             rowList.add(row);

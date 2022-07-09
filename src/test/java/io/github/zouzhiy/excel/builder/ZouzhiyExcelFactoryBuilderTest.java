@@ -11,10 +11,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.zouzhiy.excel.old.builder;
+package io.github.zouzhiy.excel.builder;
 
-import io.github.zouzhiy.excel.builder.ZouzhiyExcelFactory;
-import io.github.zouzhiy.excel.builder.ZouzhiyExcelFactoryBuilder;
 import io.github.zouzhiy.excel.cellstyle.RowStyleRead;
 import io.github.zouzhiy.excel.context.RowContext;
 import io.github.zouzhiy.excel.context.SheetContext;
@@ -101,12 +99,7 @@ class ZouzhiyExcelFactoryBuilderTest {
 
     @Test
     void registerRowWrite() {
-        RowWrite rowWrite = new RowHeadWrite() {
-            @Override
-            public int write(SheetContext sheetContext, List<?> dataList) {
-                return 0;
-            }
-        };
+        RowWrite rowWrite = (RowHeadWrite) (sheetContext, dataList) -> 0;
         ZouzhiyExcelFactory zouzhiyExcelFactory = ZouzhiyExcelFactoryBuilder.builder()
                 .register(rowWrite)
                 .build();
@@ -118,12 +111,7 @@ class ZouzhiyExcelFactoryBuilderTest {
 
     @Test
     void testRegisterRowTitleWrite() {
-        RowWrite rowWrite = new RowTitleWrite() {
-            @Override
-            public int write(SheetContext sheetContext, List<?> dataList) {
-                return 0;
-            }
-        };
+        RowWrite rowWrite = (RowTitleWrite) (sheetContext, dataList) -> 0;
         ZouzhiyExcelFactory zouzhiyExcelFactory = ZouzhiyExcelFactoryBuilder.builder()
                 .register(rowWrite)
                 .build();
@@ -135,12 +123,7 @@ class ZouzhiyExcelFactoryBuilderTest {
 
     @Test
     void testRegister1() {
-        RowWrite rowWrite = new RowTitleWrite() {
-            @Override
-            public int write(SheetContext sheetContext, List<?> dataList) {
-                return 0;
-            }
-        };
+        RowWrite rowWrite = (RowTitleWrite) (sheetContext, dataList) -> 0;
         ZouzhiyExcelFactory zouzhiyExcelFactory = ZouzhiyExcelFactoryBuilder.builder()
                 .register(rowWrite)
                 .build();
@@ -152,12 +135,7 @@ class ZouzhiyExcelFactoryBuilderTest {
 
     @Test
     void testRegisterRowFootWrite() {
-        RowWrite rowWrite = new RowFootWrite() {
-            @Override
-            public int write(SheetContext sheetContext, List<?> dataList) {
-                return 0;
-            }
-        };
+        RowWrite rowWrite = (RowFootWrite) (sheetContext, dataList) -> 0;
         ZouzhiyExcelFactory zouzhiyExcelFactory = ZouzhiyExcelFactoryBuilder.builder()
                 .register(rowWrite)
                 .build();
@@ -170,13 +148,7 @@ class ZouzhiyExcelFactoryBuilderTest {
 
     @Test
     void registerRowRead() {
-        RowRead rowRead = new RowHeadRead() {
-
-            @Override
-            public List<CellResultSet> read(SheetContext sheetContext) {
-                return null;
-            }
-        };
+        RowRead rowRead = (RowHeadRead) sheetContext -> null;
         ZouzhiyExcelFactory zouzhiyExcelFactory = ZouzhiyExcelFactoryBuilder.builder()
                 .register(rowRead)
                 .build();
@@ -188,13 +160,7 @@ class ZouzhiyExcelFactoryBuilderTest {
 
     @Test
     void testRegisterRowTitleRead() {
-        RowRead rowRead = new RowTitleRead() {
-
-            @Override
-            public CellResultSet read(SheetContext sheetContext) {
-                return null;
-            }
-        };
+        RowRead rowRead = (RowTitleRead) sheetContext -> null;
         ZouzhiyExcelFactory zouzhiyExcelFactory = ZouzhiyExcelFactoryBuilder.builder()
                 .register(rowRead)
                 .build();
@@ -206,13 +172,7 @@ class ZouzhiyExcelFactoryBuilderTest {
 
     @Test
     void registerRowTitleRead() {
-        RowRead rowRead = new RowTitleRead() {
-
-            @Override
-            public CellResultSet read(SheetContext sheetContext) {
-                return null;
-            }
-        };
+        RowRead rowRead = (RowTitleRead) sheetContext -> null;
         ZouzhiyExcelFactory zouzhiyExcelFactory = ZouzhiyExcelFactoryBuilder.builder()
                 .register(rowRead)
                 .build();
@@ -224,12 +184,7 @@ class ZouzhiyExcelFactoryBuilderTest {
 
     @Test
     void testRegisterRowFootRead() {
-        RowRead rowRead = new RowFootRead() {
-            @Override
-            public List<CellResultSet> read(SheetContext sheetContext) {
-                return null;
-            }
-        };
+        RowRead rowRead = (RowFootRead) sheetContext -> null;
         ZouzhiyExcelFactory zouzhiyExcelFactory = ZouzhiyExcelFactoryBuilder.builder()
                 .register(rowRead)
                 .build();

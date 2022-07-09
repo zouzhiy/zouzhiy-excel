@@ -90,7 +90,7 @@ public class DefaultWorkbookRead implements WorkbookRead {
             this.workbookContext.getWorkbook().close();
             WorkbookParameter workbookParameter = this.workbookContext.getWorkbookParameter();
             InputStream inputStream = workbookParameter.getInputStream();
-            if (inputStream != null){
+            if (inputStream != null) {
                 inputStream.close();
             }
             OutputStream outputStream = workbookParameter.getOutputStream();

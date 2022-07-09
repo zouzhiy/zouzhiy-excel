@@ -9,13 +9,14 @@ import java.time.format.DateTimeFormatter;
 public class TestFileUtils {
 
     public static InputStream getInputStream(String filePath) {
-     return TestFileUtils.class.getClassLoader().getResourceAsStream(filePath);
+        return TestFileUtils.class.getClassLoader().getResourceAsStream(filePath);
     }
 
 
     public static File getTemplateFile(String filePath) {
         return writeXlsFile(getInputStream(filePath));
     }
+
     public static InputStream getTemplateInputStream(String filePath) {
         try {
             return new FileInputStream(writeXlsFile(getInputStream(filePath)));
@@ -69,7 +70,7 @@ public class TestFileUtils {
         return tmpFile;
     }
 
-    public static OutputStream getOutputStream() {
+    public static OutputStream getXlsxOutputStream() {
         try {
             return new FileOutputStream(getEmptyXlsxFile());
         } catch (FileNotFoundException e) {

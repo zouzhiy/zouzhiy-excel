@@ -83,7 +83,7 @@ public class ExcelAnnotationParse {
                     .rowHeadRead(excelClass.rowHeadRead())
                     .rowFootRead(excelClass.rowFootRead())
                     .titleStyle(ExcelStyleConfig.buildByExcelStyle(excelClass.titleStyle()))
-                    .cellStyleRead(excelClass.rowStyleRead())
+                    .rowStyleRead(excelClass.rowStyleRead())
                     .titleFormat(excelClass.titleFormat())
                     .itemList(excelFieldConfigList)
                     .build();

@@ -59,7 +59,7 @@ public class DefaultSheetCellStyleRead implements SheetCellStyleRead {
     }
 
     private RowStyleRead getRowStyleRead() {
-        Class<? extends RowStyleRead> rowStyleReadClazz = this.sheetContext.getExcelClassConfig().getCellStyleRead();
+        Class<? extends RowStyleRead> rowStyleReadClazz = this.sheetContext.getExcelClassConfig().getRowStyleRead();
         if (rowStyleReadClazz == null) {
             rowStyleReadClazz = RowStyleReadRegistry.DEFAULT_ROW_STYLE_READ_CLASS;
         }

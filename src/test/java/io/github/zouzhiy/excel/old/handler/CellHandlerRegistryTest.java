@@ -13,7 +13,6 @@
  */
 package io.github.zouzhiy.excel.old.handler;
 
-import io.github.zouzhiy.excel.old.builder.Demo;
 import io.github.zouzhiy.excel.context.RowContext;
 import io.github.zouzhiy.excel.context.SheetContext;
 import io.github.zouzhiy.excel.enums.ExcelType;
@@ -23,6 +22,7 @@ import io.github.zouzhiy.excel.handler.CellHandlerRegistry;
 import io.github.zouzhiy.excel.metadata.Configuration;
 import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
 import io.github.zouzhiy.excel.metadata.result.CellResultSet;
+import io.github.zouzhiy.excel.old.builder.Demo;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -31,7 +31,7 @@ import org.junit.jupiter.api.Test;
  */
 class CellHandlerRegistryTest {
 
-    private Configuration configuration = new Configuration();
+    private final Configuration configuration = new Configuration();
 
     @Test
     void register() {

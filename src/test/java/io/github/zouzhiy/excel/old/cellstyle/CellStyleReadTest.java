@@ -13,7 +13,6 @@
  */
 package io.github.zouzhiy.excel.old.cellstyle;
 
-import io.github.zouzhiy.excel.old.builder.Demo;
 import io.github.zouzhiy.excel.builder.ZouzhiyExcelFactory;
 import io.github.zouzhiy.excel.builder.ZouzhiyExcelFactoryBuilder;
 import io.github.zouzhiy.excel.cellstyle.CellStyleRead;
@@ -22,6 +21,7 @@ import io.github.zouzhiy.excel.context.defualts.DefaultSheetContext;
 import io.github.zouzhiy.excel.metadata.config.ExcelClassConfig;
 import io.github.zouzhiy.excel.metadata.parameter.SheetParameter;
 import io.github.zouzhiy.excel.metadata.parameter.WorkbookParameter;
+import io.github.zouzhiy.excel.old.builder.Demo;
 import io.github.zouzhiy.excel.write.WorkbookWrite;
 import io.github.zouzhiy.excel.write.defaults.DefaultSheetWrite;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -97,7 +97,7 @@ class CellStyleReadTest {
                 .rowTitleWrite(null)
                 .rowHeadWrite(null)
                 .rowFootWrite(null)
-                .cellStyleRead(null)
+                .rowStyleRead(null)
                 .build();
         WorkbookWrite workbookWrite = zouzhiyExcelFactory.getWorkbookWrite(workbookParameter, excelClassConfig);
 
@@ -118,7 +118,7 @@ class CellStyleReadTest {
                 .rowTitleWrite(null)
                 .rowHeadWrite(null)
                 .rowFootWrite(null)
-                .cellStyleRead(null)
+                .rowStyleRead(null)
                 .build();
         WorkbookWrite workbookWrite = zouzhiyExcelFactory.getWorkbookWrite(workbookParameter, excelClassConfig);
 
@@ -144,7 +144,7 @@ class CellStyleReadTest {
                 .rowTitleWrite(null)
                 .rowHeadWrite(null)
                 .rowFootWrite(null)
-                .cellStyleRead(null)
+                .rowStyleRead(null)
                 .build();
         WorkbookWrite workbookWrite = zouzhiyExcelFactory.getWorkbookWrite(workbookParameter, excelClassConfig);
 

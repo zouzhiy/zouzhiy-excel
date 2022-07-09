@@ -124,8 +124,12 @@ public class WorkbookParameter {
             return this;
         }
 
-        public WorkbookParameterBuilder xssf(boolean xssf) {
-            this.xssf = xssf;
+        public WorkbookParameterBuilder xssf(boolean newXssf) {
+            if (this.xssf == null) {
+                this.xssf = newXssf;
+            } else if (this.xssf != newXssf) {
+                throw new ExcelException("已经根据输入输出文件匹配，请勿重复设置错误的文件类型");
+            }
             return this;
         }
 

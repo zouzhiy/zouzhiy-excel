@@ -14,7 +14,6 @@
 package io.github.zouzhiy.excel.old.handler.image;
 
 import io.github.zouzhiy.excel.enums.ExcelType;
-import io.github.zouzhiy.excel.exceptions.ExcelException;
 import io.github.zouzhiy.excel.handler.image.ImageUrlCellHandler;
 import org.junit.jupiter.api.Test;
 

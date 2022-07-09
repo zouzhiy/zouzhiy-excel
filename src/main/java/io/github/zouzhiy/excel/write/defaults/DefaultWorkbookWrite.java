@@ -23,6 +23,7 @@ import io.github.zouzhiy.excel.metadata.parameter.SheetParameter;
 import io.github.zouzhiy.excel.metadata.parameter.WorkbookParameter;
 import io.github.zouzhiy.excel.write.SheetWrite;
 import io.github.zouzhiy.excel.write.WorkbookWrite;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,6 +33,7 @@ import java.util.List;
  * @author zouzhiy
  * @since 2022/7/2
  */
+@Slf4j
 public class DefaultWorkbookWrite implements WorkbookWrite {
 
     private final WorkbookContext workbookContext;
@@ -76,7 +78,9 @@ public class DefaultWorkbookWrite implements WorkbookWrite {
             this.workbookContext.getWorkbook().write(workbookContext.getWorkbookParameter().getOutputStream());
             this.close();
         } catch (Exception e) {
-            throw new ExcelException(e,"工作簿写入失败");
+            log.error("工作簿写入失败.{}", this);
+            log.error("工作簿写入失败", e);
+            throw new ExcelException(e, "工作簿写入失败");
         }
     }
 
