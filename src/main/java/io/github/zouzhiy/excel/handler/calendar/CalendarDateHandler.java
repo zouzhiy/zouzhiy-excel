@@ -14,31 +14,17 @@
 package io.github.zouzhiy.excel.handler.calendar;
 
 import io.github.zouzhiy.excel.context.RowContext;
-import io.github.zouzhiy.excel.context.SheetContext;
 import io.github.zouzhiy.excel.enums.ExcelType;
-import io.github.zouzhiy.excel.handler.AbstractCellHandler;
 import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
-import io.github.zouzhiy.excel.metadata.result.CellResult;
 import org.apache.poi.ss.usermodel.Cell;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.Calendar;
 
 /**
  * @author zouzhiy
  * @since 2022/7/2
  */
-public class CalendarDateHandler extends AbstractCellHandler<Calendar> {
-
-    @Override
-    protected Calendar getCellValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResult firstCellResult) {
-        LocalDateTime localDateTime = firstCellResult.getDateValue();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(localDateTime.toInstant(ZoneOffset.of("+8")).toEpochMilli());
-
-        return calendar;
-    }
+public class CalendarDateHandler extends AbstractCalendarCellHandler {
 
     @Override
     protected void setCellValue(RowContext rowContext, ExcelFieldConfig excelFieldConfig, Cell cell, Calendar value) {

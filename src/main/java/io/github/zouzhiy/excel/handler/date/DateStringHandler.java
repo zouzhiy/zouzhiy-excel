@@ -14,47 +14,23 @@
 package io.github.zouzhiy.excel.handler.date;
 
 import io.github.zouzhiy.excel.context.RowContext;
-import io.github.zouzhiy.excel.context.SheetContext;
-import io.github.zouzhiy.excel.handler.AbstractWriteStringCellHandler;
+import io.github.zouzhiy.excel.enums.ExcelType;
 import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
-import io.github.zouzhiy.excel.metadata.result.CellResult;
-import io.github.zouzhiy.excel.utils.ExcelDateUtils;
+import io.github.zouzhiy.excel.utils.ExcelDateFormatUtils;
+import org.apache.poi.ss.usermodel.Cell;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.util.Calendar;
 import java.util.Date;
 
 /**
  * @author zouzhiy
  * @since 2022/7/2
  */
-public class DateStringHandler extends AbstractWriteStringCellHandler<Date> {
+public class DateStringHandler extends AbstractDateCellHandler {
 
-    private final Object lock = new Object();
-    private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
 
     @Override
-    protected Date getCellValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResult firstCellResult) {
-        String value = firstCellResult.getStringValue();
-        LocalDateTime localDateTime = ExcelDateUtils.parseDateTime(value, this.getJavaFormat(excelFieldConfig));
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(localDateTime.toInstant(ZoneOffset.of("+8")).toEpochMilli());
-        return calendar.getTime();
-    }
-
-    @Override
-    protected String format(RowContext rowContext, ExcelFieldConfig excelFieldConfig, Date value) {
-        String javaFormat = this.getJavaFormat(excelFieldConfig);
-        if (javaFormat.length() > 0) {
-            synchronized (lock) {
-                simpleDateFormat.applyPattern(javaFormat);
-                return simpleDateFormat.format(value);
-            }
-        } else {
-            return value.toString();
-        }
+    public ExcelType getExcelType() {
+        return ExcelType.STRING;
     }
 
     @Override
@@ -62,4 +38,10 @@ public class DateStringHandler extends AbstractWriteStringCellHandler<Date> {
         return "yyyy-MM-dd";
     }
 
+    @Override
+    protected void setCellValue(RowContext rowContext, ExcelFieldConfig excelFieldConfig, Cell cell, Date value) {
+        String javaFormat = this.getJavaFormat(excelFieldConfig);
+        String strValue = ExcelDateFormatUtils.format(value, javaFormat);
+        cell.setCellValue(strValue);
+    }
 }

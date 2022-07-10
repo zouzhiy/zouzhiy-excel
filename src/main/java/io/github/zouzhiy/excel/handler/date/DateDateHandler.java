@@ -14,28 +14,17 @@
 package io.github.zouzhiy.excel.handler.date;
 
 import io.github.zouzhiy.excel.context.RowContext;
-import io.github.zouzhiy.excel.context.SheetContext;
 import io.github.zouzhiy.excel.enums.ExcelType;
-import io.github.zouzhiy.excel.handler.AbstractCellHandler;
 import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
-import io.github.zouzhiy.excel.metadata.result.CellResult;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.DateUtil;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
  * @author zouzhiy
  * @since 2022/7/2
  */
-public class DateDateHandler extends AbstractCellHandler<Date> {
-
-    @Override
-    protected Date getCellValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResult firstCellResult) {
-        LocalDateTime localDateTime = firstCellResult.getDateValue();
-        return DateUtil.getJavaDate(DateUtil.getExcelDate(localDateTime));
-    }
+public class DateDateHandler extends AbstractDateCellHandler {
 
     @Override
     protected void setCellValue(RowContext rowContext, ExcelFieldConfig excelFieldConfig, Cell cell, Date value) {

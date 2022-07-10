@@ -14,11 +14,8 @@
 package io.github.zouzhiy.excel.handler.bigdecimal;
 
 import io.github.zouzhiy.excel.context.RowContext;
-import io.github.zouzhiy.excel.context.SheetContext;
 import io.github.zouzhiy.excel.enums.ExcelType;
-import io.github.zouzhiy.excel.handler.AbstractCellHandler;
 import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
-import io.github.zouzhiy.excel.metadata.result.CellResult;
 import org.apache.poi.ss.usermodel.Cell;
 
 import java.math.BigDecimal;
@@ -27,16 +24,9 @@ import java.math.BigDecimal;
  * @author zouzhiy
  * @since 2022/7/2
  */
-public class BigDecimalBooleanHandler extends AbstractCellHandler<BigDecimal> {
+public class BigDecimalBooleanHandler extends AbstractBigDecimalCellHandler {
 
-    private final BigDecimal FALSE_VALUE = BigDecimal.ZERO;
-    private final BigDecimal TRUE_VALUE = BigDecimal.ONE;
-
-    @Override
-    protected BigDecimal getCellValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResult firstCellResult) {
-        Boolean value = firstCellResult.getBooleanValue();
-        return value ? TRUE_VALUE : FALSE_VALUE;
-    }
+    private final static BigDecimal TRUE_VALUE = BigDecimal.ONE;
 
     @Override
     protected void setCellValue(RowContext rowContext, ExcelFieldConfig excelFieldConfig, Cell cell, BigDecimal value) {

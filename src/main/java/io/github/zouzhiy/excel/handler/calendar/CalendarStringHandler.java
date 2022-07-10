@@ -14,46 +14,29 @@
 package io.github.zouzhiy.excel.handler.calendar;
 
 import io.github.zouzhiy.excel.context.RowContext;
-import io.github.zouzhiy.excel.context.SheetContext;
-import io.github.zouzhiy.excel.handler.AbstractWriteStringCellHandler;
+import io.github.zouzhiy.excel.enums.ExcelType;
 import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
-import io.github.zouzhiy.excel.metadata.result.CellResult;
-import io.github.zouzhiy.excel.utils.ExcelDateUtils;
+import io.github.zouzhiy.excel.utils.ExcelDateFormatUtils;
+import org.apache.poi.ss.usermodel.Cell;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.Calendar;
 
 /**
  * @author zouzhiy
  * @since 2022/7/2
  */
-public class CalendarStringHandler extends AbstractWriteStringCellHandler<Calendar> {
-
-    private final Object lock = new Object();
-    private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
+public class CalendarStringHandler extends AbstractCalendarCellHandler {
 
     @Override
-    protected Calendar getCellValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResult firstCellResult) {
-        String value = firstCellResult.getStringValue();
-        LocalDateTime localDateTime = ExcelDateUtils.parseDateTime(value, this.getJavaFormat(excelFieldConfig));
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(localDateTime.toInstant(ZoneOffset.of("+8")).toEpochMilli());
-        return calendar;
+    protected void setCellValue(RowContext rowContext, ExcelFieldConfig excelFieldConfig, Cell cell, Calendar value) {
+        String javaFormat = this.getJavaFormat(excelFieldConfig);
+        String strValue = ExcelDateFormatUtils.format(value, javaFormat);
+        cell.setCellValue(strValue);
     }
 
     @Override
-    protected String format(RowContext rowContext, ExcelFieldConfig excelFieldConfig, Calendar value) {
-        String javaFormat = this.getJavaFormat(excelFieldConfig);
-        if (javaFormat.length() > 0) {
-            synchronized (lock) {
-                simpleDateFormat.applyPattern(javaFormat);
-                return simpleDateFormat.format(value.getTime());
-            }
-        } else {
-            return value.toString();
-        }
+    public ExcelType getExcelType() {
+        return ExcelType.STRING;
     }
 
     @Override

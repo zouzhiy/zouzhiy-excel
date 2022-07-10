@@ -14,11 +14,8 @@
 package io.github.zouzhiy.excel.handler.localtime;
 
 import io.github.zouzhiy.excel.context.RowContext;
-import io.github.zouzhiy.excel.context.SheetContext;
 import io.github.zouzhiy.excel.enums.ExcelType;
-import io.github.zouzhiy.excel.handler.AbstractCellHandler;
 import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
-import io.github.zouzhiy.excel.metadata.result.CellResult;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
 
@@ -29,12 +26,7 @@ import java.time.LocalTime;
  * @author zouzhiy
  * @since 2022/7/2
  */
-public class LocalTimeDateHandler extends AbstractCellHandler<LocalTime> {
-
-    @Override
-    protected LocalTime getCellValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResult firstCellResult) {
-        return firstCellResult.getDateValue().toLocalTime();
-    }
+public class LocalTimeDateHandler extends AbstractLocalTimeCellHandler {
 
     @Override
     protected void setCellValue(RowContext rowContext, ExcelFieldConfig excelFieldConfig, Cell cell, LocalTime value) {

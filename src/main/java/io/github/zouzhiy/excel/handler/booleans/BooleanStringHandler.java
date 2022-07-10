@@ -14,26 +14,25 @@
 package io.github.zouzhiy.excel.handler.booleans;
 
 import io.github.zouzhiy.excel.context.RowContext;
-import io.github.zouzhiy.excel.context.SheetContext;
-import io.github.zouzhiy.excel.handler.AbstractWriteStringCellHandler;
+import io.github.zouzhiy.excel.enums.ExcelType;
 import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
-import io.github.zouzhiy.excel.metadata.result.CellResult;
+import org.apache.poi.ss.usermodel.Cell;
 
 /**
  * @author zouzhiy
  * @since 2022/7/2
  */
-public class BooleanStringHandler extends AbstractWriteStringCellHandler<Boolean> {
+public class BooleanStringHandler extends AbstractBooleanCellHandler {
+
 
     @Override
-    protected Boolean getCellValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResult firstCellResult) {
-        String value = firstCellResult.getStringValue();
-        return Boolean.parseBoolean(value);
+    protected void setCellValue(RowContext rowContext, ExcelFieldConfig excelFieldConfig, Cell cell, Boolean value) {
+        cell.setCellValue(Boolean.toString(value));
     }
+
 
     @Override
-    protected String format(RowContext rowContext, ExcelFieldConfig excelFieldConfig, Boolean value) {
-        return value.toString();
+    public ExcelType getExcelType() {
+        return ExcelType.STRING;
     }
-
 }

@@ -15,6 +15,7 @@ package io.github.zouzhiy.excel.metadata.result;
 
 import io.github.zouzhiy.excel.enums.ExcelType;
 import io.github.zouzhiy.excel.metadata.CellSpan;
+import io.github.zouzhiy.excel.utils.ExcelDateParseUtils;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -32,87 +33,100 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 public class CellResult {
 
-    private Cell cell;
+    private final static double TRUE_VALUE_DOUBLE = 1d;
+    private final static double FALSE_VALUE_DOUBLE = 1d;
 
-    private Integer rowIndex;
+    private final static BigDecimal TRUE_VALUE_BIG_DECIMAL = BigDecimal.ONE;
+    private final static BigDecimal FALSE_VALUE_BIG_DECIMAL = BigDecimal.ZERO;
 
-    private Integer columnIndex;
+    private final Cell cell;
 
-    private Integer rowspan;
+    private final Integer rowIndex;
 
-    private Integer colspan;
+    private final Integer columnIndex;
 
-    private ExcelType excelType;
+    private final Integer rowspan;
 
-    private BigDecimal numberValue;
+    private final Integer colspan;
+
+    private final ExcelType excelType;
 
     private String stringValue;
 
+    private boolean stringValueFlag;
+
+    private BigDecimal numberValue;
+
+    private boolean numberValueFlag;
+
     private Boolean booleanValue;
+
+    private boolean booleanValueFlag;
 
     private LocalDateTime dateValue;
 
+    private boolean dateValueFlag;
 
-    private CellResult() {
+    public CellResult(Cell cell, CellSpan cellSpan, ExcelType excelType
+            , String stringValue, boolean stringValueFlag
+            , BigDecimal numberValue, boolean numberValueFlag
+            , Boolean booleanValue, boolean booleanValueFlag
+            , LocalDateTime dateValue, boolean dateValueFlag) {
+        this.cell = cell;
+        this.rowIndex = cell == null ? -1 : cell.getRowIndex();
+        this.columnIndex = cell == null ? -1 : cell.getColumnIndex();
+        this.rowspan = cellSpan.getRowspan();
+        this.colspan = cellSpan.getColspan();
+        this.excelType = excelType;
+        this.stringValue = stringValue;
+        this.stringValueFlag = stringValueFlag;
+        this.numberValue = numberValue;
+        this.numberValueFlag = numberValueFlag;
+        this.booleanValue = booleanValue;
+        this.booleanValueFlag = booleanValueFlag;
+        this.dateValue = dateValue;
+        this.dateValueFlag = dateValueFlag;
     }
 
     public static CellResult none() {
-        CellResult cellResult = new CellResult();
-        cellResult.rowIndex = -1;
-        cellResult.columnIndex = -1;
-        cellResult.rowspan = -1;
-        cellResult.colspan = -1;
-        cellResult.excelType = ExcelType.NONE;
-
-        return cellResult;
+        return new CellResult(null, CellSpan.NONE_CELL_SPAN, ExcelType.NONE
+                , null, true
+                , null, true
+                , null, true
+                , null, true);
     }
 
     public static CellResult blank(Cell cell, CellSpan cellSpan) {
-        CellResult cellResult = new CellResult();
-        cellResult.setCell(cell, cellSpan);
-        cellResult.excelType = ExcelType.BLANK;
+        return new CellResult(cell, cellSpan, ExcelType.BLANK
+                , null, true
+                , null, true
+                , null, true
+                , null, true);
 
-        return cellResult;
     }
 
-    public static CellResult numberValue(Cell cell, CellSpan cellSpan, BigDecimal value) {
-        CellResult cellResult = new CellResult();
-        cellResult.setCell(cell, cellSpan);
-        cellResult.numberValue = value;
-        cellResult.excelType = ExcelType.NUMERIC;
-        return cellResult;
+    public static CellResult valueOf(Cell cell, CellSpan cellSpan, double numberValue) {
+        return new CellResult(cell, cellSpan, ExcelType.NUMERIC
+                , null, false
+                , BigDecimal.valueOf(numberValue), true
+                , null, false
+                , null, false);
     }
 
-    public static CellResult stringValue(Cell cell, CellSpan cellSpan, String value) {
-        CellResult cellResult = new CellResult();
-        cellResult.setCell(cell, cellSpan);
-        cellResult.stringValue = value;
-        cellResult.excelType = ExcelType.STRING;
-        return cellResult;
+    public static CellResult valueOf(Cell cell, CellSpan cellSpan, boolean booleanValue) {
+        return new CellResult(cell, cellSpan, ExcelType.BOOLEAN
+                , null, false
+                , null, false
+                , booleanValue, true
+                , null, false);
     }
 
-    public static CellResult booleanValue(Cell cell, CellSpan cellSpan, Boolean value) {
-        CellResult cellResult = new CellResult();
-        cellResult.setCell(cell, cellSpan);
-        cellResult.booleanValue = value;
-        cellResult.excelType = ExcelType.BOOLEAN;
-        return cellResult;
-    }
-
-    public static CellResult dataValue(Cell cell, CellSpan cellSpan, LocalDateTime value) {
-        CellResult cellResult = new CellResult();
-        cellResult.setCell(cell, cellSpan);
-        cellResult.dateValue = value;
-        cellResult.excelType = ExcelType.DATE;
-        return cellResult;
-    }
-
-    private void setCell(Cell cell, CellSpan cellSpan) {
-        this.cell = cell;
-        this.rowIndex = cell.getRowIndex();
-        this.columnIndex = cell.getColumnIndex();
-        this.rowspan = cellSpan.getRowspan();
-        this.colspan = cellSpan.getColspan();
+    public static CellResult valueOf(Cell cell, CellSpan cellSpan, String stringValue) {
+        return new CellResult(cell, cellSpan, ExcelType.STRING
+                , stringValue, true
+                , null, false
+                , null, false
+                , null, false);
     }
 
     /**
@@ -130,4 +144,100 @@ public class CellResult {
     }
 
 
+    public String getStringValue() {
+        if (!stringValueFlag) {
+            stringValue = this.recalculateStringValue();
+        }
+        return stringValue;
+    }
+
+    public BigDecimal getNumberValue() {
+        if (!numberValueFlag) {
+            numberValue = this.recalculateNumberValue();
+        }
+        return numberValue;
+    }
+
+
+    public Boolean getBooleanValue() {
+        if (!booleanValueFlag) {
+            booleanValue = this.recalculateBooleanValue();
+        }
+        return booleanValue;
+    }
+
+    public LocalDateTime getDateValue() {
+        if (!dateValueFlag) {
+            dateValue = this.recalculateDateValue();
+        }
+        return dateValue;
+    }
+
+    private String recalculateStringValue() {
+        String str;
+        switch (excelType) {
+            case NUMERIC:
+                str = numberValue.toString();
+                break;
+            case BOOLEAN:
+                str = Boolean.toString(booleanValue);
+                break;
+            default:
+                str = null;
+                break;
+        }
+        stringValueFlag = true;
+        return str;
+    }
+
+    private BigDecimal recalculateNumberValue() {
+        BigDecimal bigDecimal;
+        switch (excelType) {
+            case STRING:
+                bigDecimal = stringValue.trim().length() == 0 ? null : new BigDecimal(stringValue);
+                break;
+            case BOOLEAN:
+                bigDecimal = booleanValue ? TRUE_VALUE_BIG_DECIMAL : FALSE_VALUE_BIG_DECIMAL;
+                break;
+            default:
+                bigDecimal = null;
+                break;
+        }
+        numberValueFlag = true;
+        return bigDecimal;
+    }
+
+    private Boolean recalculateBooleanValue() {
+        Boolean booleanValue;
+        switch (excelType) {
+            case NUMERIC:
+                booleanValue = TRUE_VALUE_BIG_DECIMAL.compareTo(numberValue) == 0;
+                break;
+            case STRING:
+                booleanValue = Boolean.valueOf(stringValue);
+                break;
+            default:
+                booleanValue = null;
+                break;
+        }
+        booleanValueFlag = true;
+        return booleanValue;
+    }
+
+    private LocalDateTime recalculateDateValue() {
+        LocalDateTime localDateTime;
+        switch (excelType) {
+            case NUMERIC:
+                localDateTime = cell.getLocalDateTimeCellValue();
+                break;
+            case STRING:
+                localDateTime = ExcelDateParseUtils.parseDateTime(stringValue);
+                break;
+            default:
+                localDateTime = null;
+                break;
+        }
+        dateValueFlag = true;
+        return localDateTime;
+    }
 }

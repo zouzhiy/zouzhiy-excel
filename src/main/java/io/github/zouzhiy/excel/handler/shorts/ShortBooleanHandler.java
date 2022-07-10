@@ -14,27 +14,17 @@
 package io.github.zouzhiy.excel.handler.shorts;
 
 import io.github.zouzhiy.excel.context.RowContext;
-import io.github.zouzhiy.excel.context.SheetContext;
 import io.github.zouzhiy.excel.enums.ExcelType;
-import io.github.zouzhiy.excel.handler.AbstractCellHandler;
 import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
-import io.github.zouzhiy.excel.metadata.result.CellResult;
 import org.apache.poi.ss.usermodel.Cell;
 
 /**
  * @author zouzhiy
  * @since 2022/7/2
  */
-public class ShortBooleanHandler extends AbstractCellHandler<Short> {
+public class ShortBooleanHandler extends AbstractShortCellHandler {
 
-    private final static Short FALSE_VALUE = 0;
     private final static Short TRUE_VALUE = 1;
-
-    @Override
-    protected Short getCellValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResult firstCellResult) {
-        Boolean value = firstCellResult.getBooleanValue();
-        return value ? TRUE_VALUE : FALSE_VALUE;
-    }
 
     @Override
     protected void setCellValue(RowContext rowContext, ExcelFieldConfig excelFieldConfig, Cell cell, Short value) {

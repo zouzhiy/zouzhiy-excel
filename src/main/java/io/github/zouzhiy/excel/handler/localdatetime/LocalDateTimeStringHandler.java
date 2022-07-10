@@ -14,41 +14,30 @@
 package io.github.zouzhiy.excel.handler.localdatetime;
 
 import io.github.zouzhiy.excel.context.RowContext;
-import io.github.zouzhiy.excel.context.SheetContext;
-import io.github.zouzhiy.excel.handler.AbstractWriteStringCellHandler;
+import io.github.zouzhiy.excel.enums.ExcelType;
 import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
-import io.github.zouzhiy.excel.metadata.result.CellResult;
-import io.github.zouzhiy.excel.utils.ExcelDateUtils;
+import io.github.zouzhiy.excel.utils.ExcelDateFormatUtils;
+import org.apache.poi.ss.usermodel.Cell;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author zouzhiy
  * @since 2022/7/2
  */
-public class LocalDateTimeStringHandler extends AbstractWriteStringCellHandler<LocalDateTime> {
+public class LocalDateTimeStringHandler extends AbstractLocalDateTimeCellHandler {
 
-    private final Map<String, DateTimeFormatter> dateTimeFormatterMap = new ConcurrentHashMap<>(16);
 
     @Override
-    protected LocalDateTime getCellValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResult firstCellResult) {
-        String value = firstCellResult.getStringValue();
-        return ExcelDateUtils.parseDateTime(value, this.getJavaFormat(excelFieldConfig));
+    protected void setCellValue(RowContext rowContext, ExcelFieldConfig excelFieldConfig, Cell cell, LocalDateTime value) {
+        String javaFormat = this.getJavaFormat(excelFieldConfig);
+        String strValue = ExcelDateFormatUtils.format(value, javaFormat);
+        cell.setCellValue(strValue);
     }
 
-
     @Override
-    protected String format(RowContext rowContext, ExcelFieldConfig excelFieldConfig, LocalDateTime value) {
-        String javaFormat = this.getJavaFormat(excelFieldConfig);
-        if (javaFormat.length() > 0) {
-            DateTimeFormatter dateTimeFormatter = dateTimeFormatterMap.computeIfAbsent(javaFormat, DateTimeFormatter::ofPattern);
-            return value.format(dateTimeFormatter);
-        } else {
-            return value.toString();
-        }
+    public ExcelType getExcelType() {
+        return ExcelType.STRING;
     }
 
     @Override

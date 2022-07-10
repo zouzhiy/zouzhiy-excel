@@ -19,12 +19,10 @@ import io.github.zouzhiy.excel.enums.ExcelType;
 import io.github.zouzhiy.excel.handler.AbstractCellHandler;
 import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
 import io.github.zouzhiy.excel.metadata.result.CellResult;
+import io.github.zouzhiy.excel.utils.ExcelNumberUtils;
 import org.apache.poi.ss.usermodel.Cell;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author zouzhiy
@@ -32,18 +30,11 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class StringNumberHandler extends AbstractCellHandler<String> {
 
-    private final Map<String, DecimalFormat> decimalFormatMap = new ConcurrentHashMap<>(16);
-
     @Override
     protected String getCellValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResult firstCellResult) {
-        BigDecimal numberValue = firstCellResult.getNumberValue();
+        BigDecimal bigDecimal = firstCellResult.getNumberValue();
         String javaFormat = this.getJavaFormat(excelFieldConfig);
-        if (javaFormat.length() > 0) {
-            DecimalFormat decimalFormat = decimalFormatMap.computeIfAbsent(javaFormat, DecimalFormat::new);
-            return decimalFormat.format(numberValue);
-        } else {
-            return numberValue.toString();
-        }
+        return ExcelNumberUtils.format(bigDecimal, javaFormat);
     }
 
     @Override
@@ -56,10 +47,6 @@ public class StringNumberHandler extends AbstractCellHandler<String> {
         return ExcelType.NUMERIC;
     }
 
-    @Override
-    public String getDefaultJavaFormat() {
-        return "0.00";
-    }
 
     @Override
     public String getDefaultExcelFormat() {

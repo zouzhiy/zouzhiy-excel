@@ -22,8 +22,6 @@ import io.github.zouzhiy.excel.metadata.result.CellResultSet;
 import io.github.zouzhiy.excel.read.CellDataRead;
 import org.apache.poi.ss.usermodel.*;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,22 +83,16 @@ public class DefaultCellDataRead implements CellDataRead {
         CellType cellTye = cell.getCellType();
         switch (cellTye) {
             case NUMERIC:
-                if (DateUtil.isCellDateFormatted(cell)) {
-                    LocalDateTime localDateTime = cell.getLocalDateTimeCellValue();
-                    cellResult = CellResult.dataValue(cell, cellSpan, localDateTime);
-                } else {
-                    double numericCellValue = cell.getNumericCellValue();
-                    BigDecimal bigDecimal = new BigDecimal(String.valueOf(numericCellValue));
-                    cellResult = CellResult.numberValue(cell, cellSpan, bigDecimal);
-                }
+                double numericCellValue = cell.getNumericCellValue();
+                cellResult = CellResult.valueOf(cell, cellSpan, numericCellValue);
                 break;
             case STRING:
                 String stringCellValue = cell.getStringCellValue();
-                cellResult = CellResult.stringValue(cell, cellSpan, stringCellValue);
+                cellResult = CellResult.valueOf(cell, cellSpan, stringCellValue);
                 break;
             case BOOLEAN:
                 boolean booleanCellValue = cell.getBooleanCellValue();
-                cellResult = CellResult.booleanValue(cell, cellSpan, booleanCellValue);
+                cellResult = CellResult.valueOf(cell, cellSpan, booleanCellValue);
                 break;
             case FORMULA:
                 cellResult = formatCellValue(formulaEvaluator, cell, cellSpan);
@@ -127,22 +119,16 @@ public class DefaultCellDataRead implements CellDataRead {
         CellType cellValueCellType = cellValue.getCellType();
         switch (cellValueCellType) {
             case NUMERIC:
-                if (DateUtil.isCellDateFormatted(cell)) {
-                    LocalDateTime localDateTime = cell.getLocalDateTimeCellValue();
-                    cellResult = CellResult.dataValue(cell, cellSpan, localDateTime);
-                } else {
-                    double numericCellValue = cell.getNumericCellValue();
-                    BigDecimal bigDecimal = new BigDecimal(String.valueOf(numericCellValue));
-                    cellResult = CellResult.numberValue(cell, cellSpan, bigDecimal);
-                }
+                double numericCellValue = cellValue.getNumberValue();
+                cellResult = CellResult.valueOf(cell, cellSpan, numericCellValue);
                 break;
             case STRING:
                 String stringCellValue = cellValue.getStringValue();
-                cellResult = CellResult.stringValue(cell, cellSpan, stringCellValue);
+                cellResult = CellResult.valueOf(cell, cellSpan, stringCellValue);
                 break;
             case BOOLEAN:
                 boolean booleanCellValue = cellValue.getBooleanValue();
-                cellResult = CellResult.booleanValue(cell, cellSpan, booleanCellValue);
+                cellResult = CellResult.valueOf(cell, cellSpan, booleanCellValue);
                 break;
             case BLANK:
             case _NONE:

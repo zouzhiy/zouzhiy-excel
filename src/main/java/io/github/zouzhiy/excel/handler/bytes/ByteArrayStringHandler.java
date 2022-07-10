@@ -15,9 +15,11 @@ package io.github.zouzhiy.excel.handler.bytes;
 
 import io.github.zouzhiy.excel.context.RowContext;
 import io.github.zouzhiy.excel.context.SheetContext;
-import io.github.zouzhiy.excel.handler.AbstractWriteStringCellHandler;
+import io.github.zouzhiy.excel.enums.ExcelType;
+import io.github.zouzhiy.excel.handler.AbstractCellHandler;
 import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
 import io.github.zouzhiy.excel.metadata.result.CellResult;
+import org.apache.poi.ss.usermodel.Cell;
 
 import java.nio.charset.StandardCharsets;
 
@@ -25,7 +27,7 @@ import java.nio.charset.StandardCharsets;
  * @author zouzhiy
  * @since 2022/7/2
  */
-public class ByteArrayStringHandler extends AbstractWriteStringCellHandler<byte[]> {
+public class ByteArrayStringHandler extends AbstractCellHandler<byte[]> {
 
     @Override
     protected byte[] getCellValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResult firstCellResult) {
@@ -34,8 +36,12 @@ public class ByteArrayStringHandler extends AbstractWriteStringCellHandler<byte[
     }
 
     @Override
-    protected String format(RowContext rowContext, ExcelFieldConfig excelFieldConfig, byte[] value) {
-        return new String(value, StandardCharsets.UTF_8);
+    protected void setCellValue(RowContext rowContext, ExcelFieldConfig excelFieldConfig, Cell cell, byte[] value) {
+        cell.setCellValue(new String(value, StandardCharsets.UTF_8));
     }
 
+    @Override
+    public ExcelType getExcelType() {
+        return ExcelType.STRING;
+    }
 }

@@ -14,31 +14,18 @@
 package io.github.zouzhiy.excel.handler.date;
 
 import io.github.zouzhiy.excel.context.RowContext;
-import io.github.zouzhiy.excel.context.SheetContext;
 import io.github.zouzhiy.excel.enums.ExcelType;
-import io.github.zouzhiy.excel.handler.AbstractCellHandler;
 import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
-import io.github.zouzhiy.excel.metadata.result.CellResult;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 /**
  * @author zouzhiy
  * @since 2022/7/2
  */
-public class DateNumberHandler extends AbstractCellHandler<Date> {
-
-    private final static BigDecimal FALSE_VALUE = BigDecimal.ZERO;
-    private final static BigDecimal TRUE_VALUE = BigDecimal.ONE;
-
-    @Override
-    protected Date getCellValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResult firstCellResult) {
-        BigDecimal numberValue = firstCellResult.getNumberValue();
-        return DateUtil.getJavaDate(numberValue.doubleValue());
-    }
+public class DateNumberHandler extends AbstractDateCellHandler {
 
     @Override
     protected void setCellValue(RowContext rowContext, ExcelFieldConfig excelFieldConfig, Cell cell, Date value) {

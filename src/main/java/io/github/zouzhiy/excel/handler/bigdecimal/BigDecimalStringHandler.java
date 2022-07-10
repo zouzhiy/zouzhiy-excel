@@ -13,10 +13,11 @@
  */
 package io.github.zouzhiy.excel.handler.bigdecimal;
 
-import io.github.zouzhiy.excel.context.SheetContext;
-import io.github.zouzhiy.excel.handler.AbstractNumberWriteStringCellHandler;
+import io.github.zouzhiy.excel.context.RowContext;
+import io.github.zouzhiy.excel.enums.ExcelType;
 import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
-import io.github.zouzhiy.excel.metadata.result.CellResult;
+import io.github.zouzhiy.excel.utils.ExcelNumberUtils;
+import org.apache.poi.ss.usermodel.Cell;
 
 import java.math.BigDecimal;
 
@@ -24,12 +25,19 @@ import java.math.BigDecimal;
  * @author zouzhiy
  * @since 2022/7/2
  */
-public class BigDecimalStringHandler extends AbstractNumberWriteStringCellHandler<BigDecimal> {
+public class BigDecimalStringHandler extends AbstractBigDecimalCellHandler {
 
     @Override
-    protected BigDecimal getCellValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResult firstCellResult) {
-        String value = firstCellResult.getStringValue();
-        return new BigDecimal(value);
+    protected void setCellValue(RowContext rowContext, ExcelFieldConfig excelFieldConfig, Cell cell, BigDecimal value) {
+        String javaFormat = this.getJavaFormat(excelFieldConfig);
+        String strValue = ExcelNumberUtils.format(value, javaFormat);
+        cell.setCellValue(strValue);
     }
+
+    @Override
+    public ExcelType getExcelType() {
+        return ExcelType.STRING;
+    }
+
 
 }

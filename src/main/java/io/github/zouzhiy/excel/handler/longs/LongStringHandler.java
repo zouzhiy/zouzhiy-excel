@@ -13,21 +13,27 @@
  */
 package io.github.zouzhiy.excel.handler.longs;
 
-import io.github.zouzhiy.excel.context.SheetContext;
-import io.github.zouzhiy.excel.handler.AbstractNumberWriteStringCellHandler;
+import io.github.zouzhiy.excel.context.RowContext;
+import io.github.zouzhiy.excel.enums.ExcelType;
 import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
-import io.github.zouzhiy.excel.metadata.result.CellResult;
+import io.github.zouzhiy.excel.utils.ExcelNumberUtils;
+import org.apache.poi.ss.usermodel.Cell;
 
 /**
  * @author zouzhiy
  * @since 2022/7/2
  */
-public class LongStringHandler extends AbstractNumberWriteStringCellHandler<Long> {
+public class LongStringHandler extends AbstractLongCellHandler {
 
     @Override
-    protected Long getCellValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResult firstCellResult) {
-        String value = firstCellResult.getStringValue();
-        return Long.parseLong(value);
+    protected void setCellValue(RowContext rowContext, ExcelFieldConfig excelFieldConfig, Cell cell, Long value) {
+        String javaFormat = this.getJavaFormat(excelFieldConfig);
+        String strValue = ExcelNumberUtils.format(value, javaFormat);
+        cell.setCellValue(strValue);
     }
 
+    @Override
+    public ExcelType getExcelType() {
+        return ExcelType.STRING;
+    }
 }

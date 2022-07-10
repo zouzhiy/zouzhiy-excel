@@ -14,27 +14,18 @@
 package io.github.zouzhiy.excel.handler.doubles;
 
 import io.github.zouzhiy.excel.context.RowContext;
-import io.github.zouzhiy.excel.context.SheetContext;
 import io.github.zouzhiy.excel.enums.ExcelType;
-import io.github.zouzhiy.excel.handler.AbstractCellHandler;
 import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
-import io.github.zouzhiy.excel.metadata.result.CellResult;
 import org.apache.poi.ss.usermodel.Cell;
 
 /**
  * @author zouzhiy
  * @since 2022/7/2
  */
-public class DoubleBooleanHandler extends AbstractCellHandler<Double> {
+public class DoubleBooleanHandler extends AbstractDoubleCellHandler {
 
-    private final static Double FALSE_VALUE = 0d;
     private final static Double TRUE_VALUE = 1d;
 
-    @Override
-    protected Double getCellValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResult firstCellResult) {
-        Boolean value = firstCellResult.getBooleanValue();
-        return value ? TRUE_VALUE : FALSE_VALUE;
-    }
 
     @Override
     protected void setCellValue(RowContext rowContext, ExcelFieldConfig excelFieldConfig, Cell cell, Double value) {

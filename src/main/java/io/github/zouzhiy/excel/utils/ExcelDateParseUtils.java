@@ -30,7 +30,7 @@ import static java.time.temporal.ChronoField.MONTH_OF_YEAR;
  * @author zouzhiy
  * @since 2022/7/2
  */
-public class ExcelDateUtils {
+public class ExcelDateParseUtils {
 
     private final static Map<String, DateTimeFormatter> DATE_TIME_FORMATTER_MAP = new ConcurrentHashMap<>(16);
 
@@ -40,7 +40,7 @@ public class ExcelDateUtils {
             , "yyyy.MM.dd HH:mm:ss", "yyyy.MM.dd HH:mm", "yyyy.MM.dd HH", "yyyy.MM.dd", "yyyy.MM"
             , "yyyyMMdd HHmmss", "yyyyMMdd HHmm", "yyyyMMdd HH", "yyyyMMdd", "yyyyMM"
             , "yyyy年MM月dd日 HH时mm分ss秒", "yyyy年MM月dd日 HH时mm分", "yyyy年MM月dd日 HH时", "yyyy年MM月dd日", "yyyy年MM月"
-            , "yyyy"
+            , "yyyy", "HH:mm:ss"
 
     };
 

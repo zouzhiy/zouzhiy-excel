@@ -14,29 +14,15 @@
 package io.github.zouzhiy.excel.handler.bytes;
 
 import io.github.zouzhiy.excel.context.RowContext;
-import io.github.zouzhiy.excel.context.SheetContext;
 import io.github.zouzhiy.excel.enums.ExcelType;
-import io.github.zouzhiy.excel.handler.AbstractCellHandler;
 import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
-import io.github.zouzhiy.excel.metadata.result.CellResult;
 import org.apache.poi.ss.usermodel.Cell;
-
-import java.math.BigDecimal;
 
 /**
  * @author zouzhiy
  * @since 2022/7/2
  */
-public class ByteNumberHandler extends AbstractCellHandler<Byte> {
-
-    private final static BigDecimal FALSE_VALUE = BigDecimal.ZERO;
-    private final static BigDecimal TRUE_VALUE = BigDecimal.ONE;
-
-    @Override
-    protected Byte getCellValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResult firstCellResult) {
-        BigDecimal numberValue = firstCellResult.getNumberValue();
-        return numberValue.byteValue();
-    }
+public class ByteNumberHandler extends AbstractByteCellHandler {
 
     @Override
     protected void setCellValue(RowContext rowContext, ExcelFieldConfig excelFieldConfig, Cell cell, Byte value) {

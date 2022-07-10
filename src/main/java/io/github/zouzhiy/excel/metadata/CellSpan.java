@@ -41,6 +41,8 @@ public class CellSpan {
         }
     };
 
+    public final static CellSpan NONE_CELL_SPAN = CellSpan.newInstance(-1, -1, -1, -1);
+
     /**
      * 横跨的行数
      */

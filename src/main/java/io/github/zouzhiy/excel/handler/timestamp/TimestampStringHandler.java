@@ -14,14 +14,12 @@
 package io.github.zouzhiy.excel.handler.timestamp;
 
 import io.github.zouzhiy.excel.context.RowContext;
-import io.github.zouzhiy.excel.context.SheetContext;
-import io.github.zouzhiy.excel.handler.AbstractWriteStringCellHandler;
+import io.github.zouzhiy.excel.enums.ExcelType;
 import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
-import io.github.zouzhiy.excel.metadata.result.CellResult;
-import io.github.zouzhiy.excel.utils.ExcelDateUtils;
+import io.github.zouzhiy.excel.utils.ExcelDateFormatUtils;
+import org.apache.poi.ss.usermodel.Cell;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -30,26 +28,14 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author zouzhiy
  * @since 2022/7/2
  */
-public class TimestampStringHandler extends AbstractWriteStringCellHandler<Timestamp> {
+public class TimestampStringHandler extends AbstractTimestampCellHandler {
 
     private final Map<String, DateTimeFormatter> dateTimeFormatterMap = new ConcurrentHashMap<>(16);
 
-    @Override
-    protected Timestamp getCellValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResult firstCellResult) {
-        String value = firstCellResult.getStringValue();
-        LocalDateTime localDateTime = ExcelDateUtils.parseDateTime(value, this.getJavaFormat(excelFieldConfig));
-        return Timestamp.valueOf(localDateTime);
-    }
 
     @Override
-    protected String format(RowContext rowContext, ExcelFieldConfig excelFieldConfig, Timestamp value) {
-        String javaFormat = this.getJavaFormat(excelFieldConfig);
-        if (javaFormat.length() > 0) {
-            DateTimeFormatter dateTimeFormatter = dateTimeFormatterMap.computeIfAbsent(javaFormat, DateTimeFormatter::ofPattern);
-            return value.toLocalDateTime().format(dateTimeFormatter);
-        } else {
-            return value.toString();
-        }
+    public ExcelType getExcelType() {
+        return ExcelType.STRING;
     }
 
     @Override
@@ -57,4 +43,10 @@ public class TimestampStringHandler extends AbstractWriteStringCellHandler<Times
         return "yyyy-MM-dd HH:mm:ss";
     }
 
+    @Override
+    protected void setCellValue(RowContext rowContext, ExcelFieldConfig excelFieldConfig, Cell cell, Timestamp value) {
+        String javaFormat = this.getJavaFormat(excelFieldConfig);
+        String strValue = ExcelDateFormatUtils.format(value, javaFormat);
+        cell.setCellValue(strValue);
+    }
 }

@@ -15,10 +15,12 @@ package io.github.zouzhiy.excel.old.example.example3.handler;
 
 import io.github.zouzhiy.excel.context.RowContext;
 import io.github.zouzhiy.excel.context.SheetContext;
-import io.github.zouzhiy.excel.handler.AbstractWriteStringCellHandler;
+import io.github.zouzhiy.excel.enums.ExcelType;
+import io.github.zouzhiy.excel.handler.AbstractCellHandler;
 import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
 import io.github.zouzhiy.excel.metadata.result.CellResult;
 import io.github.zouzhiy.excel.old.example.example3.matedata.Item;
+import org.apache.poi.ss.usermodel.Cell;
 
 import java.util.function.Supplier;
 
@@ -26,7 +28,7 @@ import java.util.function.Supplier;
  * @author zouzhiy
  * @since 2022/7/4
  */
-public class ItemStringHandler extends AbstractWriteStringCellHandler<Item> {
+public class ItemStringHandler extends AbstractCellHandler<Item> {
 
     @Override
     protected Item getCellValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResult firstCellResult) {
@@ -46,9 +48,14 @@ public class ItemStringHandler extends AbstractWriteStringCellHandler<Item> {
         }).get());
     }
 
+    @Override
+    protected void setCellValue(RowContext rowContext, ExcelFieldConfig excelFieldConfig, Cell cell, Item value) {
+        cell.setCellValue(String.format("%s,%s", value.getTitle() == null ? "" : value.getTitle(), value.getName() == null ? "" : value.getName()));
+    }
+
 
     @Override
-    protected String format(RowContext rowContext, ExcelFieldConfig excelFieldConfig, Item value) {
-        return String.format("%s,%s", value.getTitle() == null ? "" : value.getTitle(), value.getName() == null ? "" : value.getName());
+    public ExcelType getExcelType() {
+        return ExcelType.STRING;
     }
 }

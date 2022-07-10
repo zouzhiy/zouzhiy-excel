@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
  * @author zouzhiy
  * @since 2022/7/9
  */
-class ExcelDateUtilsTest {
+class ExcelDateParseUtilsTest {
 
     @Test
     void parseDateTime1() {
@@ -21,11 +21,11 @@ class ExcelDateUtilsTest {
         String str4 = "20220708 193030";
         String str5 = "2022年07月08日 19时30分30秒";
 
-        LocalDateTime localDateTime1 = ExcelDateUtils.parseDateTime(str1);
-        LocalDateTime localDateTime2 = ExcelDateUtils.parseDateTime(str2);
-        LocalDateTime localDateTime3 = ExcelDateUtils.parseDateTime(str3);
-        LocalDateTime localDateTime4 = ExcelDateUtils.parseDateTime(str4);
-        LocalDateTime localDateTime5 = ExcelDateUtils.parseDateTime(str5);
+        LocalDateTime localDateTime1 = ExcelDateParseUtils.parseDateTime(str1);
+        LocalDateTime localDateTime2 = ExcelDateParseUtils.parseDateTime(str2);
+        LocalDateTime localDateTime3 = ExcelDateParseUtils.parseDateTime(str3);
+        LocalDateTime localDateTime4 = ExcelDateParseUtils.parseDateTime(str4);
+        LocalDateTime localDateTime5 = ExcelDateParseUtils.parseDateTime(str5);
 
         Assertions.assertEquals(localDateTime, localDateTime1);
         Assertions.assertEquals(localDateTime, localDateTime2);
@@ -39,7 +39,7 @@ class ExcelDateUtilsTest {
         String str9 = "2022-07--08 19:30:30";
 
         try {
-            ExcelDateUtils.parseDateTime(str6);
+            ExcelDateParseUtils.parseDateTime(str6);
             assert false;
         } catch (ExcelException e) {
             assert true;
@@ -48,7 +48,7 @@ class ExcelDateUtilsTest {
         }
 
         try {
-            ExcelDateUtils.parseDateTime(str7);
+            ExcelDateParseUtils.parseDateTime(str7);
             assert false;
         } catch (ExcelException e) {
             assert true;
@@ -57,7 +57,7 @@ class ExcelDateUtilsTest {
         }
 
         try {
-            ExcelDateUtils.parseDateTime(str8);
+            ExcelDateParseUtils.parseDateTime(str8);
             assert false;
         } catch (ExcelException e) {
             assert true;
@@ -66,7 +66,7 @@ class ExcelDateUtilsTest {
         }
 
         try {
-            ExcelDateUtils.parseDateTime(str9);
+            ExcelDateParseUtils.parseDateTime(str9);
             assert false;
         } catch (ExcelException e) {
             assert true;
@@ -85,11 +85,11 @@ class ExcelDateUtilsTest {
         String str4 = "20220708 1930";
         String str5 = "2022年07月08日 19时30分";
 
-        LocalDateTime localDateTime1 = ExcelDateUtils.parseDateTime(str1);
-        LocalDateTime localDateTime2 = ExcelDateUtils.parseDateTime(str2);
-        LocalDateTime localDateTime3 = ExcelDateUtils.parseDateTime(str3);
-        LocalDateTime localDateTime4 = ExcelDateUtils.parseDateTime(str4);
-        LocalDateTime localDateTime5 = ExcelDateUtils.parseDateTime(str5);
+        LocalDateTime localDateTime1 = ExcelDateParseUtils.parseDateTime(str1);
+        LocalDateTime localDateTime2 = ExcelDateParseUtils.parseDateTime(str2);
+        LocalDateTime localDateTime3 = ExcelDateParseUtils.parseDateTime(str3);
+        LocalDateTime localDateTime4 = ExcelDateParseUtils.parseDateTime(str4);
+        LocalDateTime localDateTime5 = ExcelDateParseUtils.parseDateTime(str5);
 
         Assertions.assertEquals(localDateTime, localDateTime1);
         Assertions.assertEquals(localDateTime, localDateTime2);
@@ -107,11 +107,11 @@ class ExcelDateUtilsTest {
         String str4 = "20220708 19";
         String str5 = "2022年07月08日 19时";
 
-        LocalDateTime localDateTime1 = ExcelDateUtils.parseDateTime(str1);
-        LocalDateTime localDateTime2 = ExcelDateUtils.parseDateTime(str2);
-        LocalDateTime localDateTime3 = ExcelDateUtils.parseDateTime(str3);
-        LocalDateTime localDateTime4 = ExcelDateUtils.parseDateTime(str4);
-        LocalDateTime localDateTime5 = ExcelDateUtils.parseDateTime(str5);
+        LocalDateTime localDateTime1 = ExcelDateParseUtils.parseDateTime(str1);
+        LocalDateTime localDateTime2 = ExcelDateParseUtils.parseDateTime(str2);
+        LocalDateTime localDateTime3 = ExcelDateParseUtils.parseDateTime(str3);
+        LocalDateTime localDateTime4 = ExcelDateParseUtils.parseDateTime(str4);
+        LocalDateTime localDateTime5 = ExcelDateParseUtils.parseDateTime(str5);
 
         Assertions.assertEquals(localDateTime, localDateTime1);
         Assertions.assertEquals(localDateTime, localDateTime2);
@@ -129,11 +129,11 @@ class ExcelDateUtilsTest {
         String str4 = "20220708 ";
         String str5 = "2022年07月08日 ";
 
-        LocalDateTime localDateTime1 = ExcelDateUtils.parseDateTime(str1);
-        LocalDateTime localDateTime2 = ExcelDateUtils.parseDateTime(str2);
-        LocalDateTime localDateTime3 = ExcelDateUtils.parseDateTime(str3);
-        LocalDateTime localDateTime4 = ExcelDateUtils.parseDateTime(str4);
-        LocalDateTime localDateTime5 = ExcelDateUtils.parseDateTime(str5);
+        LocalDateTime localDateTime1 = ExcelDateParseUtils.parseDateTime(str1);
+        LocalDateTime localDateTime2 = ExcelDateParseUtils.parseDateTime(str2);
+        LocalDateTime localDateTime3 = ExcelDateParseUtils.parseDateTime(str3);
+        LocalDateTime localDateTime4 = ExcelDateParseUtils.parseDateTime(str4);
+        LocalDateTime localDateTime5 = ExcelDateParseUtils.parseDateTime(str5);
 
         Assertions.assertEquals(localDateTime, localDateTime1);
         Assertions.assertEquals(localDateTime, localDateTime2);
@@ -151,11 +151,11 @@ class ExcelDateUtilsTest {
         String str4 = "202207 ";
         String str5 = "2022年07月 ";
 
-        LocalDateTime localDateTime1 = ExcelDateUtils.parseDateTime(str1);
-        LocalDateTime localDateTime2 = ExcelDateUtils.parseDateTime(str2);
-        LocalDateTime localDateTime3 = ExcelDateUtils.parseDateTime(str3);
-        LocalDateTime localDateTime4 = ExcelDateUtils.parseDateTime(str4);
-        LocalDateTime localDateTime5 = ExcelDateUtils.parseDateTime(str5);
+        LocalDateTime localDateTime1 = ExcelDateParseUtils.parseDateTime(str1);
+        LocalDateTime localDateTime2 = ExcelDateParseUtils.parseDateTime(str2);
+        LocalDateTime localDateTime3 = ExcelDateParseUtils.parseDateTime(str3);
+        LocalDateTime localDateTime4 = ExcelDateParseUtils.parseDateTime(str4);
+        LocalDateTime localDateTime5 = ExcelDateParseUtils.parseDateTime(str5);
 
         Assertions.assertEquals(localDateTime, localDateTime1);
         Assertions.assertEquals(localDateTime, localDateTime2);
@@ -169,7 +169,7 @@ class ExcelDateUtilsTest {
         LocalDateTime localDateTime = LocalDateTime.of(2022, 1, 1, 0, 0, 0);
         String str1 = "2022 ";
 
-        LocalDateTime localDateTime1 = ExcelDateUtils.parseDateTime(str1);
+        LocalDateTime localDateTime1 = ExcelDateParseUtils.parseDateTime(str1);
 
         Assertions.assertEquals(localDateTime, localDateTime1);
 
@@ -180,15 +180,15 @@ class ExcelDateUtilsTest {
         LocalDateTime localDateTime = LocalDateTime.of(2022, 7, 8, 19, 30, 22);
         String str1 = "2022-07-08 19:30:22";
 
-        LocalDateTime localDateTime1 = ExcelDateUtils.parseDateTime(str1, "");
-        LocalDateTime localDateTime2 = ExcelDateUtils.parseDateTime(str1, "yyyy-MM-dd HH:mm:ss");
+        LocalDateTime localDateTime1 = ExcelDateParseUtils.parseDateTime(str1, "");
+        LocalDateTime localDateTime2 = ExcelDateParseUtils.parseDateTime(str1, "yyyy-MM-dd HH:mm:ss");
 
         Assertions.assertEquals(localDateTime, localDateTime1);
 
         Assertions.assertEquals(localDateTime, localDateTime2);
 
         try {
-            LocalDateTime localDateTime3 = ExcelDateUtils.parseDateTime(str1, "yyyy-MMdd HH:mm:ss");
+            LocalDateTime localDateTime3 = ExcelDateParseUtils.parseDateTime(str1, "yyyy-MMdd HH:mm:ss");
             assert false;
 
         } catch (ExcelException e) {
@@ -205,7 +205,7 @@ class ExcelDateUtilsTest {
 
 
         try {
-            LocalDateTime localDateTime2 = ExcelDateUtils.parseDateTime(str1);
+            LocalDateTime localDateTime2 = ExcelDateParseUtils.parseDateTime(str1);
             assert false;
         } catch (ExcelException e) {
             assert true;

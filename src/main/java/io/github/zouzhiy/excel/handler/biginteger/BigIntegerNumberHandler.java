@@ -14,26 +14,17 @@
 package io.github.zouzhiy.excel.handler.biginteger;
 
 import io.github.zouzhiy.excel.context.RowContext;
-import io.github.zouzhiy.excel.context.SheetContext;
 import io.github.zouzhiy.excel.enums.ExcelType;
-import io.github.zouzhiy.excel.handler.AbstractCellHandler;
 import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
-import io.github.zouzhiy.excel.metadata.result.CellResult;
 import org.apache.poi.ss.usermodel.Cell;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 
 /**
  * @author zouzhiy
  * @since 2022/7/2
  */
-public class BigIntegerNumberHandler extends AbstractCellHandler<BigInteger> {
-    @Override
-    protected BigInteger getCellValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResult firstCellResult) {
-        BigDecimal numberValue = firstCellResult.getNumberValue();
-        return numberValue.toBigInteger();
-    }
+public class BigIntegerNumberHandler extends AbstractBigIntegerCellHandler {
 
     @Override
     protected void setCellValue(RowContext rowContext, ExcelFieldConfig excelFieldConfig, Cell cell, BigInteger value) {

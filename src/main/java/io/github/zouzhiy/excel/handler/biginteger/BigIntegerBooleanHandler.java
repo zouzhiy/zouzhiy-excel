@@ -14,11 +14,8 @@
 package io.github.zouzhiy.excel.handler.biginteger;
 
 import io.github.zouzhiy.excel.context.RowContext;
-import io.github.zouzhiy.excel.context.SheetContext;
 import io.github.zouzhiy.excel.enums.ExcelType;
-import io.github.zouzhiy.excel.handler.AbstractCellHandler;
 import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
-import io.github.zouzhiy.excel.metadata.result.CellResult;
 import org.apache.poi.ss.usermodel.Cell;
 
 import java.math.BigInteger;
@@ -27,16 +24,9 @@ import java.math.BigInteger;
  * @author zouzhiy
  * @since 2022/7/2
  */
-public class BigIntegerBooleanHandler extends AbstractCellHandler<BigInteger> {
+public class BigIntegerBooleanHandler extends AbstractBigIntegerCellHandler {
 
-    private final static BigInteger FALSE_VALUE = BigInteger.ZERO;
     private final static BigInteger TRUE_VALUE = BigInteger.ONE;
-
-    @Override
-    protected BigInteger getCellValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResult firstCellResult) {
-        Boolean value = firstCellResult.getBooleanValue();
-        return value ? TRUE_VALUE : FALSE_VALUE;
-    }
 
     @Override
     protected void setCellValue(RowContext rowContext, ExcelFieldConfig excelFieldConfig, Cell cell, BigInteger value) {

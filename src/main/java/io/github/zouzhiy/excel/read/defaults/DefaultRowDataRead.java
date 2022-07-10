@@ -88,7 +88,13 @@ public class DefaultRowDataRead implements RowDataRead {
         }
         Invoker invoker = metaClass.getSetInvoker(propertyName);
         Class<?> javaType = invoker.getType();
-        CellHandler<?> cellHandler = this.getCellHandler(sheetContext, cellHandlerClazz, javaType, cellResultSet.getExcelType());
+        ExcelType excelType;
+        if (excelFieldConfig.getExcelType().equals(ExcelType.BLANK)) {
+            excelType = cellResultSet.getExcelType();
+        } else {
+            excelType = excelFieldConfig.getExcelType();
+        }
+        CellHandler<?> cellHandler = this.getCellHandler(sheetContext, cellHandlerClazz, javaType, excelType);
 
         Object object = cellHandler.read(sheetContext, excelFieldConfig, cellResultSet);
         try {

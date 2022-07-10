@@ -14,32 +14,18 @@
 package io.github.zouzhiy.excel.handler.calendar;
 
 import io.github.zouzhiy.excel.context.RowContext;
-import io.github.zouzhiy.excel.context.SheetContext;
 import io.github.zouzhiy.excel.enums.ExcelType;
-import io.github.zouzhiy.excel.handler.AbstractCellHandler;
 import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
-import io.github.zouzhiy.excel.metadata.result.CellResult;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
 
-import java.math.BigDecimal;
 import java.util.Calendar;
-import java.util.Date;
 
 /**
  * @author zouzhiy
  * @since 2022/7/2
  */
-public class CalendarNumberHandler extends AbstractCellHandler<Calendar> {
-
-    @Override
-    protected Calendar getCellValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResult firstCellResult) {
-        BigDecimal numberValue = firstCellResult.getNumberValue();
-        Date date = DateUtil.getJavaDate(numberValue.doubleValue());
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        return calendar;
-    }
+public class CalendarNumberHandler extends AbstractCalendarCellHandler {
 
     @Override
     protected void setCellValue(RowContext rowContext, ExcelFieldConfig excelFieldConfig, Cell cell, Calendar value) {

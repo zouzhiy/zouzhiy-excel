@@ -19,12 +19,11 @@ import io.github.zouzhiy.excel.enums.ExcelType;
 import io.github.zouzhiy.excel.handler.AbstractCellHandler;
 import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
 import io.github.zouzhiy.excel.metadata.result.CellResult;
+import io.github.zouzhiy.excel.utils.ExcelDateFormatUtils;
+import io.github.zouzhiy.excel.utils.ExcelDateParseUtils;
 import org.apache.poi.ss.usermodel.Cell;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author zouzhiy
@@ -32,22 +31,17 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class StringDateHandler extends AbstractCellHandler<String> {
 
-    private final Map<String, DateTimeFormatter> dateTimeFormatterMap = new ConcurrentHashMap<>(16);
-
     @Override
     protected String getCellValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResult firstCellResult) {
         LocalDateTime localDateTime = firstCellResult.getDateValue();
         String javaFormat = this.getJavaFormat(excelFieldConfig);
-        DateTimeFormatter dateTimeFormatter = dateTimeFormatterMap.computeIfAbsent(javaFormat, DateTimeFormatter::ofPattern);
-        return localDateTime.format(dateTimeFormatter);
-
+        return ExcelDateFormatUtils.format(localDateTime, javaFormat);
     }
 
     @Override
     protected void setCellValue(RowContext rowContext, ExcelFieldConfig excelFieldConfig, Cell cell, String value) {
         String javaFormat = this.getJavaFormat(excelFieldConfig);
-        DateTimeFormatter dateTimeFormatter = dateTimeFormatterMap.computeIfAbsent(javaFormat, DateTimeFormatter::ofPattern);
-        LocalDateTime localDateTime = LocalDateTime.parse(value, dateTimeFormatter);
+        LocalDateTime localDateTime = ExcelDateParseUtils.parseDateTime(value, javaFormat);
         cell.setCellValue(localDateTime);
     }
 

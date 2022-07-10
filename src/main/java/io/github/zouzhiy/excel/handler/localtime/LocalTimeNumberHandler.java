@@ -14,15 +14,11 @@
 package io.github.zouzhiy.excel.handler.localtime;
 
 import io.github.zouzhiy.excel.context.RowContext;
-import io.github.zouzhiy.excel.context.SheetContext;
 import io.github.zouzhiy.excel.enums.ExcelType;
-import io.github.zouzhiy.excel.handler.AbstractCellHandler;
 import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
-import io.github.zouzhiy.excel.metadata.result.CellResult;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -30,13 +26,8 @@ import java.time.LocalTime;
  * @author zouzhiy
  * @since 2022/7/2
  */
-public class LocalTimeNumberHandler extends AbstractCellHandler<LocalTime> {
+public class LocalTimeNumberHandler extends AbstractLocalTimeCellHandler {
 
-    @Override
-    protected LocalTime getCellValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResult firstCellResult) {
-        BigDecimal numberValue = firstCellResult.getNumberValue();
-        return DateUtil.getLocalDateTime(numberValue.doubleValue()).toLocalTime();
-    }
 
     @Override
     protected void setCellValue(RowContext rowContext, ExcelFieldConfig excelFieldConfig, Cell cell, LocalTime value) {

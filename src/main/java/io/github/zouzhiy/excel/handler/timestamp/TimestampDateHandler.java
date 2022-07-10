@@ -14,11 +14,8 @@
 package io.github.zouzhiy.excel.handler.timestamp;
 
 import io.github.zouzhiy.excel.context.RowContext;
-import io.github.zouzhiy.excel.context.SheetContext;
 import io.github.zouzhiy.excel.enums.ExcelType;
-import io.github.zouzhiy.excel.handler.AbstractCellHandler;
 import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
-import io.github.zouzhiy.excel.metadata.result.CellResult;
 import org.apache.poi.ss.usermodel.Cell;
 
 import java.sql.Timestamp;
@@ -27,12 +24,8 @@ import java.sql.Timestamp;
  * @author zouzhiy
  * @since 2022/7/2
  */
-public class TimestampDateHandler extends AbstractCellHandler<Timestamp> {
+public class TimestampDateHandler extends AbstractTimestampCellHandler {
 
-    @Override
-    protected Timestamp getCellValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResult firstCellResult) {
-        return Timestamp.valueOf(firstCellResult.getDateValue());
-    }
 
     @Override
     protected void setCellValue(RowContext rowContext, ExcelFieldConfig excelFieldConfig, Cell cell, Timestamp value) {

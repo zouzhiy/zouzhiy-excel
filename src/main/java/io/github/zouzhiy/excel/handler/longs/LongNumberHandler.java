@@ -14,25 +14,15 @@
 package io.github.zouzhiy.excel.handler.longs;
 
 import io.github.zouzhiy.excel.context.RowContext;
-import io.github.zouzhiy.excel.context.SheetContext;
 import io.github.zouzhiy.excel.enums.ExcelType;
-import io.github.zouzhiy.excel.handler.AbstractCellHandler;
 import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
-import io.github.zouzhiy.excel.metadata.result.CellResult;
 import org.apache.poi.ss.usermodel.Cell;
-
-import java.math.BigDecimal;
 
 /**
  * @author zouzhiy
  * @since 2022/7/2
  */
-public class LongNumberHandler extends AbstractCellHandler<Long> {
-    @Override
-    protected Long getCellValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResult firstCellResult) {
-        BigDecimal numberValue = firstCellResult.getNumberValue();
-        return numberValue.longValue();
-    }
+public class LongNumberHandler extends AbstractLongCellHandler {
 
     @Override
     protected void setCellValue(RowContext rowContext, ExcelFieldConfig excelFieldConfig, Cell cell, Long value) {

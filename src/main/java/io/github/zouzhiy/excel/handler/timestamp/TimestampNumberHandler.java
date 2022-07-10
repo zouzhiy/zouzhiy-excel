@@ -14,28 +14,18 @@
 package io.github.zouzhiy.excel.handler.timestamp;
 
 import io.github.zouzhiy.excel.context.RowContext;
-import io.github.zouzhiy.excel.context.SheetContext;
 import io.github.zouzhiy.excel.enums.ExcelType;
-import io.github.zouzhiy.excel.handler.AbstractCellHandler;
 import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
-import io.github.zouzhiy.excel.metadata.result.CellResult;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
 
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 /**
  * @author zouzhiy
  * @since 2022/7/2
  */
-public class TimestampNumberHandler extends AbstractCellHandler<Timestamp> {
-
-    @Override
-    protected Timestamp getCellValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResult firstCellResult) {
-        BigDecimal numberValue = firstCellResult.getNumberValue();
-        return Timestamp.valueOf(DateUtil.getLocalDateTime(numberValue.doubleValue()));
-    }
+public class TimestampNumberHandler extends AbstractTimestampCellHandler {
 
     @Override
     protected void setCellValue(RowContext rowContext, ExcelFieldConfig excelFieldConfig, Cell cell, Timestamp value) {
