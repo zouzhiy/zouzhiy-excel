@@ -22,7 +22,10 @@ import io.github.zouzhiy.excel.handler.image.ImageByteCellHandler;
 import io.github.zouzhiy.excel.handler.image.ImageFileCellHandler;
 import io.github.zouzhiy.excel.handler.image.ImageUrlCellHandler;
 import io.github.zouzhiy.excel.old.http.ImageHttpServer;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.apache.commons.compress.utils.IOUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.ss.usermodel.DateUtil;
@@ -48,7 +51,10 @@ import java.util.Random;
  * @author zouzhiy
  * @since 2022/7/2
  */
-@Data
+@Setter
+@Getter
+@EqualsAndHashCode(exclude = {"imageFile", "imageUrl", "imageByte"})
+@ToString(exclude = {"imageFile", "imageUrl", "imageByte"})
 @ExcelClass
 public class Demo {
 
@@ -125,7 +131,7 @@ public class Demo {
     private Date dateString = nextBoolean() ? null : Calendar.getInstance().getTime();
 
     @ExcelField(excelType = ExcelType.BOOLEAN)
-    private double unboxDoubleBoolean = random.nextDouble();
+    private double unboxDoubleBoolean = random.nextInt(1) * 1.0;
     @ExcelField(excelType = ExcelType.DATE)
     private double unboxDoubleDate = DateUtil.getExcelDate(Calendar.getInstance().getTime());
     @ExcelField(excelType = ExcelType.NUMERIC)
@@ -134,7 +140,7 @@ public class Demo {
     private double unboxDoubleString = random.nextDouble();
 
     @ExcelField(excelType = ExcelType.BOOLEAN)
-    private Double boxDoubleBoolean = nextBoolean() ? null : random.nextDouble();
+    private Double boxDoubleBoolean = nextBoolean() ? null : random.nextInt(1) * 1.0;
     @ExcelField(excelType = ExcelType.DATE)
     private Double boxDoubleDate = nextBoolean() ? null : DateUtil.getExcelDate(Calendar.getInstance().getTime());
     @ExcelField(excelType = ExcelType.NUMERIC)
@@ -144,14 +150,14 @@ public class Demo {
 
 
     @ExcelField(excelType = ExcelType.BOOLEAN)
-    private float unboxFloatBoolean = random.nextFloat();
+    private float unboxFloatBoolean = random.nextInt(1) * 1.0f;
     @ExcelField(excelType = ExcelType.NUMERIC)
     private float unboxFloatNumber = random.nextFloat();
     @ExcelField(excelType = ExcelType.STRING)
     private float unboxFloatString = random.nextFloat();
 
     @ExcelField(excelType = ExcelType.BOOLEAN)
-    private Float boxFloatBoolean = nextBoolean() ? null : random.nextFloat();
+    private Float boxFloatBoolean = nextBoolean() ? null : random.nextInt(1) * 1.0f;
     @ExcelField(excelType = ExcelType.NUMERIC)
     private Float boxFloatNumber = nextBoolean() ? null : random.nextFloat();
     @ExcelField(excelType = ExcelType.STRING)
@@ -202,14 +208,14 @@ public class Demo {
     }
 
     @ExcelField(excelType = ExcelType.BOOLEAN)
-    private int unboxIntegerBoolean = random.nextInt();
+    private int unboxIntegerBoolean = random.nextInt(1);
     @ExcelField(excelType = ExcelType.NUMERIC)
     private int unboxIntegerNumber = random.nextInt();
     @ExcelField(excelType = ExcelType.STRING)
     private int unboxIntegerString = random.nextInt();
 
     @ExcelField(excelType = ExcelType.BOOLEAN)
-    private Integer boxIntegerBoolean = nextBoolean() ? null : random.nextInt();
+    private Integer boxIntegerBoolean = nextBoolean() ? null : random.nextInt(1);
     @ExcelField(excelType = ExcelType.NUMERIC)
     private Integer boxIntegerNumber = nextBoolean() ? null : random.nextInt();
     @ExcelField(excelType = ExcelType.STRING)
@@ -238,29 +244,29 @@ public class Demo {
     private LocalTime localTimeString = nextBoolean() ? null : LocalTime.now();
 
     @ExcelField(excelType = ExcelType.BOOLEAN)
-    private long unboxLongBoolean = random.nextLong();
+    private long unboxLongBoolean = random.nextInt(1) *1L;
     @ExcelField(excelType = ExcelType.NUMERIC)
-    private long unboxLongNumber = random.nextLong();
+    private long unboxLongNumber = random.nextInt() * 1L;
     @ExcelField(excelType = ExcelType.STRING)
-    private long unboxLongString = random.nextLong();
+    private long unboxLongString = random.nextInt() * 1L;
 
     @ExcelField(excelType = ExcelType.BOOLEAN)
-    private Long boxLongBoolean = nextBoolean() ? null : random.nextLong();
+    private Long boxLongBoolean = nextBoolean() ? null : random.nextInt(1) *1L;
     @ExcelField(excelType = ExcelType.NUMERIC)
-    private Long boxLongNumber = nextBoolean() ? null : random.nextLong();
+    private Long boxLongNumber = nextBoolean() ? null : random.nextInt() * 1L;
     @ExcelField(excelType = ExcelType.STRING)
-    private Long boxLongString = nextBoolean() ? null : random.nextLong();
+    private Long boxLongString = nextBoolean() ? null : random.nextInt() * 1L;
 
 
     @ExcelField(excelType = ExcelType.BOOLEAN)
-    private short unboxShortBoolean = (short) random.nextInt(Short.MAX_VALUE);
+    private short unboxShortBoolean = (short) random.nextInt(1);
     @ExcelField(excelType = ExcelType.NUMERIC)
     private short unboxShortNumber = (short) random.nextInt(Short.MAX_VALUE);
     @ExcelField(excelType = ExcelType.STRING)
     private short unboxShortString = (short) random.nextInt(Short.MAX_VALUE);
 
     @ExcelField(excelType = ExcelType.BOOLEAN)
-    private Short boxShortBoolean = nextBoolean() ? null : (short) random.nextInt(Short.MAX_VALUE);
+    private Short boxShortBoolean = nextBoolean() ? null : (short) random.nextInt(1);
     @ExcelField(excelType = ExcelType.NUMERIC)
     private Short boxShortNumber = nextBoolean() ? null : (short) random.nextInt(Short.MAX_VALUE);
     @ExcelField(excelType = ExcelType.STRING)

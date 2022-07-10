@@ -35,7 +35,7 @@ public class DateStringHandler extends AbstractDateCellHandler {
 
     @Override
     public String getDefaultJavaFormat() {
-        return "yyyy-MM-dd";
+        return "yyyy-MM-dd HH:mm:ss";
     }
 
     @Override

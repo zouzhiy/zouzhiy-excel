@@ -38,6 +38,6 @@ public class DateDateHandler extends AbstractDateCellHandler {
 
     @Override
     public String getDefaultExcelFormat() {
-        return "yyyy-MM-dd";
+        return "yyyy-MM-dd HH:mm:ss";
     }
 }
