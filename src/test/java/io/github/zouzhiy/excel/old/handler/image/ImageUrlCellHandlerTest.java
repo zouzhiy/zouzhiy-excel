@@ -30,6 +30,6 @@ class ImageUrlCellHandlerTest {
 
     @Test
     void getExcelType() {
-        assert new ImageUrlCellHandler().getExcelType().equals(ExcelType.BLANK);
+        assert new ImageUrlCellHandler().getExcelType().equals(ExcelType.NONE);
     }
 }

@@ -91,8 +91,9 @@ class ZouzhiyExcelFactoryBuilderTest {
                 .register(cellHandler)
                 .build();
 
+        Class<? extends CellHandler<String>> cellHandlerClass = (Class<? extends CellHandler<String>>) cellHandler.getClass();
         assert zouzhiyExcelFactory.getConfiguration().getCellHandlerRegistry()
-                .getMappingCellHandler((Class<? extends CellHandler<?>>) cellHandler.getClass())
+                .getCellHandler(cellHandlerClass)
                 .equals(cellHandler);
 
     }

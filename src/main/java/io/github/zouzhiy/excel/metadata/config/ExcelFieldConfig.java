@@ -15,7 +15,6 @@ package io.github.zouzhiy.excel.metadata.config;
 
 import io.github.zouzhiy.excel.enums.ExcelType;
 import io.github.zouzhiy.excel.handler.CellHandler;
-import io.github.zouzhiy.excel.handler.NoneCellHandler;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -44,8 +43,9 @@ public class ExcelFieldConfig {
     @Builder.Default
     private final ExcelType excelType = ExcelType.BLANK;
 
+    @SuppressWarnings("unchecked")
     @Builder.Default
-    private final Class<? extends CellHandler<?>> cellHandler = NoneCellHandler.class;
+    private final Class<? extends CellHandler<?>>[] cellHandler = (Class<? extends CellHandler<?>>[]) new Class<?>[0];
 
     @Builder.Default
     private final int colspan = 1;

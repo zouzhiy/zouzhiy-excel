@@ -80,7 +80,7 @@ public class DefaultSheetRead implements SheetRead {
 
         Integer titleRowIndex = sheetParameter.getTitleRowStartIndex();
         if (titleRowIndex == -1) {
-            sheetReadConsumerList.forEach(item -> item.acceptReadTitle(sheetContext, CellResultSet.empty()));
+            sheetReadConsumerList.forEach(item -> item.acceptReadTitle(sheetContext, CellResultSet.none()));
             return null;
         }
         Class<? extends RowTitleRead> rowTitleReadClazz = excelClassConfig.getRowTitleRead();

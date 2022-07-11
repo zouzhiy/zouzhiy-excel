@@ -18,6 +18,7 @@ import io.github.zouzhiy.excel.context.SheetContext;
 import io.github.zouzhiy.excel.enums.ExcelType;
 import io.github.zouzhiy.excel.handler.CellHandler;
 import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
+import io.github.zouzhiy.excel.metadata.result.CellResult;
 import io.github.zouzhiy.excel.metadata.result.CellResultSet;
 import io.github.zouzhiy.excel.utils.RegionUtils;
 import org.apache.poi.ss.usermodel.Cell;
@@ -42,7 +43,13 @@ public class HeadStringHandler implements CellHandler<String> {
 
     @Override
     public String read(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResultSet cellResultSet) {
-        return cellResultSet.getFirstCellResult().getStringValue();
+        CellResult firstCellResult = cellResultSet.getFirstCellResult();
+        if (cellResultSet.isNone() || firstCellResult.isNone()) {
+            return null;
+        } else if (firstCellResult.isBlank()) {
+            return null;
+        }
+        return firstCellResult.getStringValue();
     }
 
     @Override

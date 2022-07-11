@@ -71,7 +71,7 @@ public class Excel {
             workbookWrite.write(demoList);
             return workbookParameter.getOutputFile();
         } catch (Exception e) {
-            throw new ExcelException("写入失败");
+            throw new ExcelException(e, "写入失败");
         }
 
     }
@@ -83,7 +83,7 @@ public class Excel {
         assert url != null;
         String rootPath = url.getPath();
 
-        String fileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + ".xlsx";
+        String fileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS")) + ".xlsx";
         String writePath = rootPath + File.separator + "write" + File.separator + fileName;
         File file = new File(writePath);
         File parentFile = file.getParentFile();

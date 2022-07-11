@@ -46,6 +46,6 @@ public class ImageUrlCellHandler extends AbstractImageCellHandler<String> {
 
     @Override
     public final ExcelType getExcelType() {
-        return ExcelType.BLANK;
+        return ExcelType.NONE;
     }
 }

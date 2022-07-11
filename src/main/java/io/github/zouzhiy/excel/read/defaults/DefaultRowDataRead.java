@@ -80,7 +80,7 @@ public class DefaultRowDataRead implements RowDataRead {
         if (cellResultSet.isNone() && !excelFieldConfig.getExcelType().equals(ExcelType.NONE)) {
             return;
         }
-        Class<? extends CellHandler<?>> cellHandlerClazz = excelFieldConfig.getCellHandler();
+        Class<? extends CellHandler<?>>[] cellHandlerClazz = excelFieldConfig.getCellHandler();
         String propertyName = excelFieldConfig.getPropertyName();
         boolean hasSetter = metaClass.hasSetter(propertyName);
         if (!hasSetter) {
@@ -104,9 +104,10 @@ public class DefaultRowDataRead implements RowDataRead {
         }
     }
 
-    private CellHandler<?> getCellHandler(SheetContext sheetContext, Class<? extends CellHandler<?>> cellHandlerClazz, Class<?> javaType, ExcelType excelType) {
+    private <T> CellHandler<T> getCellHandler(SheetContext sheetContext, Class<? extends CellHandler<?>>[] cellHandlerClazz, Class<T> javaType, ExcelType excelType) {
         CellHandlerRegistry cellHandlerRegistry = sheetContext.getConfiguration().getCellHandlerRegistry();
-        return cellHandlerRegistry.getCellHandler(cellHandlerClazz, javaType, excelType);
+        //noinspection unchecked
+        return cellHandlerRegistry.getCellHandler((Class<? extends CellHandler<T>>[]) cellHandlerClazz, javaType, excelType);
     }
 
 

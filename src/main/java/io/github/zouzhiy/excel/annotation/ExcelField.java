@@ -16,7 +16,6 @@ package io.github.zouzhiy.excel.annotation;
 import io.github.zouzhiy.excel.enums.ExcelType;
 import io.github.zouzhiy.excel.enums.StyleHorizontalAlignment;
 import io.github.zouzhiy.excel.handler.CellHandler;
-import io.github.zouzhiy.excel.handler.NoneCellHandler;
 
 import java.lang.annotation.*;
 
@@ -33,7 +32,7 @@ public @interface ExcelField {
 
     ExcelType excelType() default ExcelType.BLANK;
 
-    Class<? extends CellHandler<?>> cellHandler() default NoneCellHandler.class;
+    Class<? extends CellHandler<?>>[] cellHandler() default {};
 
     int colspan() default 1;
 

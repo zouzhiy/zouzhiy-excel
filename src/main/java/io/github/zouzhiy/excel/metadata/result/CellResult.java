@@ -28,27 +28,29 @@ import java.time.LocalDateTime;
  * @author zouzhiy
  * @since 2022/7/2
  */
-@Getter
 @ToString
 @EqualsAndHashCode
 public class CellResult {
 
-    private final static double TRUE_VALUE_DOUBLE = 1d;
-    private final static double FALSE_VALUE_DOUBLE = 1d;
-
     private final static BigDecimal TRUE_VALUE_BIG_DECIMAL = BigDecimal.ONE;
     private final static BigDecimal FALSE_VALUE_BIG_DECIMAL = BigDecimal.ZERO;
 
+    @Getter
     private final Cell cell;
 
+    @Getter
     private final Integer rowIndex;
 
+    @Getter
     private final Integer columnIndex;
 
+    @Getter
     private final Integer rowspan;
 
+    @Getter
     private final Integer colspan;
 
+    @Getter
     private final ExcelType excelType;
 
     private String stringValue;

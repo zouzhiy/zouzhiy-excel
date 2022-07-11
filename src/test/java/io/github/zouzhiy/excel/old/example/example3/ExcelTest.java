@@ -15,6 +15,7 @@ package io.github.zouzhiy.excel.old.example.example3;
 
 import io.github.zouzhiy.excel.old.example.example3.matedata.Demo;
 import io.github.zouzhiy.excel.old.example.example3.matedata.Item;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -45,8 +46,9 @@ class ExcelTest {
 
         List<Demo> demo1List = excel.read(outputFile);
 
-        assert demo1List.equals(demoList);
-
+        for (int i = 0; i < demo1List.size(); i++) {
+            Assertions.assertEquals(demo1List.get(i), demoList.get(i));
+        }
     }
 
     private Item getValue() {

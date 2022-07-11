@@ -25,6 +25,6 @@ public class ItemListSplitHandler extends AbstractListSplitHandler<Item> {
 
     @Override
     public ExcelType getExcelType() {
-        return ExcelType.NUMERIC;
+        return ExcelType.STRING;
     }
 }

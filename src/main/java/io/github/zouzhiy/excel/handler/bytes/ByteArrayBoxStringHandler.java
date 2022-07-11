@@ -63,6 +63,6 @@ public class ByteArrayBoxStringHandler extends AbstractCellHandler<Byte[]> {
 
     @Override
     public ExcelType getExcelType() {
-        return null;
+        return ExcelType.STRING;
     }
 }

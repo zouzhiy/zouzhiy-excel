@@ -68,7 +68,7 @@ public abstract class AbstractListSplitHandler<E> extends AbstractListHandler<E>
             throw new ExcelException("rowList 与预期不符。%s,%s,%s", rowList.size(), valueList, valueList.size());
         }
         CellHandlerRegistry cellHandlerRegistry = sheetContext.getConfiguration().getCellHandlerRegistry();
-        CellHandler<E> cellHandler = cellHandlerRegistry.getCellHandler(this.getItemType(), ExcelType.STRING);
+        CellHandler<E> cellHandler = cellHandlerRegistry.getCellHandler(this.getItemType(), this.getExcelType());
         for (int i = 0; i < valueList.size(); i++) {
             E item = valueList.get(i);
             Row row = rowList.get(i);

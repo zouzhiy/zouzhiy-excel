@@ -52,7 +52,7 @@ public class DefaultRowDataWrite implements RowDataWrite {
         List<ExcelFieldConfig> writeMainConfigItemList = excelClassConfig.getItemList();
         int curColumnIndex = 0;
         for (ExcelFieldConfig excelFieldConfig : writeMainConfigItemList) {
-            Class<? extends CellHandler<?>> cellHandlerClazz = excelFieldConfig.getCellHandler();
+            Class<? extends CellHandler<?>>[] cellHandlerClazz = excelFieldConfig.getCellHandler();
             Class<?> javaType = excelFieldConfig.getJavaType();
             ExcelType excelType = excelFieldConfig.getExcelType();
             String propertyName = excelFieldConfig.getPropertyName();
@@ -78,9 +78,11 @@ public class DefaultRowDataWrite implements RowDataWrite {
         return sheetContext.getSheet().createRow(rowIndex);
     }
 
-    private CellHandler<?> getCellHandler(SheetContext sheetContext, Class<? extends CellHandler<?>> cellHandlerClazz, Class<?> javaType, ExcelType excelType) {
+
+    private <T> CellHandler<T> getCellHandler(SheetContext sheetContext, Class<? extends CellHandler<?>>[] cellHandlerClazz, Class<T> javaType, ExcelType excelType) {
         CellHandlerRegistry cellHandlerRegistry = sheetContext.getConfiguration().getCellHandlerRegistry();
-        return cellHandlerRegistry.getCellHandler(cellHandlerClazz, javaType, excelType);
+        //noinspection unchecked
+        return cellHandlerRegistry.getCellHandler((Class<? extends CellHandler<T>>[]) cellHandlerClazz, javaType, excelType);
     }
 
     private <T> int getRowspan(SheetContext sheetContext, ExcelClassConfig excelClassConfig, T item) {
@@ -89,7 +91,7 @@ public class DefaultRowDataWrite implements RowDataWrite {
 
         int maxRowspan = 1;
         for (ExcelFieldConfig excelFieldConfig : writeMainConfigItemList) {
-            Class<? extends CellHandler<?>> cellHandlerClazz = excelFieldConfig.getCellHandler();
+            Class<? extends CellHandler<?>>[] cellHandlerClazz = excelFieldConfig.getCellHandler();
             Class<?> javaType = excelFieldConfig.getJavaType();
             ExcelType excelType = excelFieldConfig.getExcelType();
             String propertyName = excelFieldConfig.getPropertyName();

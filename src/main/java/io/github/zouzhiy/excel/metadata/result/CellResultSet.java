@@ -37,7 +37,7 @@ public class CellResultSet {
     @Getter
     List<List<CellResult>> cellResultListList;
 
-    public static CellResultSet empty() {
+    public static CellResultSet none() {
         CellResultSet cellResultSet = new CellResultSet();
         cellResultSet.cellResultListList = Collections.emptyList();
         return cellResultSet;

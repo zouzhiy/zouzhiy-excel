@@ -47,6 +47,6 @@ public class ImageFileCellHandler extends AbstractImageCellHandler<File> {
 
     @Override
     public final ExcelType getExcelType() {
-        return ExcelType.BLANK;
+        return ExcelType.NONE;
     }
 }
