@@ -8,7 +8,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 import java.nio.charset.StandardCharsets;
@@ -83,14 +82,12 @@ class ByteArrayStringHandlerTest extends CellHandlerTest {
         Mockito.when(excelFieldConfig.getColspan()).thenReturn(colspan);
         Mockito.when(row.getRowNum()).thenReturn(rowIndex);
 
-        try (MockedStatic<RegionUtils> regionUtilsMockedStatic = Mockito.mockStatic(RegionUtils.class)){
-            cellHandler.write(rowContext, columnIndex, excelFieldConfig, value.getBytes(StandardCharsets.UTF_8));
-            Mockito.verify(cell).setCellValue(value);
+        cellHandler.write(rowContext, columnIndex, excelFieldConfig, value.getBytes(StandardCharsets.UTF_8));
 
-            Mockito.verify(cell).setCellStyle(cellStyle);
-            regionUtilsMockedStatic.verify(() -> RegionUtils.addMergedRegionIfPresent(sheetContext, cellStyle, rowIndex, rowIndex + rowspan - 1, columnIndex, columnIndex + colspan - 1));
-        }
+        Mockito.verify(cell).setCellValue(value);
 
+        Mockito.verify(cell).setCellStyle(cellStyle);
+        regionUtilsMockedStatic.verify(() -> RegionUtils.addMergedRegionIfPresent(sheetContext, cellStyle, rowIndex, rowIndex + rowspan - 1, columnIndex, columnIndex + colspan - 1));
     }
 
 

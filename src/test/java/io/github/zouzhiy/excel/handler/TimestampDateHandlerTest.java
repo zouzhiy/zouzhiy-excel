@@ -1,7 +1,7 @@
 package io.github.zouzhiy.excel.handler;
 
 import io.github.zouzhiy.excel.enums.ExcelType;
-import io.github.zouzhiy.excel.handler.calendar.CalendarDateHandler;
+import io.github.zouzhiy.excel.handler.timestamp.TimestampDateHandler;
 import io.github.zouzhiy.excel.metadata.result.CellResult;
 import io.github.zouzhiy.excel.utils.RegionUtils;
 import org.apache.poi.ss.usermodel.Row;
@@ -10,23 +10,20 @@ import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
-class CalendarDateHandlerTest extends CellHandlerTest {
+class TimestampDateHandlerTest extends CellHandlerTest {
 
-    private final CalendarDateHandler cellHandler = new CalendarDateHandler();
+    private final TimestampDateHandler cellHandler = new TimestampDateHandler();
 
 
     @Override
     @Test
     void getJavaType() {
-        Assertions.assertEquals(cellHandler.getJavaType(), Calendar.class);
+        Assertions.assertEquals(cellHandler.getJavaType(), Timestamp.class);
     }
 
     @Override
@@ -38,7 +35,7 @@ class CalendarDateHandlerTest extends CellHandlerTest {
     @Test
     void readNone1() {
         Mockito.when(cellResultSet.isNone()).thenReturn(true);
-        Calendar result = cellHandler.read(sheetContext, excelFieldConfig, cellResultSet);
+        Timestamp result = cellHandler.read(sheetContext, excelFieldConfig, cellResultSet);
         Assertions.assertNull(result);
     }
 
@@ -46,7 +43,7 @@ class CalendarDateHandlerTest extends CellHandlerTest {
     void readNone2() {
         CellResult cellResultNone = CellResult.none();
         Mockito.when(cellResultSet.getFirstCellResult()).thenReturn(cellResultNone);
-        Calendar result = cellHandler.read(sheetContext, excelFieldConfig, cellResultSet);
+        Timestamp result = cellHandler.read(sheetContext, excelFieldConfig, cellResultSet);
         Assertions.assertNull(result);
     }
 
@@ -54,7 +51,7 @@ class CalendarDateHandlerTest extends CellHandlerTest {
     void readNoneBlank() {
         CellResult cellResultNone = CellResult.blank(cell, cellSpan);
         Mockito.when(cellResultSet.getFirstCellResult()).thenReturn(cellResultNone);
-        Calendar result = cellHandler.read(sheetContext, excelFieldConfig, cellResultSet);
+        Timestamp result = cellHandler.read(sheetContext, excelFieldConfig, cellResultSet);
         Assertions.assertNull(result);
     }
 
@@ -63,10 +60,10 @@ class CalendarDateHandlerTest extends CellHandlerTest {
     void read() {
         CellResult cellResult = Mockito.mock(CellResult.class);
         LocalDateTime localDateTime = LocalDateTime.now();
-        Calendar value = this.convert(localDateTime);
+        Timestamp value = Timestamp.valueOf(localDateTime);
         Mockito.when(cellResult.getDateValue()).thenReturn(localDateTime);
         Mockito.when(cellResultSet.getFirstCellResult()).thenReturn(cellResult);
-        Calendar result = cellHandler.read(sheetContext, excelFieldConfig, cellResultSet);
+        Timestamp result = cellHandler.read(sheetContext, excelFieldConfig, cellResultSet);
         Assertions.assertEquals(result, value);
     }
 
@@ -74,7 +71,7 @@ class CalendarDateHandlerTest extends CellHandlerTest {
     @RepeatedTest(10)
     void write() {
         LocalDateTime localDateTime = LocalDateTime.now();
-        Calendar value = random.nextBoolean() ? null : this.convert(localDateTime);
+        Timestamp value = random.nextBoolean() ? null : Timestamp.valueOf(localDateTime);
         int rowIndex = random.nextInt();
         int columnIndex = random.nextInt();
         int rowspan = random.nextInt();
@@ -94,7 +91,7 @@ class CalendarDateHandlerTest extends CellHandlerTest {
         if (value == null) {
             Mockito.verify(cell, Mockito.times(0)).setCellValue(Mockito.anyBoolean());
         } else {
-            Mockito.verify(cell).setCellValue(value);
+            Mockito.verify(cell).setCellValue(value.toLocalDateTime());
         }
         Mockito.verify(cell).setCellStyle(cellStyle);
         regionUtilsMockedStatic.verify(() -> RegionUtils.addMergedRegionIfPresent(sheetContext, cellStyle, rowIndex, rowIndex + rowspan - 1, columnIndex, columnIndex + colspan - 1));
@@ -104,7 +101,7 @@ class CalendarDateHandlerTest extends CellHandlerTest {
     @RepeatedTest(5)
     void getWriteRowspan() {
         LocalDateTime localDateTime = LocalDateTime.now();
-        Calendar value = random.nextBoolean() ? null : this.convert(localDateTime);
+        Timestamp value = random.nextBoolean() ? null : Timestamp.valueOf(localDateTime);
         Assertions.assertEquals(cellHandler.getWriteRowspan(value), 1);
     }
 
@@ -120,11 +117,4 @@ class CalendarDateHandlerTest extends CellHandlerTest {
         Assertions.assertEquals(cellHandler.getDefaultExcelFormat(), "yyyy-MM-dd HH:mm:ss");
     }
 
-    private Calendar convert(LocalDateTime localDateTime) {
-        ZoneId zoneId = ZoneId.systemDefault();
-        ZonedDateTime zdt = localDateTime.atZone(zoneId);
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(Date.from(zdt.toInstant()));
-        return calendar;
-    }
 }

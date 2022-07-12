@@ -128,11 +128,9 @@ class ZouzhiyExcelFactoryWriteTest {
                         String str1 = new String((byte[]) value1, StandardCharsets.UTF_8);
                         String str2 = new String((byte[]) value2, StandardCharsets.UTF_8);
                         Assertions.assertEquals(str1, str2);
-                    } else if (Byte[].class.equals(fieldType)){
+                    } else if (Byte[].class.equals(fieldType)) {
                         continue;
-                    }
-
-                    else {
+                    } else {
                         System.out.printf("%s,%s,%s,%s%n", i, field.getName(), value1, value2);
                     }
                 }

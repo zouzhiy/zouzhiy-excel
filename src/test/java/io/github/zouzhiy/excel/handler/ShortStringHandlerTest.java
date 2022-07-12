@@ -1,7 +1,7 @@
 package io.github.zouzhiy.excel.handler;
 
 import io.github.zouzhiy.excel.enums.ExcelType;
-import io.github.zouzhiy.excel.handler.floats.FloatStringHandler;
+import io.github.zouzhiy.excel.handler.shorts.ShortStringHandler;
 import io.github.zouzhiy.excel.metadata.result.CellResult;
 import io.github.zouzhiy.excel.utils.ExcelNumberUtils;
 import io.github.zouzhiy.excel.utils.RegionUtils;
@@ -15,14 +15,14 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-class FloatStringHandlerTest extends CellHandlerTest {
+class ShortStringHandlerTest extends CellHandlerTest {
 
-    private final FloatStringHandler cellHandler = new FloatStringHandler();
+    private final ShortStringHandler cellHandler = new ShortStringHandler();
 
     @Override
     @Test
     void getJavaType() {
-        Assertions.assertEquals(cellHandler.getJavaType(), Float.class);
+        Assertions.assertEquals(cellHandler.getJavaType(), Short.class);
     }
 
     @Override
@@ -34,7 +34,7 @@ class FloatStringHandlerTest extends CellHandlerTest {
     @Test
     void readNone1() {
         Mockito.when(cellResultSet.isNone()).thenReturn(true);
-        Float result = cellHandler.read(sheetContext, excelFieldConfig, cellResultSet);
+        Short result = cellHandler.read(sheetContext, excelFieldConfig, cellResultSet);
         Assertions.assertNull(result);
     }
 
@@ -42,7 +42,7 @@ class FloatStringHandlerTest extends CellHandlerTest {
     void readNone2() {
         CellResult cellResultNone = CellResult.none();
         Mockito.when(cellResultSet.getFirstCellResult()).thenReturn(cellResultNone);
-        Float result = cellHandler.read(sheetContext, excelFieldConfig, cellResultSet);
+        Short result = cellHandler.read(sheetContext, excelFieldConfig, cellResultSet);
         Assertions.assertNull(result);
     }
 
@@ -50,18 +50,18 @@ class FloatStringHandlerTest extends CellHandlerTest {
     void readNoneBlank() {
         CellResult cellResultNone = CellResult.blank(cell, cellSpan);
         Mockito.when(cellResultSet.getFirstCellResult()).thenReturn(cellResultNone);
-        Float result = cellHandler.read(sheetContext, excelFieldConfig, cellResultSet);
+        Short result = cellHandler.read(sheetContext, excelFieldConfig, cellResultSet);
         Assertions.assertNull(result);
     }
 
     @Override
     @RepeatedTest(5)
     void read() {
-        Float value = random.nextFloat();
+        Short value = (short) random.nextInt();
         CellResult cellResult = Mockito.mock(CellResult.class);
         Mockito.when(cellResult.getNumberValue()).thenReturn(new BigDecimal(value));
         Mockito.when(cellResultSet.getFirstCellResult()).thenReturn(cellResult);
-        Float result = cellHandler.read(sheetContext, excelFieldConfig, cellResultSet);
+        Short result = cellHandler.read(sheetContext, excelFieldConfig, cellResultSet);
         Assertions.assertEquals(result, value);
     }
 
@@ -92,7 +92,7 @@ class FloatStringHandlerTest extends CellHandlerTest {
     @Override
     @RepeatedTest(10)
     void write() {
-        Float value = random.nextFloat();
+        Short value = (short) random.nextInt();
         int rowIndex = random.nextInt();
         int columnIndex = random.nextInt();
         int rowspan = random.nextInt();
@@ -118,7 +118,7 @@ class FloatStringHandlerTest extends CellHandlerTest {
 
     @RepeatedTest(10)
     void writeFormat1() {
-        Float value = random.nextFloat();
+        Short value = (short) random.nextInt();
         int rowIndex = random.nextInt();
         int columnIndex = random.nextInt();
         int rowspan = random.nextInt();
@@ -145,7 +145,7 @@ class FloatStringHandlerTest extends CellHandlerTest {
     @Override
     @RepeatedTest(5)
     void getWriteRowspan() {
-        Float value = random.nextFloat();
+        Short value = (short) random.nextInt();
         Assertions.assertEquals(cellHandler.getWriteRowspan(value), 1);
     }
 

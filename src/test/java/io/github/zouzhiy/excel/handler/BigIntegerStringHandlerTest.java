@@ -9,7 +9,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 import java.math.BigDecimal;
@@ -83,19 +82,17 @@ class BigIntegerStringHandlerTest extends CellHandlerTest {
         Mockito.when(excelFieldConfig.getColspan()).thenReturn(colspan);
         Mockito.when(row.getRowNum()).thenReturn(rowIndex);
 
-        MockedStatic<RegionUtils> regionUtilsMockedStatic = Mockito.mockStatic(RegionUtils.class);
         cellHandler.write(rowContext, columnIndex, excelFieldConfig, null);
 
         Mockito.verify(cell, Mockito.times(0)).setCellValue(Mockito.anyString());
 
         Mockito.verify(cell).setCellStyle(cellStyle);
         regionUtilsMockedStatic.verify(() -> RegionUtils.addMergedRegionIfPresent(sheetContext, cellStyle, rowIndex, rowIndex + rowspan - 1, columnIndex, columnIndex + colspan - 1));
-        regionUtilsMockedStatic.close();
     }
 
     @RepeatedTest(10)
     void writeFormat1() {
-        BigInteger value = BigInteger.valueOf(random.nextInt(1));
+        BigInteger value = BigInteger.valueOf(random.nextInt(2));
         int rowIndex = random.nextInt();
         int columnIndex = random.nextInt();
         int rowspan = random.nextInt();
@@ -111,20 +108,18 @@ class BigIntegerStringHandlerTest extends CellHandlerTest {
         Mockito.when(excelFieldConfig.getJavaFormat()).thenReturn("");
         Mockito.when(row.getRowNum()).thenReturn(rowIndex);
 
-        MockedStatic<RegionUtils> regionUtilsMockedStatic = Mockito.mockStatic(RegionUtils.class);
         cellHandler.write(rowContext, columnIndex, excelFieldConfig, value);
 
         Mockito.verify(cell).setCellValue(value.toString());
 
         Mockito.verify(cell).setCellStyle(cellStyle);
         regionUtilsMockedStatic.verify(() -> RegionUtils.addMergedRegionIfPresent(sheetContext, cellStyle, rowIndex, rowIndex + rowspan - 1, columnIndex, columnIndex + colspan - 1));
-        regionUtilsMockedStatic.close();
     }
 
     @Override
     @RepeatedTest(10)
     void write() {
-        BigInteger value = BigInteger.valueOf(random.nextInt(1));
+        BigInteger value = BigInteger.valueOf(random.nextInt(2));
         int rowIndex = random.nextInt();
         int columnIndex = random.nextInt();
         int rowspan = random.nextInt();
@@ -140,13 +135,11 @@ class BigIntegerStringHandlerTest extends CellHandlerTest {
         Mockito.when(excelFieldConfig.getJavaFormat()).thenReturn("0.000");
         Mockito.when(row.getRowNum()).thenReturn(rowIndex);
 
-        MockedStatic<RegionUtils> regionUtilsMockedStatic = Mockito.mockStatic(RegionUtils.class);
         cellHandler.write(rowContext, columnIndex, excelFieldConfig, value);
         Mockito.verify(cell).setCellValue(ExcelNumberUtils.format(value, "0.000"));
 
         Mockito.verify(cell).setCellStyle(cellStyle);
         regionUtilsMockedStatic.verify(() -> RegionUtils.addMergedRegionIfPresent(sheetContext, cellStyle, rowIndex, rowIndex + rowspan - 1, columnIndex, columnIndex + colspan - 1));
-        regionUtilsMockedStatic.close();
     }
 
     @Override

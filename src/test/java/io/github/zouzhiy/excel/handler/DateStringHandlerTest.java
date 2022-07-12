@@ -9,7 +9,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 import java.time.LocalDateTime;
@@ -88,14 +87,12 @@ class DateStringHandlerTest extends CellHandlerTest {
         Mockito.when(excelFieldConfig.getColspan()).thenReturn(colspan);
         Mockito.when(row.getRowNum()).thenReturn(rowIndex);
 
-        MockedStatic<RegionUtils> regionUtilsMockedStatic = Mockito.mockStatic(RegionUtils.class);
         cellHandler.write(rowContext, columnIndex, excelFieldConfig, null);
 
         Mockito.verify(cell, Mockito.times(0)).setCellValue(Mockito.anyString());
 
         Mockito.verify(cell).setCellStyle(cellStyle);
         regionUtilsMockedStatic.verify(() -> RegionUtils.addMergedRegionIfPresent(sheetContext, cellStyle, rowIndex, rowIndex + rowspan - 1, columnIndex, columnIndex + colspan - 1));
-        regionUtilsMockedStatic.close();
     }
 
     @Override
@@ -119,20 +116,18 @@ class DateStringHandlerTest extends CellHandlerTest {
         Mockito.when(excelFieldConfig.getJavaFormat()).thenReturn("");
         Mockito.when(row.getRowNum()).thenReturn(rowIndex);
 
-        MockedStatic<RegionUtils> regionUtilsMockedStatic = Mockito.mockStatic(RegionUtils.class);
         cellHandler.write(rowContext, columnIndex, excelFieldConfig, value);
 
         Mockito.verify(cell).setCellValue(ExcelDateFormatUtils.format(value, "yyyy-MM-dd HH:mm:ss"));
 
         Mockito.verify(cell).setCellStyle(cellStyle);
         regionUtilsMockedStatic.verify(() -> RegionUtils.addMergedRegionIfPresent(sheetContext, cellStyle, rowIndex, rowIndex + rowspan - 1, columnIndex, columnIndex + colspan - 1));
-        regionUtilsMockedStatic.close();
     }
 
     @RepeatedTest(10)
     void writeFormat1() {
         LocalDateTime localDateTime = LocalDateTime.now();
-        Date value =  this.convert(localDateTime).getTime();
+        Date value = this.convert(localDateTime).getTime();
 
         int rowIndex = random.nextInt();
         int columnIndex = random.nextInt();
@@ -149,14 +144,12 @@ class DateStringHandlerTest extends CellHandlerTest {
         Mockito.when(excelFieldConfig.getJavaFormat()).thenReturn("yyyy-MM-dd");
         Mockito.when(row.getRowNum()).thenReturn(rowIndex);
 
-        MockedStatic<RegionUtils> regionUtilsMockedStatic = Mockito.mockStatic(RegionUtils.class);
         cellHandler.write(rowContext, columnIndex, excelFieldConfig, value);
 
         Mockito.verify(cell).setCellValue(ExcelDateFormatUtils.format(value, "yyyy-MM-dd"));
 
         Mockito.verify(cell).setCellStyle(cellStyle);
         regionUtilsMockedStatic.verify(() -> RegionUtils.addMergedRegionIfPresent(sheetContext, cellStyle, rowIndex, rowIndex + rowspan - 1, columnIndex, columnIndex + colspan - 1));
-        regionUtilsMockedStatic.close();
     }
 
     @Override

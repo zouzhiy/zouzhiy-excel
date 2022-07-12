@@ -8,14 +8,13 @@ import org.apache.poi.ss.usermodel.Row;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-class FloatBooleanHandlerTest extends CellHandlerTest {
+class FloatBooleanHandlerTest extends io.github.zouzhiy.excel.handler.CellHandlerTest {
 
     private final FloatBooleanHandler cellHandler = new FloatBooleanHandler();
 
@@ -58,7 +57,7 @@ class FloatBooleanHandlerTest extends CellHandlerTest {
     @Override
     @RepeatedTest(5)
     void read() {
-        Float value = random.nextInt(1) * 1.0f;
+        Float value = random.nextInt(2) * 1.0f;
         CellResult cellResult = Mockito.mock(CellResult.class);
         Mockito.when(cellResult.getNumberValue()).thenReturn(BigDecimal.valueOf(value.intValue()));
         Mockito.when(cellResultSet.getFirstCellResult()).thenReturn(cellResult);
@@ -84,7 +83,6 @@ class FloatBooleanHandlerTest extends CellHandlerTest {
         Mockito.when(excelFieldConfig.getColspan()).thenReturn(colspan);
         Mockito.when(row.getRowNum()).thenReturn(rowIndex);
 
-        MockedStatic<RegionUtils> regionUtilsMockedStatic = Mockito.mockStatic(RegionUtils.class);
         cellHandler.write(rowContext, columnIndex, excelFieldConfig, value);
 
         if (value == null) {
@@ -94,7 +92,6 @@ class FloatBooleanHandlerTest extends CellHandlerTest {
         }
         Mockito.verify(cell).setCellStyle(cellStyle);
         regionUtilsMockedStatic.verify(() -> RegionUtils.addMergedRegionIfPresent(sheetContext, cellStyle, rowIndex, rowIndex + rowspan - 1, columnIndex, columnIndex + colspan - 1));
-        regionUtilsMockedStatic.close();
     }
 
     @Override

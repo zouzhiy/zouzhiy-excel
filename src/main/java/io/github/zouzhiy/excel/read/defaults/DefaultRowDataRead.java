@@ -107,7 +107,7 @@ public class DefaultRowDataRead implements RowDataRead {
     private <T> CellHandler<T> getCellHandler(SheetContext sheetContext, Class<? extends CellHandler<?>>[] cellHandlerClazz, Class<T> javaType, ExcelType excelType) {
         CellHandlerRegistry cellHandlerRegistry = sheetContext.getConfiguration().getCellHandlerRegistry();
         //noinspection unchecked
-        return cellHandlerRegistry.getCellHandler((Class<? extends CellHandler<T>>[]) cellHandlerClazz, javaType, excelType);
+        return cellHandlerRegistry.getCellHandler(cellHandlerClazz, javaType, excelType);
     }
 
 

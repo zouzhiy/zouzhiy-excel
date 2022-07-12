@@ -1,7 +1,7 @@
 package io.github.zouzhiy.excel.handler;
 
 import io.github.zouzhiy.excel.enums.ExcelType;
-import io.github.zouzhiy.excel.handler.calendar.CalendarDateHandler;
+import io.github.zouzhiy.excel.handler.shorts.ShortBooleanHandler;
 import io.github.zouzhiy.excel.metadata.result.CellResult;
 import io.github.zouzhiy.excel.utils.RegionUtils;
 import org.apache.poi.ss.usermodel.Row;
@@ -10,35 +10,31 @@ import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
-class CalendarDateHandlerTest extends CellHandlerTest {
+class ShortBooleanHandlerTest extends CellHandlerTest {
 
-    private final CalendarDateHandler cellHandler = new CalendarDateHandler();
+    private final ShortBooleanHandler cellHandler = new ShortBooleanHandler();
 
 
     @Override
     @Test
     void getJavaType() {
-        Assertions.assertEquals(cellHandler.getJavaType(), Calendar.class);
+        Assertions.assertEquals(cellHandler.getJavaType(), Short.class);
     }
 
     @Override
     @Test
     void getExcelType() {
-        Assertions.assertEquals(cellHandler.getExcelType(), ExcelType.DATE);
+        Assertions.assertEquals(cellHandler.getExcelType(), ExcelType.BOOLEAN);
     }
 
     @Test
     void readNone1() {
         Mockito.when(cellResultSet.isNone()).thenReturn(true);
-        Calendar result = cellHandler.read(sheetContext, excelFieldConfig, cellResultSet);
+        Short result = cellHandler.read(sheetContext, excelFieldConfig, cellResultSet);
         Assertions.assertNull(result);
     }
 
@@ -46,7 +42,7 @@ class CalendarDateHandlerTest extends CellHandlerTest {
     void readNone2() {
         CellResult cellResultNone = CellResult.none();
         Mockito.when(cellResultSet.getFirstCellResult()).thenReturn(cellResultNone);
-        Calendar result = cellHandler.read(sheetContext, excelFieldConfig, cellResultSet);
+        Short result = cellHandler.read(sheetContext, excelFieldConfig, cellResultSet);
         Assertions.assertNull(result);
     }
 
@@ -54,27 +50,25 @@ class CalendarDateHandlerTest extends CellHandlerTest {
     void readNoneBlank() {
         CellResult cellResultNone = CellResult.blank(cell, cellSpan);
         Mockito.when(cellResultSet.getFirstCellResult()).thenReturn(cellResultNone);
-        Calendar result = cellHandler.read(sheetContext, excelFieldConfig, cellResultSet);
+        Short result = cellHandler.read(sheetContext, excelFieldConfig, cellResultSet);
         Assertions.assertNull(result);
     }
 
     @Override
     @RepeatedTest(5)
     void read() {
+        Short value = (short) random.nextInt(2);
         CellResult cellResult = Mockito.mock(CellResult.class);
-        LocalDateTime localDateTime = LocalDateTime.now();
-        Calendar value = this.convert(localDateTime);
-        Mockito.when(cellResult.getDateValue()).thenReturn(localDateTime);
+        Mockito.when(cellResult.getNumberValue()).thenReturn(BigDecimal.valueOf(value.intValue()));
         Mockito.when(cellResultSet.getFirstCellResult()).thenReturn(cellResult);
-        Calendar result = cellHandler.read(sheetContext, excelFieldConfig, cellResultSet);
+        Short result = cellHandler.read(sheetContext, excelFieldConfig, cellResultSet);
         Assertions.assertEquals(result, value);
     }
 
     @Override
     @RepeatedTest(10)
     void write() {
-        LocalDateTime localDateTime = LocalDateTime.now();
-        Calendar value = random.nextBoolean() ? null : this.convert(localDateTime);
+        Short value = random.nextBoolean() ? null : (short) random.nextInt();
         int rowIndex = random.nextInt();
         int columnIndex = random.nextInt();
         int rowspan = random.nextInt();
@@ -94,7 +88,7 @@ class CalendarDateHandlerTest extends CellHandlerTest {
         if (value == null) {
             Mockito.verify(cell, Mockito.times(0)).setCellValue(Mockito.anyBoolean());
         } else {
-            Mockito.verify(cell).setCellValue(value);
+            Mockito.verify(cell).setCellValue(value.compareTo((short) 1) == 0);
         }
         Mockito.verify(cell).setCellStyle(cellStyle);
         regionUtilsMockedStatic.verify(() -> RegionUtils.addMergedRegionIfPresent(sheetContext, cellStyle, rowIndex, rowIndex + rowspan - 1, columnIndex, columnIndex + colspan - 1));
@@ -103,8 +97,7 @@ class CalendarDateHandlerTest extends CellHandlerTest {
     @Override
     @RepeatedTest(5)
     void getWriteRowspan() {
-        LocalDateTime localDateTime = LocalDateTime.now();
-        Calendar value = random.nextBoolean() ? null : this.convert(localDateTime);
+        Short value = random.nextBoolean() ? null : (short) random.nextInt(2);
         Assertions.assertEquals(cellHandler.getWriteRowspan(value), 1);
     }
 
@@ -117,14 +110,6 @@ class CalendarDateHandlerTest extends CellHandlerTest {
     @Override
     @Test
     void getDefaultExcelFormat() {
-        Assertions.assertEquals(cellHandler.getDefaultExcelFormat(), "yyyy-MM-dd HH:mm:ss");
-    }
-
-    private Calendar convert(LocalDateTime localDateTime) {
-        ZoneId zoneId = ZoneId.systemDefault();
-        ZonedDateTime zdt = localDateTime.atZone(zoneId);
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(Date.from(zdt.toInstant()));
-        return calendar;
+        Assertions.assertEquals(cellHandler.getDefaultExcelFormat(), "");
     }
 }

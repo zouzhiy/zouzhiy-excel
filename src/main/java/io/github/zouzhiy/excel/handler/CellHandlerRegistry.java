@@ -87,40 +87,39 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class CellHandlerRegistry {
 
-    private static final ConcurrentHashMap<Class<?>, ExcelType> STANDARD_MAPPING;
+    private final ConcurrentHashMap<Class<?>, ExcelType> standardMapping = new ConcurrentHashMap<>(32);
 
-    static {
-        STANDARD_MAPPING = new ConcurrentHashMap<>();
-        STANDARD_MAPPING.put(BigDecimal.class, ExcelType.NUMERIC);
-        STANDARD_MAPPING.put(BigInteger.class, ExcelType.NUMERIC);
-        STANDARD_MAPPING.put(boolean.class, ExcelType.BOOLEAN);
-        STANDARD_MAPPING.put(Boolean.class, ExcelType.BOOLEAN);
-        STANDARD_MAPPING.put(byte.class, ExcelType.NUMERIC);
-        STANDARD_MAPPING.put(Byte.class, ExcelType.NUMERIC);
-        STANDARD_MAPPING.put(byte[].class, ExcelType.STRING);
-        STANDARD_MAPPING.put(Byte[].class, ExcelType.STRING);
-        STANDARD_MAPPING.put(Calendar.class, ExcelType.DATE);
-        STANDARD_MAPPING.put(java.sql.Date.class, ExcelType.DATE);
-        STANDARD_MAPPING.put(Date.class, ExcelType.DATE);
-        STANDARD_MAPPING.put(double.class, ExcelType.NUMERIC);
-        STANDARD_MAPPING.put(Double.class, ExcelType.NUMERIC);
-        STANDARD_MAPPING.put(float.class, ExcelType.NUMERIC);
-        STANDARD_MAPPING.put(Float.class, ExcelType.NUMERIC);
-        STANDARD_MAPPING.put(int.class, ExcelType.NUMERIC);
-        STANDARD_MAPPING.put(Integer.class, ExcelType.NUMERIC);
-        STANDARD_MAPPING.put(LocalDate.class, ExcelType.DATE);
-        STANDARD_MAPPING.put(LocalDateTime.class, ExcelType.DATE);
-        STANDARD_MAPPING.put(LocalTime.class, ExcelType.DATE);
-        STANDARD_MAPPING.put(long.class, ExcelType.NUMERIC);
-        STANDARD_MAPPING.put(Long.class, ExcelType.NUMERIC);
-        STANDARD_MAPPING.put(OffsetDateTime.class, ExcelType.DATE);
-        STANDARD_MAPPING.put(OffsetTime.class, ExcelType.DATE);
-        STANDARD_MAPPING.put(Short.class, ExcelType.NUMERIC);
-        STANDARD_MAPPING.put(String.class, ExcelType.STRING);
-        STANDARD_MAPPING.put(Time.class, ExcelType.DATE);
-        STANDARD_MAPPING.put(Timestamp.class, ExcelType.DATE);
-        STANDARD_MAPPING.put(URL.class, ExcelType.STRING);
-        STANDARD_MAPPING.put(List.class, ExcelType.STRING);
+    {
+        standardMapping.put(BigDecimal.class, ExcelType.NUMERIC);
+        standardMapping.put(BigInteger.class, ExcelType.NUMERIC);
+        standardMapping.put(boolean.class, ExcelType.BOOLEAN);
+        standardMapping.put(Boolean.class, ExcelType.BOOLEAN);
+        standardMapping.put(byte.class, ExcelType.NUMERIC);
+        standardMapping.put(Byte.class, ExcelType.NUMERIC);
+        standardMapping.put(byte[].class, ExcelType.STRING);
+        standardMapping.put(Byte[].class, ExcelType.STRING);
+        standardMapping.put(Calendar.class, ExcelType.DATE);
+        standardMapping.put(java.sql.Date.class, ExcelType.DATE);
+        standardMapping.put(Date.class, ExcelType.DATE);
+        standardMapping.put(double.class, ExcelType.NUMERIC);
+        standardMapping.put(Double.class, ExcelType.NUMERIC);
+        standardMapping.put(float.class, ExcelType.NUMERIC);
+        standardMapping.put(Float.class, ExcelType.NUMERIC);
+        standardMapping.put(int.class, ExcelType.NUMERIC);
+        standardMapping.put(Integer.class, ExcelType.NUMERIC);
+        standardMapping.put(LocalDate.class, ExcelType.DATE);
+        standardMapping.put(LocalDateTime.class, ExcelType.DATE);
+        standardMapping.put(LocalTime.class, ExcelType.DATE);
+        standardMapping.put(long.class, ExcelType.NUMERIC);
+        standardMapping.put(Long.class, ExcelType.NUMERIC);
+        standardMapping.put(OffsetDateTime.class, ExcelType.DATE);
+        standardMapping.put(OffsetTime.class, ExcelType.DATE);
+        standardMapping.put(Short.class, ExcelType.NUMERIC);
+        standardMapping.put(String.class, ExcelType.STRING);
+        standardMapping.put(Time.class, ExcelType.DATE);
+        standardMapping.put(Timestamp.class, ExcelType.DATE);
+        standardMapping.put(URL.class, ExcelType.STRING);
+        standardMapping.put(List.class, ExcelType.STRING);
     }
 
     private final Map<Class<?>, CellHandler<?>> allCellHandlerMap = new ConcurrentHashMap<>();
@@ -213,6 +212,11 @@ public class CellHandlerRegistry {
     }
 
     public void register(CellHandler<?> cellHandler) {
+        ExcelStandardMapping excelStandardMapping = cellHandler.getClass().getAnnotation(ExcelStandardMapping.class);
+        if (excelStandardMapping != null) {
+            this.addStandardMapping(cellHandler.getJavaType(), cellHandler.getExcelType());
+        }
+
         Class<?> javaType = cellHandler.getJavaType();
         List<CellHandler<?>> cellHandlerList = cellHandlerListMap.computeIfAbsent(javaType, k -> new ArrayList<>());
 
@@ -223,20 +227,17 @@ public class CellHandlerRegistry {
         allCellHandlerMap.put(cellHandler.getClass(), cellHandler);
     }
 
-    public <T> CellHandler<T> getCellHandler(Class<? extends CellHandler<T>> cellHandlerClazz, Class<T> clazz, ExcelType excelType) {
-        return getCellHandler(Collections.singletonList(cellHandlerClazz), clazz, excelType);
+    public <T> CellHandler<T> getCellHandler(Class<? extends CellHandler<?>> cellHandlerClazz) {
+        //noinspection unchecked
+        return (CellHandler<T>) this.getCellHandler(Collections.singletonList(cellHandlerClazz), ExcelType.BLANK);
     }
 
-    public <T> CellHandler<T> getCellHandler(Class<? extends CellHandler<T>>[] cellHandlerClazz, Class<T> clazz, ExcelType excelType) {
-        if (cellHandlerClazz == null || cellHandlerClazz.length == 0) {
-            return this.getCellHandler(clazz, excelType);
-
-        } else {
-            return this.getCellHandler(Arrays.asList(cellHandlerClazz), excelType);
-        }
+    public <T> CellHandler<T> getCellHandler(Class<? extends CellHandler<?>>[] cellHandlerClazz, Class<?> clazz, ExcelType excelType) {
+        //noinspection unchecked
+        return (CellHandler<T>) this.getCellHandler(Arrays.asList(cellHandlerClazz), clazz, excelType);
     }
 
-    public <T> CellHandler<T> getCellHandler(List<Class<? extends CellHandler<T>>> cellHandlerClazzList, Class<T> clazz, ExcelType excelType) {
+    public CellHandler<?> getCellHandler(List<Class<? extends CellHandler<?>>> cellHandlerClazzList, Class<?> clazz, ExcelType excelType) {
         if (cellHandlerClazzList.isEmpty()) {
             return this.getCellHandler(clazz, excelType);
         } else {
@@ -244,115 +245,77 @@ public class CellHandlerRegistry {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    public <T> CellHandler<T> getCellHandler(List<Class<? extends CellHandler<T>>> cellHandlerClazzList, ExcelType excelType) {
-        List<CellHandler<T>> cellHandlerList = new ArrayList<>();
-        for (Class<? extends CellHandler<T>> cellHandlerClazz : cellHandlerClazzList) {
-            CellHandler<T> cellHandler = (CellHandler<T>) allCellHandlerMap.get(cellHandlerClazz);
+    public CellHandler<?> getCellHandler(List<Class<? extends CellHandler<?>>> cellHandlerClazzList, ExcelType excelType) {
+        List<CellHandler<?>> cellHandlerList = new ArrayList<>();
+        for (Class<? extends CellHandler<?>> cellHandlerClazz : cellHandlerClazzList) {
+            CellHandler<?> cellHandler = allCellHandlerMap.get(cellHandlerClazz);
             if (cellHandler == null) {
                 continue;
             }
             cellHandlerList.add(cellHandler);
         }
-        if (cellHandlerList.isEmpty()) {
-            throw new ExcelException("无对应的转换器。%s,%s", cellHandlerClazzList, excelType);
+        return getWinnerCellHandler(cellHandlerList, null, excelType);
+    }
+
+
+    public <T> CellHandler<T> getCellHandler(Class<?> clazz, ExcelType excelType) {
+        Class<?> boxClazz = this.getBoxClazz(clazz);
+        List<CellHandler<?>> cellHandlerList = cellHandlerListMap.get(boxClazz);
+
+        //noinspection unchecked
+        return (CellHandler<T>) getWinnerCellHandler(cellHandlerList, clazz, excelType);
+    }
+
+    public List<CellHandler<?>> getAllHandler() {
+        return new ArrayList<>(allCellHandlerMap.values());
+    }
+
+    /**
+     * 根据条件，选出一个最佳匹配的 {@link io.github.zouzhiy.excel.handler.CellHandler}
+     * 以不返回空为最大追求结果
+     *
+     * @param cellHandlerList 第一次筛选匹配的CellHandler列表
+     * @param javaClazz       java类型
+     * @param excelType       excle单元格格式
+     * @return 最匹配的CellHandler
+     */
+    private CellHandler<?> getWinnerCellHandler(List<CellHandler<?>> cellHandlerList, Class<?> javaClazz, ExcelType excelType) {
+        if (cellHandlerList == null || cellHandlerList.isEmpty()) {
+            throw new ExcelException("无对应的转换器。%s,%s", javaClazz, excelType);
         }
+
+        if (javaClazz == null) {
+            javaClazz = cellHandlerList.get(0).getJavaType();
+        }
+        // 只有一个，则此元素胜出
         if (cellHandlerList.size() == 1) {
             return cellHandlerList.get(0);
         }
 
-        for (CellHandler<T> cellHandler : cellHandlerList) {
-            if (excelType.equals(cellHandler.getExcelType())) {
-                return cellHandler;
-            }
-        }
-
         List<CellHandler<?>> winnerList = new ArrayList<>();
+        // excelType匹配的优先级最高
         for (CellHandler<?> cellHandler : cellHandlerList) {
             if (excelType.equals(cellHandler.getExcelType())) {
                 winnerList.add(cellHandler);
             }
         }
         if (winnerList.size() > 0) {
-            return (CellHandler<T>) winnerList.get(0);
+            return winnerList.get(0);
         }
 
-        if (excelType.equals(ExcelType.BLANK)) {
-            excelType = STANDARD_MAPPING.getOrDefault(cellHandlerList.get(0).getJavaType(), ExcelType.NONE);
-        }
+        // excelType不匹配的情况下，取标准匹配
+        excelType = standardMapping.getOrDefault(javaClazz, ExcelType.NONE);
         for (CellHandler<?> cellHandler : cellHandlerList) {
             if (excelType.equals(cellHandler.getExcelType())) {
                 winnerList.add(cellHandler);
             }
         }
         if (winnerList.size() > 0) {
-            return (CellHandler<T>) winnerList.get(0);
+            return winnerList.get(0);
         }
 
-        for (CellHandler<?> cellHandler : cellHandlerList) {
-            if (ExcelType.NONE.equals(cellHandler.getExcelType())) {
-                winnerList.add(cellHandler);
-            }
-        }
-        if (winnerList.size() > 0) {
-            return (CellHandler<T>) winnerList.get(0);
-        }
-
-        throw new ExcelException("无对应的转换器。%s,%s", cellHandlerClazzList, excelType);
-    }
-
-    public <T> CellHandler<T> getCellHandler(Class<? extends CellHandler<T>> cellHandlerClazz) {
-        CellHandler<?> cellHandler = allCellHandlerMap.get(cellHandlerClazz);
-        if (cellHandler == null) {
-            throw new ExcelException("无对应的转换器。%s", cellHandlerClazz);
-        }
-        //noinspection unchecked
-        return (CellHandler<T>) cellHandler;
-    }
-
-    @SuppressWarnings("unchecked")
-    public <T> CellHandler<T> getCellHandler(Class<T> clazz, ExcelType excelType) {
-        Class<?> boxClazz = this.getBoxClazz(clazz);
-        List<CellHandler<?>> cellHandlerList = cellHandlerListMap.get(boxClazz);
-        if (cellHandlerList == null || cellHandlerList.isEmpty()) {
-            throw new ExcelException("无对应的转换器。%s,%s", clazz, excelType);
-        }
-
-        if (cellHandlerList.size() == 1) {
-            return (CellHandler<T>) cellHandlerList.get(0);
-        }
-
-        List<CellHandler<?>> winnerList = new ArrayList<>();
-        for (CellHandler<?> cellHandler : cellHandlerList) {
-            if (excelType.equals(cellHandler.getExcelType())) {
-                winnerList.add(cellHandler);
-            }
-        }
-        if (winnerList.size() > 0) {
-            return (CellHandler<T>) winnerList.get(0);
-        }
-
-        if (excelType.equals(ExcelType.BLANK)) {
-            excelType = STANDARD_MAPPING.getOrDefault(clazz, ExcelType.NONE);
-        }
-        for (CellHandler<?> cellHandler : cellHandlerList) {
-            if (excelType.equals(cellHandler.getExcelType())) {
-                winnerList.add(cellHandler);
-            }
-        }
-        if (winnerList.size() > 0) {
-            return (CellHandler<T>) winnerList.get(0);
-        }
-
-        for (CellHandler<?> cellHandler : cellHandlerList) {
-            if (ExcelType.NONE.equals(cellHandler.getExcelType())) {
-                winnerList.add(cellHandler);
-            }
-        }
-        if (winnerList.size() > 0) {
-            return (CellHandler<T>) winnerList.get(0);
-        }
-        throw new ExcelException("无对应的转换器。%s,%s", clazz, excelType);
+        // 实在匹配不上，就去第一个
+        return cellHandlerList.get(0);
     }
 
     private Class<?> getBoxClazz(Class<?> clazz) {
@@ -375,5 +338,9 @@ public class CellHandlerRegistry {
             newClazz = Double.class;
         }
         return newClazz;
+    }
+
+    private void addStandardMapping(Class<?> javaType, ExcelType excelType) {
+        standardMapping.put(javaType, excelType);
     }
 }

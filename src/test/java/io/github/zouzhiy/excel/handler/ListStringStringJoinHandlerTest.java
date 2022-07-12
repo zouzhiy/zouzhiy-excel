@@ -1,9 +1,8 @@
 package io.github.zouzhiy.excel.handler;
 
 import io.github.zouzhiy.excel.enums.ExcelType;
-import io.github.zouzhiy.excel.handler.floats.FloatStringHandler;
+import io.github.zouzhiy.excel.handler.list.ListStringStringJoinHandler;
 import io.github.zouzhiy.excel.metadata.result.CellResult;
-import io.github.zouzhiy.excel.utils.ExcelNumberUtils;
 import io.github.zouzhiy.excel.utils.RegionUtils;
 import org.apache.poi.ss.usermodel.Row;
 import org.junit.jupiter.api.Assertions;
@@ -11,18 +10,17 @@ import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-class FloatStringHandlerTest extends CellHandlerTest {
+public class ListStringStringJoinHandlerTest extends CellHandlerTest {
 
-    private final FloatStringHandler cellHandler = new FloatStringHandler();
+    private final ListStringStringJoinHandler cellHandler = new ListStringStringJoinHandler();
 
     @Override
     @Test
     void getJavaType() {
-        Assertions.assertEquals(cellHandler.getJavaType(), Float.class);
+        Assertions.assertEquals(cellHandler.getJavaType(), List.class);
     }
 
     @Override
@@ -34,7 +32,7 @@ class FloatStringHandlerTest extends CellHandlerTest {
     @Test
     void readNone1() {
         Mockito.when(cellResultSet.isNone()).thenReturn(true);
-        Float result = cellHandler.read(sheetContext, excelFieldConfig, cellResultSet);
+        List<String> result = cellHandler.read(sheetContext, excelFieldConfig, cellResultSet);
         Assertions.assertNull(result);
     }
 
@@ -42,7 +40,7 @@ class FloatStringHandlerTest extends CellHandlerTest {
     void readNone2() {
         CellResult cellResultNone = CellResult.none();
         Mockito.when(cellResultSet.getFirstCellResult()).thenReturn(cellResultNone);
-        Float result = cellHandler.read(sheetContext, excelFieldConfig, cellResultSet);
+        List<String> result = cellHandler.read(sheetContext, excelFieldConfig, cellResultSet);
         Assertions.assertNull(result);
     }
 
@@ -50,18 +48,21 @@ class FloatStringHandlerTest extends CellHandlerTest {
     void readNoneBlank() {
         CellResult cellResultNone = CellResult.blank(cell, cellSpan);
         Mockito.when(cellResultSet.getFirstCellResult()).thenReturn(cellResultNone);
-        Float result = cellHandler.read(sheetContext, excelFieldConfig, cellResultSet);
-        Assertions.assertNull(result);
+        List<String> result = cellHandler.read(sheetContext, excelFieldConfig, cellResultSet);
+        Assertions.assertTrue(result.isEmpty());
     }
 
     @Override
     @RepeatedTest(5)
     void read() {
-        Float value = random.nextFloat();
+        List<String> value = new ArrayList<>();
+        value.add(random.nextDouble() + "");
+        value.add(random.nextDouble() + "");
+        value.add(random.nextDouble() + "");
         CellResult cellResult = Mockito.mock(CellResult.class);
-        Mockito.when(cellResult.getNumberValue()).thenReturn(new BigDecimal(value));
+        Mockito.when(cellResult.getStringValue()).thenReturn(String.join(";", value));
         Mockito.when(cellResultSet.getFirstCellResult()).thenReturn(cellResult);
-        Float result = cellHandler.read(sheetContext, excelFieldConfig, cellResultSet);
+        List<String> result = cellHandler.read(sheetContext, excelFieldConfig, cellResultSet);
         Assertions.assertEquals(result, value);
     }
 
@@ -89,10 +90,38 @@ class FloatStringHandlerTest extends CellHandlerTest {
         regionUtilsMockedStatic.verify(() -> RegionUtils.addMergedRegionIfPresent(sheetContext, cellStyle, rowIndex, rowIndex + rowspan - 1, columnIndex, columnIndex + colspan - 1));
     }
 
+    @RepeatedTest(10)
+    void writeEmpty() {
+        List<String> value = new ArrayList<>();
+        int rowIndex = random.nextInt();
+        int columnIndex = random.nextInt();
+        int rowspan = random.nextInt();
+        int colspan = random.nextInt();
+        List<Row> rowList = new ArrayList<>();
+        rowList.add(row);
+        Mockito.when(rowContext.getRowList()).thenReturn(rowList);
+        Mockito.when(row.createCell(columnIndex)).thenReturn(cell);
+        Mockito.when(rowContext.getSheetContext()).thenReturn(sheetContext);
+        Mockito.when(sheetContext.getDataCellStyle(excelFieldConfig, cellHandler.getDefaultExcelFormat())).thenReturn(cellStyle);
+        Mockito.when(rowContext.getRowspan()).thenReturn(rowspan);
+        Mockito.when(excelFieldConfig.getColspan()).thenReturn(colspan);
+        Mockito.when(row.getRowNum()).thenReturn(rowIndex);
+
+        cellHandler.write(rowContext, columnIndex, excelFieldConfig, value);
+
+        Mockito.verify(cell).setCellValue(String.join(";", value));
+
+        Mockito.verify(cell).setCellStyle(cellStyle);
+        regionUtilsMockedStatic.verify(() -> RegionUtils.addMergedRegionIfPresent(sheetContext, cellStyle, rowIndex, rowIndex + rowspan - 1, columnIndex, columnIndex + colspan - 1));
+    }
+
     @Override
     @RepeatedTest(10)
     void write() {
-        Float value = random.nextFloat();
+        List<String> value = new ArrayList<>();
+        value.add(random.nextDouble() + "");
+        value.add(random.nextDouble() + "");
+        value.add(random.nextDouble() + "");
         int rowIndex = random.nextInt();
         int columnIndex = random.nextInt();
         int rowspan = random.nextInt();
@@ -105,47 +134,24 @@ class FloatStringHandlerTest extends CellHandlerTest {
         Mockito.when(sheetContext.getDataCellStyle(excelFieldConfig, cellHandler.getDefaultExcelFormat())).thenReturn(cellStyle);
         Mockito.when(rowContext.getRowspan()).thenReturn(rowspan);
         Mockito.when(excelFieldConfig.getColspan()).thenReturn(colspan);
-        Mockito.when(excelFieldConfig.getJavaFormat()).thenReturn("");
         Mockito.when(row.getRowNum()).thenReturn(rowIndex);
 
         cellHandler.write(rowContext, columnIndex, excelFieldConfig, value);
 
-        Mockito.verify(cell).setCellValue(String.valueOf(value));
+        Mockito.verify(cell).setCellValue(String.join(";", value));
 
         Mockito.verify(cell).setCellStyle(cellStyle);
         regionUtilsMockedStatic.verify(() -> RegionUtils.addMergedRegionIfPresent(sheetContext, cellStyle, rowIndex, rowIndex + rowspan - 1, columnIndex, columnIndex + colspan - 1));
     }
 
-    @RepeatedTest(10)
-    void writeFormat1() {
-        Float value = random.nextFloat();
-        int rowIndex = random.nextInt();
-        int columnIndex = random.nextInt();
-        int rowspan = random.nextInt();
-        int colspan = random.nextInt();
-        List<Row> rowList = new ArrayList<>();
-        rowList.add(row);
-        Mockito.when(rowContext.getRowList()).thenReturn(rowList);
-        Mockito.when(row.createCell(columnIndex)).thenReturn(cell);
-        Mockito.when(rowContext.getSheetContext()).thenReturn(sheetContext);
-        Mockito.when(sheetContext.getDataCellStyle(excelFieldConfig, cellHandler.getDefaultExcelFormat())).thenReturn(cellStyle);
-        Mockito.when(rowContext.getRowspan()).thenReturn(rowspan);
-        Mockito.when(excelFieldConfig.getColspan()).thenReturn(colspan);
-        Mockito.when(excelFieldConfig.getJavaFormat()).thenReturn("0.00");
-        Mockito.when(row.getRowNum()).thenReturn(rowIndex);
-
-        cellHandler.write(rowContext, columnIndex, excelFieldConfig, value);
-
-        Mockito.verify(cell).setCellValue(ExcelNumberUtils.format(value, "0.00"));
-
-        Mockito.verify(cell).setCellStyle(cellStyle);
-        regionUtilsMockedStatic.verify(() -> RegionUtils.addMergedRegionIfPresent(sheetContext, cellStyle, rowIndex, rowIndex + rowspan - 1, columnIndex, columnIndex + colspan - 1));
-    }
 
     @Override
     @RepeatedTest(5)
     void getWriteRowspan() {
-        Float value = random.nextFloat();
+        List<String> value = new ArrayList<>();
+        value.add(random.nextDouble() + "");
+        value.add(random.nextDouble() + "");
+        value.add(random.nextDouble() + "");
         Assertions.assertEquals(cellHandler.getWriteRowspan(value), 1);
     }
 

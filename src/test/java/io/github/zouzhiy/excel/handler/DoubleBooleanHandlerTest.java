@@ -8,7 +8,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 import java.math.BigDecimal;
@@ -58,7 +57,7 @@ class DoubleBooleanHandlerTest extends CellHandlerTest {
     @Override
     @RepeatedTest(5)
     void read() {
-        Double value = random.nextInt(1) * 1.0;
+        Double value = random.nextInt(2) * 1.0;
         CellResult cellResult = Mockito.mock(CellResult.class);
         Mockito.when(cellResult.getNumberValue()).thenReturn(BigDecimal.valueOf(value.intValue()));
         Mockito.when(cellResultSet.getFirstCellResult()).thenReturn(cellResult);
@@ -84,7 +83,6 @@ class DoubleBooleanHandlerTest extends CellHandlerTest {
         Mockito.when(excelFieldConfig.getColspan()).thenReturn(colspan);
         Mockito.when(row.getRowNum()).thenReturn(rowIndex);
 
-        MockedStatic<RegionUtils> regionUtilsMockedStatic = Mockito.mockStatic(RegionUtils.class);
         cellHandler.write(rowContext, columnIndex, excelFieldConfig, value);
 
         if (value == null) {
@@ -94,7 +92,6 @@ class DoubleBooleanHandlerTest extends CellHandlerTest {
         }
         Mockito.verify(cell).setCellStyle(cellStyle);
         regionUtilsMockedStatic.verify(() -> RegionUtils.addMergedRegionIfPresent(sheetContext, cellStyle, rowIndex, rowIndex + rowspan - 1, columnIndex, columnIndex + colspan - 1));
-        regionUtilsMockedStatic.close();
     }
 
     @Override

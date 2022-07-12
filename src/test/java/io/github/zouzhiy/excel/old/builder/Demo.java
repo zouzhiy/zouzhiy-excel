@@ -244,14 +244,14 @@ public class Demo {
     private LocalTime localTimeString = nextBoolean() ? null : LocalTime.now();
 
     @ExcelField(excelType = ExcelType.BOOLEAN)
-    private long unboxLongBoolean = random.nextInt(1) *1L;
+    private long unboxLongBoolean = random.nextInt(1) * 1L;
     @ExcelField(excelType = ExcelType.NUMERIC)
     private long unboxLongNumber = random.nextInt() * 1L;
     @ExcelField(excelType = ExcelType.STRING)
     private long unboxLongString = random.nextInt() * 1L;
 
     @ExcelField(excelType = ExcelType.BOOLEAN)
-    private Long boxLongBoolean = nextBoolean() ? null : random.nextInt(1) *1L;
+    private Long boxLongBoolean = nextBoolean() ? null : random.nextInt(1) * 1L;
     @ExcelField(excelType = ExcelType.NUMERIC)
     private Long boxLongNumber = nextBoolean() ? null : random.nextInt() * 1L;
     @ExcelField(excelType = ExcelType.STRING)
