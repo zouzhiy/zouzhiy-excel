@@ -28,7 +28,7 @@ public abstract class AbstractLocalDateTimeCellHandler extends AbstractCellHandl
 
     @Override
     protected final LocalDateTime getCellValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResult firstCellResult) {
-        return firstCellResult.getDateValue();
+        return firstCellResult.getDateValue(this.getJavaFormat(excelFieldConfig));
     }
 
 }

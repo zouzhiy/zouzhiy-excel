@@ -59,9 +59,9 @@ class StringDateHandlerTest extends CellHandlerTest {
     void read() {
         CellResult cellResult = Mockito.mock(CellResult.class);
         String value = "20220302 23:11:22";
-        Mockito.when(cellResult.getDateValue()).thenReturn(ExcelDateParseUtils.parseDateTime(value));
+        Mockito.when(cellResult.getDateValue("yyyyMMdd HH:mm:ss")).thenReturn(ExcelDateParseUtils.parseDateTime(value, "yyyyMMdd HH:mm:ss"));
         Mockito.when(cellResultSet.getFirstCellResult()).thenReturn(cellResult);
-        Mockito.when(excelFieldConfig.getJavaFormat()).thenReturn("");
+        Mockito.when(excelFieldConfig.getJavaFormat()).thenReturn("yyyyMMdd HH:mm:ss");
         String result = cellHandler.read(sheetContext, excelFieldConfig, cellResultSet);
         Assertions.assertEquals(result, value);
     }

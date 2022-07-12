@@ -64,8 +64,9 @@ class CalendarDateHandlerTest extends CellHandlerTest {
         CellResult cellResult = Mockito.mock(CellResult.class);
         LocalDateTime localDateTime = LocalDateTime.now();
         Calendar value = this.convert(localDateTime);
-        Mockito.when(cellResult.getDateValue()).thenReturn(localDateTime);
+        Mockito.when(cellResult.getDateValue(Mockito.anyString())).thenReturn(localDateTime);
         Mockito.when(cellResultSet.getFirstCellResult()).thenReturn(cellResult);
+        Mockito.when(excelFieldConfig.getJavaFormat()).thenReturn("");
         Calendar result = cellHandler.read(sheetContext, excelFieldConfig, cellResultSet);
         Assertions.assertEquals(result, value);
     }

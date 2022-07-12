@@ -168,9 +168,9 @@ public class CellResult {
         return booleanValue;
     }
 
-    public LocalDateTime getDateValue() {
+    public LocalDateTime getDateValue(String format) {
         if (!dateValueFlag) {
-            dateValue = this.recalculateDateValue();
+            dateValue = this.recalculateDateValue(format);
         }
         return dateValue;
     }
@@ -226,14 +226,14 @@ public class CellResult {
         return booleanValue;
     }
 
-    private LocalDateTime recalculateDateValue() {
+    private LocalDateTime recalculateDateValue(String format) {
         LocalDateTime localDateTime;
         switch (excelType) {
             case NUMERIC:
                 localDateTime = cell.getLocalDateTimeCellValue();
                 break;
             case STRING:
-                localDateTime = ExcelDateParseUtils.parseDateTime(stringValue);
+                localDateTime = ExcelDateParseUtils.parseDateTime(stringValue, format);
                 break;
             default:
                 localDateTime = null;

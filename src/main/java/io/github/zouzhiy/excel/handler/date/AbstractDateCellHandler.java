@@ -31,7 +31,7 @@ public abstract class AbstractDateCellHandler extends AbstractCellHandler<Date> 
 
     @Override
     protected final Date getCellValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResult firstCellResult) {
-        LocalDateTime localDateTime = firstCellResult.getDateValue();
+        LocalDateTime localDateTime = firstCellResult.getDateValue(this.getJavaFormat(excelFieldConfig));
         ZoneId zoneId = ZoneId.systemDefault();
         ZonedDateTime zdt = localDateTime.atZone(zoneId);
         return Date.from(zdt.toInstant());

@@ -62,8 +62,9 @@ class TimestampStringHandlerTest extends CellHandlerTest {
         Timestamp value = Timestamp.valueOf(localDateTime);
 
         CellResult cellResult = Mockito.mock(CellResult.class);
-        Mockito.when(cellResult.getDateValue()).thenReturn(localDateTime);
+        Mockito.when(cellResult.getDateValue(Mockito.anyString())).thenReturn(localDateTime);
         Mockito.when(cellResultSet.getFirstCellResult()).thenReturn(cellResult);
+        Mockito.when(excelFieldConfig.getJavaFormat()).thenReturn("");
         Timestamp result = cellHandler.read(sheetContext, excelFieldConfig, cellResultSet);
         Assertions.assertEquals(result, value);
     }

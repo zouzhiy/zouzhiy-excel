@@ -65,8 +65,9 @@ class DateNumberHandlerTest extends CellHandlerTest {
         Date value = this.convert(localDateTime).getTime();
 
         CellResult cellResult = Mockito.mock(CellResult.class);
-        Mockito.when(cellResult.getDateValue()).thenReturn(localDateTime);
+        Mockito.when(cellResult.getDateValue(Mockito.anyString())).thenReturn(localDateTime);
         Mockito.when(cellResultSet.getFirstCellResult()).thenReturn(cellResult);
+        Mockito.when(excelFieldConfig.getJavaFormat()).thenReturn("");
         Date result = cellHandler.read(sheetContext, excelFieldConfig, cellResultSet);
         Assertions.assertEquals(result, value);
     }

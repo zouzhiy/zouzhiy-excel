@@ -62,8 +62,9 @@ class LocalTimeDateHandlerTest extends CellHandlerTest {
         CellResult cellResult = Mockito.mock(CellResult.class);
         LocalDateTime localDateTime = LocalDateTime.now();
         LocalTime value = localDateTime.toLocalTime();
-        Mockito.when(cellResult.getDateValue()).thenReturn(localDateTime);
+        Mockito.when(cellResult.getDateValue(Mockito.anyString())).thenReturn(localDateTime);
         Mockito.when(cellResultSet.getFirstCellResult()).thenReturn(cellResult);
+        Mockito.when(excelFieldConfig.getJavaFormat()).thenReturn("");
         LocalTime result = cellHandler.read(sheetContext, excelFieldConfig, cellResultSet);
         Assertions.assertEquals(result, value);
     }

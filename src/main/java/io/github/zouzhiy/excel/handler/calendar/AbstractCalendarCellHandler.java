@@ -32,7 +32,7 @@ public abstract class AbstractCalendarCellHandler extends AbstractCellHandler<Ca
 
     @Override
     protected final Calendar getCellValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResult firstCellResult) {
-        LocalDateTime localDateTime = firstCellResult.getDateValue();
+        LocalDateTime localDateTime = firstCellResult.getDateValue(this.getJavaFormat(excelFieldConfig));
         ZoneId zoneId = ZoneId.systemDefault();
         ZonedDateTime zdt = localDateTime.atZone(zoneId);
         Calendar calendar = Calendar.getInstance();

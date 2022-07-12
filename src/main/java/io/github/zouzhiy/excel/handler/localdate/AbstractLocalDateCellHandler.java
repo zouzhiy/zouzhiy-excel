@@ -29,7 +29,7 @@ public abstract class AbstractLocalDateCellHandler extends AbstractCellHandler<L
 
     @Override
     protected final LocalDate getCellValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResult firstCellResult) {
-        LocalDateTime localDateTime = firstCellResult.getDateValue();
+        LocalDateTime localDateTime = firstCellResult.getDateValue(this.getJavaFormat(excelFieldConfig));
         return localDateTime == null ? null : localDateTime.toLocalDate();
     }
 

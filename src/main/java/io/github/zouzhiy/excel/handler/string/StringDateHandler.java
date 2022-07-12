@@ -33,7 +33,7 @@ public class StringDateHandler extends AbstractCellHandler<String> {
 
     @Override
     protected String getCellValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResult firstCellResult) {
-        LocalDateTime localDateTime = firstCellResult.getDateValue();
+        LocalDateTime localDateTime = firstCellResult.getDateValue(this.getJavaFormat(excelFieldConfig));
         String javaFormat = this.getJavaFormat(excelFieldConfig);
         return ExcelDateFormatUtils.format(localDateTime, javaFormat);
     }
