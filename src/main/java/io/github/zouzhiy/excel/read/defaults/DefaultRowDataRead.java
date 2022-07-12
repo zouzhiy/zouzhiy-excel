@@ -50,7 +50,6 @@ public class DefaultRowDataRead implements RowDataRead {
         SheetParameter sheetParameter = sheetContext.getSheetParameter();
         int dataColumnStartIndex = sheetParameter.getDataColumnStartIndex();
 
-
         ExcelClassConfig excelClassConfig = sheetContext.getExcelClassConfig();
         List<ExcelFieldConfig> itemList = excelClassConfig.getItemList();
         // 这一行的数据影响行数
@@ -103,7 +102,6 @@ public class DefaultRowDataRead implements RowDataRead {
 
     private <T> CellHandler<T> getCellHandler(SheetContext sheetContext, Class<? extends CellHandler<?>>[] cellHandlerClazz, Class<T> javaType, ExcelType excelType) {
         CellHandlerRegistry cellHandlerRegistry = sheetContext.getConfiguration().getCellHandlerRegistry();
-        //noinspection unchecked
         return cellHandlerRegistry.getCellHandler(cellHandlerClazz, javaType, excelType);
     }
 

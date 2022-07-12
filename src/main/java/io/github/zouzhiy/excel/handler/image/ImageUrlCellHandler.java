@@ -32,7 +32,7 @@ public class ImageUrlCellHandler extends AbstractImageCellHandler<String> {
 
     @Override
     protected String getCellValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResult firstCellResult) {
-        throw new ExcelException("不支持的方法");
+        return null;
     }
 
     @Override

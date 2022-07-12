@@ -21,7 +21,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,10 +36,10 @@ public class Demo {
     private Item value;
 
     @ExcelField(cellHandler = ItemListStringSplitHandler.class)
-    private List<Item> value1List ;
+    private List<Item> value1List;
 
     @ExcelField(cellHandler = ItemListStringSplitHandler.class)
-    private List<Item> value2List ;
+    private List<Item> value2List;
 
     @ExcelField(cellHandler = ItemListStringSplitHandler.class)
     private List<Item> value3List;

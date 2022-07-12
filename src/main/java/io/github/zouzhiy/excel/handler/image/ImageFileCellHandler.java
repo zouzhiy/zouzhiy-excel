@@ -33,7 +33,7 @@ public class ImageFileCellHandler extends AbstractImageCellHandler<File> {
 
     @Override
     protected File getCellValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResult firstCellResult) {
-        throw new ExcelException("不支持的方法");
+        return null;
     }
 
     @Override
