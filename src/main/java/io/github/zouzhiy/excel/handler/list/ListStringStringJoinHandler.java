@@ -26,6 +26,6 @@ public class ListStringStringJoinHandler extends AbstractListJoinHandler<String>
 
     @Override
     protected String parse(String item) {
-        return item;
+        return item == null ? null : "null".equals(item) ? null : item;
     }
 }

@@ -34,10 +34,12 @@ public class Demo {
 
     private String value;
 
-    private List<String> value1List = new ArrayList<>();
+    private List<String> value1List;
 
-    private List<String> value2List = new ArrayList<>();
+    private List<String> value2List;
 
-    private List<String> value3List = new ArrayList<>();
+    private List<String> value3List;
+
+    private List<String> value4List;
 
 }

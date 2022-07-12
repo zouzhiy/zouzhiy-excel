@@ -54,12 +54,19 @@ public abstract class AbstractListJoinHandler<E> extends AbstractListHandler<E> 
 
     @Override
     public void write(RowContext rowContext, Integer columnIndex, ExcelFieldConfig excelFieldConfig, List<E> valueList) {
-        if (valueList == null || valueList.isEmpty()) {
+        String value;
+        if (valueList == null) {
             return;
+        } else if (valueList.isEmpty()){
+            value = null;
+        } else {
+            value = valueList.stream().map(this::format).collect(Collectors.joining(this.getDelimiter()));
         }
-        String value = valueList.stream().map(this::format).collect(Collectors.joining(this.getDelimiter()));
 
-        CellHandler<String> cellHandler = rowContext.getSheetContext().getConfiguration().getCellHandlerRegistry().getCellHandler(String.class, this.getExcelType());
+        CellHandler<String> cellHandler = rowContext.getSheetContext()
+                .getConfiguration()
+                .getCellHandlerRegistry()
+                .getCellHandler(String.class, this.getExcelType());
         cellHandler.write(rowContext, columnIndex, excelFieldConfig, value);
     }
 

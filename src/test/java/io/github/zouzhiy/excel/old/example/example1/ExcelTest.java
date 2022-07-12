@@ -52,6 +52,23 @@ class ExcelTest {
 
     }
 
+    @Test
+    void write2() {
+        Excel excel = new Excel();
+        List<Demo> demoList = new ArrayList<>();
+        demoList.add(Demo.builder().value(this.getValue())
+                .value1List(new ArrayList<>())
+                .value2List(Collections.singletonList(""))
+                .value3List(Collections.singletonList(null))
+                .value4List(null)
+                .build());
+        File outputFile = excel.write(demoList);
+
+        List<Demo> demo1List = excel.read(outputFile);
+
+        assert demo1List.equals(demoList);
+    }
+
     private String getValue() {
         return "test" + random.nextInt(440);
     }
