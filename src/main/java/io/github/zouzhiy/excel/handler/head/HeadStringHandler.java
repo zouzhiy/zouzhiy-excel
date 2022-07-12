@@ -43,6 +43,9 @@ public class HeadStringHandler implements CellHandler<String> {
 
     @Override
     public String read(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResultSet cellResultSet) {
+        if (cellResultSet == null) {
+            return null;
+        }
         CellResult firstCellResult = cellResultSet.getFirstCellResult();
         if (cellResultSet.isNone() || firstCellResult.isNone()) {
             return null;

@@ -39,7 +39,7 @@ public abstract class AbstractListJoinHandler<E> extends AbstractListHandler<E> 
 
     @Override
     public List<E> read(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResultSet cellResultSet) {
-        if (cellResultSet.isNone()) {
+        if (cellResultSet == null || cellResultSet.isNone()) {
             return null;
         }
         CellResult firstCellResult = cellResultSet.getFirstCellResult();
@@ -57,7 +57,7 @@ public abstract class AbstractListJoinHandler<E> extends AbstractListHandler<E> 
         String value;
         if (valueList == null) {
             return;
-        } else if (valueList.isEmpty()){
+        } else if (valueList.isEmpty()) {
             value = null;
         } else {
             value = valueList.stream().map(this::format).collect(Collectors.joining(this.getDelimiter()));

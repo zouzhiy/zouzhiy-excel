@@ -77,9 +77,6 @@ public class DefaultRowDataRead implements RowDataRead {
     }
 
     private <T> void setValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, T item, MetaClass metaClass, CellResultSet cellResultSet) {
-        if (cellResultSet.isNone() && !excelFieldConfig.getExcelType().equals(ExcelType.NONE)) {
-            return;
-        }
         Class<? extends CellHandler<?>>[] cellHandlerClazz = excelFieldConfig.getCellHandler();
         String propertyName = excelFieldConfig.getPropertyName();
         boolean hasSetter = metaClass.hasSetter(propertyName);
@@ -89,7 +86,7 @@ public class DefaultRowDataRead implements RowDataRead {
         Invoker invoker = metaClass.getSetInvoker(propertyName);
         Class<?> javaType = invoker.getType();
         ExcelType excelType;
-        if (excelFieldConfig.getExcelType().equals(ExcelType.BLANK)) {
+        if (cellResultSet != null && !cellResultSet.isNone() && excelFieldConfig.getExcelType().equals(ExcelType.BLANK)) {
             excelType = cellResultSet.getExcelType();
         } else {
             excelType = excelFieldConfig.getExcelType();

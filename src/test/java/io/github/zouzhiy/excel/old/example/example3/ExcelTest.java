@@ -40,8 +40,29 @@ class ExcelTest {
                     .value1List(this.getStringList())
                     .value2List(this.getStringList())
                     .value3List(this.getStringList())
+                    .value4List(this.getStringList())
                     .build());
         }
+        File outputFile = excel.write(demoList);
+
+        List<Demo> demo1List = excel.read(outputFile);
+
+        for (int i = 0; i < demo1List.size(); i++) {
+            Assertions.assertEquals(demo1List.get(i), demoList.get(i));
+        }
+    }
+
+    @Test
+    void write4() {
+        Excel excel = new Excel();
+
+        List<Demo> demoList = new ArrayList<>();
+        demoList.add(Demo.builder().value(this.getValue())
+                .value1List(Collections.emptyList())
+                .value2List(Collections.singletonList(this.getValue()))
+                .value3List(Collections.singletonList(null))
+                .value4List(Collections.emptyList())
+                .build());
         File outputFile = excel.write(demoList);
 
         List<Demo> demo1List = excel.read(outputFile);

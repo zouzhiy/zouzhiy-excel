@@ -46,6 +46,9 @@ public abstract class AbstractCellHandler<T> implements CellHandler<T> {
 
     @Override
     public final T read(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResultSet cellResultSet) {
+        if (cellResultSet == null) {
+            return null;
+        }
         CellResult firstCellResult = cellResultSet.getFirstCellResult();
         if (cellResultSet.isNone() || firstCellResult.isNone()) {
             return null;

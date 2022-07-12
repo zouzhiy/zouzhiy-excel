@@ -31,6 +31,8 @@ import java.util.List;
 import java.util.Objects;
 
 /**
+ * null 和 {@link Collections#emptyList()} 无法区分
+ *
  * @author zouzhiy
  * @since 2022/7/4
  */
@@ -38,7 +40,13 @@ public abstract class AbstractListSplitHandler<E> extends AbstractListHandler<E>
 
     @Override
     public List<E> read(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResultSet cellResultSet) {
+        if (cellResultSet == null) {
+            return new ArrayList<>();
+        }
         CellHandlerRegistry cellHandlerRegistry = sheetContext.getConfiguration().getCellHandlerRegistry();
+        if (cellResultSet.isNone()) {
+            return new ArrayList<>();
+        }
         List<List<CellResult>> cellResultListList = cellResultSet.getCellResultListList();
         Class<E> javaType = this.getItemType();
         List<E> dataList = new ArrayList<>();
@@ -52,9 +60,6 @@ public abstract class AbstractListSplitHandler<E> extends AbstractListHandler<E>
                     .filter(Objects::nonNull)
                     .findAny()
                     .orElse(null);
-            if (data == null) {
-                continue;
-            }
             dataList.add(data);
         }
         return dataList;
@@ -62,6 +67,9 @@ public abstract class AbstractListSplitHandler<E> extends AbstractListHandler<E>
 
     @Override
     public void write(RowContext rowContext, Integer columnIndex, ExcelFieldConfig excelFieldConfig, List<E> valueList) {
+        if (valueList == null) {
+            return;
+        }
         SheetContext sheetContext = rowContext.getSheetContext();
         List<Row> rowList = rowContext.getRowList();
         if (rowList.size() < valueList.size()) {
@@ -78,7 +86,7 @@ public abstract class AbstractListSplitHandler<E> extends AbstractListHandler<E>
 
     @Override
     public int getWriteRowspan(List<E> valueList) {
-        return valueList.size();
+        return valueList == null ? 1 : valueList.size();
     }
 
 }

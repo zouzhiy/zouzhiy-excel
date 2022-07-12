@@ -37,12 +37,14 @@ public class Demo {
     private Item value;
 
     @ExcelField(cellHandler = ItemListStringSplitHandler.class)
-    private List<Item> value1List = new ArrayList<>();
+    private List<Item> value1List ;
 
     @ExcelField(cellHandler = ItemListStringSplitHandler.class)
-    private List<Item> value2List = new ArrayList<>();
+    private List<Item> value2List ;
 
     @ExcelField(cellHandler = ItemListStringSplitHandler.class)
-    private List<Item> value3List = new ArrayList<>();
+    private List<Item> value3List;
 
+    @ExcelField(cellHandler = ItemListStringSplitHandler.class)
+    private List<Item> value4List;
 }
