@@ -21,5 +21,5 @@ public interface ReflectorFactory {
 
     void setClassCacheEnabled(boolean classCacheEnabled);
 
-    io.github.zouzhiy.excel.ibatis.reflection.Reflector findForClass(Class<?> type);
+    Reflector findForClass(Class<?> type);
 }

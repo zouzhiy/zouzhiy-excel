@@ -13,6 +13,7 @@
  */
 package io.github.zouzhiy.excel.metadata.config;
 
+import io.github.zouzhiy.excel.annotation.ExcelClass;
 import io.github.zouzhiy.excel.cellstyle.RowStyleRead;
 import io.github.zouzhiy.excel.cellstyle.defaults.DefaultRowStyleRead;
 import io.github.zouzhiy.excel.read.RowFootRead;
@@ -78,6 +79,21 @@ public class ExcelClassConfig {
     public static ExcelClassConfig getDefaultExcelClassConfig(List<ExcelFieldConfig> itemList) {
         return ExcelClassConfig.builder()
                 .itemList(itemList)
+                .build();
+    }
+
+    public static ExcelClassConfig buildByExcelClass(ExcelClass excelClass, List<ExcelFieldConfig> excelFieldConfigList) {
+        return ExcelClassConfig.builder()
+                .rowTitleWrite(excelClass.rowTitleWrite())
+                .rowHeadWrite(excelClass.rowHeadWrite())
+                .rowFootWrite(excelClass.rowFootWrite())
+                .rowTitleRead(excelClass.rowTitleRead())
+                .rowHeadRead(excelClass.rowHeadRead())
+                .rowFootRead(excelClass.rowFootRead())
+                .titleStyle(ExcelStyleConfig.buildByExcelStyle(excelClass.titleStyle()))
+                .rowStyleRead(excelClass.rowStyleRead())
+                .titleFormat(excelClass.titleFormat())
+                .itemList(excelFieldConfigList)
                 .build();
     }
 }

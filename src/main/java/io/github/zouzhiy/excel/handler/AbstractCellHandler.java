@@ -109,7 +109,7 @@ public abstract class AbstractCellHandler<T> implements CellHandler<T> {
 
     protected String getJavaFormat(ExcelFieldConfig excelFieldConfig) {
         String javaFormat = excelFieldConfig.getJavaFormat();
-        if (javaFormat.length() > 0) {
+        if (javaFormat == null || javaFormat.length() > 0) {
             return javaFormat;
         } else {
             return this.getDefaultJavaFormat();

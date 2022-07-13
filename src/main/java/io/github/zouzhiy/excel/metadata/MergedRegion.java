@@ -13,7 +13,7 @@
  */
 package io.github.zouzhiy.excel.metadata;
 
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import org.apache.poi.ss.util.CellRangeAddress;
 
 import java.util.ArrayList;
@@ -25,9 +25,9 @@ import java.util.Map;
  * @author zouzhiy
  * @since 2022/7/2
  */
-@EqualsAndHashCode
 public class MergedRegion {
 
+    @Getter
     private final Map<Integer, List<CellRangeAddress>> cellRangeAddressListMap;
 
     public MergedRegion(List<CellRangeAddress> cellRangeAddressList) {
@@ -105,8 +105,8 @@ public class MergedRegion {
         }
         for (List<CellRangeAddress> cellRangeAddressList : cellRangeAddressListMap.values()) {
             for (CellRangeAddress item : cellRangeAddressList) {
-                if (firstRow <= item.getFirstRow() && lastRow >= item.getLastRow()) {
-                    if (firstCol <= item.getFirstColumn() && lastCol >= item.getLastColumn()) {
+                if (firstRow <= item.getLastRow() && lastRow >= item.getFirstRow()) {
+                    if (firstCol <= item.getLastColumn() && lastCol >= item.getFirstColumn()) {
                         return false;
                     }
                 }

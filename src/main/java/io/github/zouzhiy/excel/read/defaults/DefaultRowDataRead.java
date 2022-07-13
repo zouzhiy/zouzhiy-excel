@@ -72,7 +72,7 @@ public class DefaultRowDataRead implements RowDataRead {
             curColumnIndex += colspan;
         }
 
-        return RowResultSet.newInstance(item, maxRowspan);
+        return RowResultSet.newInstance(item, rowIndex, maxRowspan);
     }
 
     private <T> void setValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, T item, MetaClass metaClass, CellResultSet cellResultSet) {

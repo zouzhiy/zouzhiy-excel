@@ -253,7 +253,7 @@ class DefaultSheetContextTest {
         Mockito.when(workbookContext.getWorkbook()).thenReturn(workbook);
         Mockito.doReturn(sheet).when(sheetContext).getSheet();
 
-        Assertions.assertEquals(sheetContext.getMergedRegion(), new MergedRegion(sheet.getMergedRegions()));
+        Assertions.assertEquals(sheetContext.getMergedRegion().getCellRangeAddressListMap(), new MergedRegion(sheet.getMergedRegions()).getCellRangeAddressListMap());
     }
 
     @Test

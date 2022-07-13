@@ -2,6 +2,7 @@ package io.github.zouzhiy.excel.handler;
 
 import io.github.zouzhiy.excel.enums.ExcelType;
 import io.github.zouzhiy.excel.handler.list.ListStringStringJoinHandler;
+import io.github.zouzhiy.excel.metadata.Configuration;
 import io.github.zouzhiy.excel.metadata.result.CellResult;
 import io.github.zouzhiy.excel.utils.RegionUtils;
 import org.apache.poi.ss.usermodel.Row;
@@ -68,26 +69,10 @@ public class ListStringStringJoinHandlerTest extends CellHandlerTest {
 
     @RepeatedTest(10)
     void writeNull() {
-        int rowIndex = random.nextInt();
         int columnIndex = random.nextInt();
-        int rowspan = random.nextInt();
-        int colspan = random.nextInt();
-        List<Row> rowList = new ArrayList<>();
-        rowList.add(row);
-        Mockito.when(rowContext.getRowList()).thenReturn(rowList);
-        Mockito.when(row.createCell(columnIndex)).thenReturn(cell);
-        Mockito.when(rowContext.getSheetContext()).thenReturn(sheetContext);
-        Mockito.when(sheetContext.getDataCellStyle(excelFieldConfig, cellHandler.getDefaultExcelFormat())).thenReturn(cellStyle);
-        Mockito.when(rowContext.getRowspan()).thenReturn(rowspan);
-        Mockito.when(excelFieldConfig.getColspan()).thenReturn(colspan);
-        Mockito.when(row.getRowNum()).thenReturn(rowIndex);
-
         cellHandler.write(rowContext, columnIndex, excelFieldConfig, null);
-
         Mockito.verify(cell, Mockito.times(0)).setCellValue(Mockito.anyString());
-
-        Mockito.verify(cell).setCellStyle(cellStyle);
-        regionUtilsMockedStatic.verify(() -> RegionUtils.addMergedRegionIfPresent(sheetContext, cellStyle, rowIndex, rowIndex + rowspan - 1, columnIndex, columnIndex + colspan - 1));
+        Mockito.verify(cell, Mockito.times(0)).setCellStyle(cellStyle);
     }
 
     @RepeatedTest(10)
@@ -107,10 +92,12 @@ public class ListStringStringJoinHandlerTest extends CellHandlerTest {
         Mockito.when(excelFieldConfig.getColspan()).thenReturn(colspan);
         Mockito.when(row.getRowNum()).thenReturn(rowIndex);
 
+        Configuration configuration = new Configuration();
+        Mockito.when(sheetContext.getConfiguration()).thenReturn(configuration);
+
         cellHandler.write(rowContext, columnIndex, excelFieldConfig, value);
 
-        Mockito.verify(cell).setCellValue(String.join(";", value));
-
+        Mockito.verify(cell, Mockito.times(0)).setCellValue(Mockito.anyString());
         Mockito.verify(cell).setCellStyle(cellStyle);
         regionUtilsMockedStatic.verify(() -> RegionUtils.addMergedRegionIfPresent(sheetContext, cellStyle, rowIndex, rowIndex + rowspan - 1, columnIndex, columnIndex + colspan - 1));
     }
@@ -119,9 +106,9 @@ public class ListStringStringJoinHandlerTest extends CellHandlerTest {
     @RepeatedTest(10)
     void write() {
         List<String> value = new ArrayList<>();
-        value.add(random.nextDouble() + "");
-        value.add(random.nextDouble() + "");
-        value.add(random.nextDouble() + "");
+        value.add("" + random.nextDouble());
+        value.add("" + random.nextDouble());
+        value.add("" + random.nextDouble());
         int rowIndex = random.nextInt();
         int columnIndex = random.nextInt();
         int rowspan = random.nextInt();
@@ -136,10 +123,12 @@ public class ListStringStringJoinHandlerTest extends CellHandlerTest {
         Mockito.when(excelFieldConfig.getColspan()).thenReturn(colspan);
         Mockito.when(row.getRowNum()).thenReturn(rowIndex);
 
+        Configuration configuration = new Configuration();
+        Mockito.when(sheetContext.getConfiguration()).thenReturn(configuration);
+
         cellHandler.write(rowContext, columnIndex, excelFieldConfig, value);
 
-        Mockito.verify(cell).setCellValue(String.join(";", value));
-
+        Mockito.verify(cell, Mockito.times(1)).setCellValue(String.join(";", value));
         Mockito.verify(cell).setCellStyle(cellStyle);
         regionUtilsMockedStatic.verify(() -> RegionUtils.addMergedRegionIfPresent(sheetContext, cellStyle, rowIndex, rowIndex + rowspan - 1, columnIndex, columnIndex + colspan - 1));
     }

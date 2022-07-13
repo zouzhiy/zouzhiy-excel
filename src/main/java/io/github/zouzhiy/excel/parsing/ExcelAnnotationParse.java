@@ -18,7 +18,6 @@ import io.github.zouzhiy.excel.annotation.ExcelField;
 import io.github.zouzhiy.excel.metadata.Configuration;
 import io.github.zouzhiy.excel.metadata.config.ExcelClassConfig;
 import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
-import io.github.zouzhiy.excel.metadata.config.ExcelStyleConfig;
 import lombok.Getter;
 
 import java.lang.reflect.Field;
@@ -75,18 +74,7 @@ public class ExcelAnnotationParse {
         if (excelClass == null) {
             return ExcelClassConfig.getDefaultExcelClassConfig(excelFieldConfigList);
         } else {
-            return ExcelClassConfig.builder()
-                    .rowTitleWrite(excelClass.rowTitleWrite())
-                    .rowHeadWrite(excelClass.rowHeadWrite())
-                    .rowFootWrite(excelClass.rowFootWrite())
-                    .rowTitleRead(excelClass.rowTitleRead())
-                    .rowHeadRead(excelClass.rowHeadRead())
-                    .rowFootRead(excelClass.rowFootRead())
-                    .titleStyle(ExcelStyleConfig.buildByExcelStyle(excelClass.titleStyle()))
-                    .rowStyleRead(excelClass.rowStyleRead())
-                    .titleFormat(excelClass.titleFormat())
-                    .itemList(excelFieldConfigList)
-                    .build();
+            return ExcelClassConfig.buildByExcelClass(excelClass, excelFieldConfigList);
         }
     }
 
@@ -136,21 +124,7 @@ public class ExcelAnnotationParse {
         if (excelField == null) {
             return ExcelFieldConfig.getDefaultExcelFieldConfig(propertyName, javaType);
         } else {
-            return ExcelFieldConfig
-                    .builder()
-                    .title(excelField.title().length() == 0 ? propertyName : excelField.title())
-                    .propertyName(propertyName)
-                    .javaType(javaType)
-                    .excelType(excelField.excelType())
-                    .cellHandler(excelField.cellHandler())
-                    .colspan(excelField.colspan())
-                    .headFormat(excelField.headFormat())
-                    .javaFormat(excelField.javaFormat())
-                    .excelFormat(excelField.excelFormat())
-                    .sort(excelField.sort())
-                    .headStyle(ExcelStyleConfig.buildByExcelStyle(excelField.headStyle()))
-                    .dataStyle(ExcelStyleConfig.buildByExcelStyle(excelField.dataStyle()))
-                    .build();
+            return ExcelFieldConfig.buildByExcelField(excelField, propertyName, javaType);
         }
     }
 

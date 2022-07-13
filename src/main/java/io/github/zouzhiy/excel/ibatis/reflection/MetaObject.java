@@ -32,9 +32,9 @@ public class MetaObject {
     private final ObjectWrapper objectWrapper;
     private final ObjectFactory objectFactory;
     private final ObjectWrapperFactory objectWrapperFactory;
-    private final io.github.zouzhiy.excel.ibatis.reflection.ReflectorFactory reflectorFactory;
+    private final ReflectorFactory reflectorFactory;
 
-    private MetaObject(Object object, ObjectFactory objectFactory, ObjectWrapperFactory objectWrapperFactory, io.github.zouzhiy.excel.ibatis.reflection.ReflectorFactory reflectorFactory) {
+    private MetaObject(Object object, ObjectFactory objectFactory, ObjectWrapperFactory objectWrapperFactory, ReflectorFactory reflectorFactory) {
         this.originalObject = object;
         this.objectFactory = objectFactory;
         this.objectWrapperFactory = objectWrapperFactory;
@@ -53,9 +53,9 @@ public class MetaObject {
         }
     }
 
-    public static MetaObject forObject(Object object, ObjectFactory objectFactory, ObjectWrapperFactory objectWrapperFactory, io.github.zouzhiy.excel.ibatis.reflection.ReflectorFactory reflectorFactory) {
+    public static MetaObject forObject(Object object, ObjectFactory objectFactory, ObjectWrapperFactory objectWrapperFactory, ReflectorFactory reflectorFactory) {
         if (object == null) {
-            return io.github.zouzhiy.excel.ibatis.reflection.SystemMetaObject.NULL_META_OBJECT;
+            return SystemMetaObject.NULL_META_OBJECT;
         } else {
             return new MetaObject(object, objectFactory, objectWrapperFactory, reflectorFactory);
         }
@@ -69,7 +69,7 @@ public class MetaObject {
         return objectWrapperFactory;
     }
 
-    public io.github.zouzhiy.excel.ibatis.reflection.ReflectorFactory getReflectorFactory() {
+    public ReflectorFactory getReflectorFactory() {
         return reflectorFactory;
     }
 
@@ -109,7 +109,7 @@ public class MetaObject {
         PropertyTokenizer prop = new PropertyTokenizer(name);
         if (prop.hasNext()) {
             MetaObject metaValue = metaObjectForProperty(prop.getIndexedName());
-            if (metaValue == io.github.zouzhiy.excel.ibatis.reflection.SystemMetaObject.NULL_META_OBJECT) {
+            if (metaValue == SystemMetaObject.NULL_META_OBJECT) {
                 return null;
             } else {
                 return metaValue.getValue(prop.getChildren());
@@ -123,7 +123,7 @@ public class MetaObject {
         PropertyTokenizer prop = new PropertyTokenizer(name);
         if (prop.hasNext()) {
             MetaObject metaValue = metaObjectForProperty(prop.getIndexedName());
-            if (metaValue == io.github.zouzhiy.excel.ibatis.reflection.SystemMetaObject.NULL_META_OBJECT) {
+            if (metaValue == SystemMetaObject.NULL_META_OBJECT) {
                 if (value == null) {
                     // don't instantiate child path if value is null
                     return;

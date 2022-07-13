@@ -65,6 +65,9 @@ public class ImageByteCellHandler extends AbstractImageCellHandler<byte[]> {
     private PictureData getPictureData(HSSFCell hssfCell) {
         HSSFSheet sheet = hssfCell.getSheet();
         HSSFPatriarch hssfShapes = sheet.getDrawingPatriarch();
+        if (hssfShapes == null) {
+            return null;
+        }
         List<HSSFShape> hssfShapeList = hssfShapes.getChildren();
 
         for (HSSFShape hssfShape : hssfShapeList) {

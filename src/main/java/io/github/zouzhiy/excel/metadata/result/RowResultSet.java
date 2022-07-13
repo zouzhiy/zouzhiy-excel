@@ -26,16 +26,20 @@ import lombok.ToString;
 @EqualsAndHashCode
 public class RowResultSet<T> {
 
-    private T data;
+    private final T data;
 
-    private int rowspan;
+    private final int rowIndex;
 
-    public static <T> RowResultSet<T> newInstance(T data, int rowspan) {
-        RowResultSet<T> rowResultSet = new RowResultSet<>();
-        rowResultSet.data = data;
-        rowResultSet.rowspan = rowspan;
+    private final int rowspan;
 
-        return rowResultSet;
+    private RowResultSet(T data, int rowIndex, int rowspan) {
+        this.data = data;
+        this.rowIndex = rowIndex;
+        this.rowspan = rowspan;
+    }
+
+    public static <T> RowResultSet<T> newInstance(T data, int rowIndex, int rowspan) {
+        return new RowResultSet<>(data, rowIndex, rowspan);
     }
 
 }

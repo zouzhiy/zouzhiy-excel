@@ -20,9 +20,9 @@ import io.github.zouzhiy.excel.ibatis.util.MapUtil;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-public class DefaultReflectorFactory implements io.github.zouzhiy.excel.ibatis.reflection.ReflectorFactory {
+public class DefaultReflectorFactory implements ReflectorFactory {
     private boolean classCacheEnabled = true;
-    private final ConcurrentMap<Class<?>, io.github.zouzhiy.excel.ibatis.reflection.Reflector> reflectorMap = new ConcurrentHashMap<>();
+    private final ConcurrentMap<Class<?>, Reflector> reflectorMap = new ConcurrentHashMap<>();
 
     public DefaultReflectorFactory() {
     }
@@ -38,12 +38,12 @@ public class DefaultReflectorFactory implements io.github.zouzhiy.excel.ibatis.r
     }
 
     @Override
-    public io.github.zouzhiy.excel.ibatis.reflection.Reflector findForClass(Class<?> type) {
+    public Reflector findForClass(Class<?> type) {
         if (classCacheEnabled) {
             // synchronized (type) removed see issue #461
-            return MapUtil.computeIfAbsent(reflectorMap, type, io.github.zouzhiy.excel.ibatis.reflection.Reflector::new);
+            return MapUtil.computeIfAbsent(reflectorMap, type, Reflector::new);
         } else {
-            return new io.github.zouzhiy.excel.ibatis.reflection.Reflector(type);
+            return new Reflector(type);
         }
     }
 

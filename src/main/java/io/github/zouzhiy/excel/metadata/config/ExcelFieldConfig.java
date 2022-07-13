@@ -13,6 +13,7 @@
  */
 package io.github.zouzhiy.excel.metadata.config;
 
+import io.github.zouzhiy.excel.annotation.ExcelField;
 import io.github.zouzhiy.excel.enums.ExcelType;
 import io.github.zouzhiy.excel.handler.CellHandler;
 import lombok.Builder;
@@ -77,4 +78,22 @@ public class ExcelFieldConfig {
                 .build();
     }
 
+
+    public static ExcelFieldConfig buildByExcelField(ExcelField excelField, String propertyName, Class<?> javaType) {
+        return ExcelFieldConfig
+                .builder()
+                .title(excelField.title().length() == 0 ? propertyName : excelField.title())
+                .propertyName(propertyName)
+                .javaType(javaType)
+                .excelType(excelField.excelType())
+                .cellHandler(excelField.cellHandler())
+                .colspan(excelField.colspan())
+                .headFormat(excelField.headFormat())
+                .javaFormat(excelField.javaFormat())
+                .excelFormat(excelField.excelFormat())
+                .sort(excelField.sort())
+                .headStyle(ExcelStyleConfig.buildByExcelStyle(excelField.headStyle()))
+                .dataStyle(ExcelStyleConfig.buildByExcelStyle(excelField.dataStyle()))
+                .build();
+    }
 }

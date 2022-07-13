@@ -124,12 +124,12 @@ class CellHandlerRegistryTest {
 
         List<Class<? extends CellHandler<?>>> cellHandlerClassList = new ArrayList<>();
 
-        assertThrows(ExcelException.class, () ->  cellHandlerRegistry.getCellHandler(cellHandlerClassList, ExcelType.NONE));
-        assertThrows(ExcelException.class, () ->  cellHandlerRegistry.getCellHandler(cellHandlerClassList, ExcelType.BLANK));
-        assertThrows(ExcelException.class, () ->  cellHandlerRegistry.getCellHandler(cellHandlerClassList, ExcelType.STRING));
-        assertThrows(ExcelException.class, () ->  cellHandlerRegistry.getCellHandler(cellHandlerClassList, ExcelType.NUMERIC));
-        assertThrows(ExcelException.class, () ->  cellHandlerRegistry.getCellHandler(cellHandlerClassList, ExcelType.BOOLEAN));
-        assertThrows(ExcelException.class, () ->  cellHandlerRegistry.getCellHandler(cellHandlerClassList, ExcelType.DATE));
+        assertThrows(ExcelException.class, () -> cellHandlerRegistry.getCellHandler(cellHandlerClassList, ExcelType.NONE));
+        assertThrows(ExcelException.class, () -> cellHandlerRegistry.getCellHandler(cellHandlerClassList, ExcelType.BLANK));
+        assertThrows(ExcelException.class, () -> cellHandlerRegistry.getCellHandler(cellHandlerClassList, ExcelType.STRING));
+        assertThrows(ExcelException.class, () -> cellHandlerRegistry.getCellHandler(cellHandlerClassList, ExcelType.NUMERIC));
+        assertThrows(ExcelException.class, () -> cellHandlerRegistry.getCellHandler(cellHandlerClassList, ExcelType.BOOLEAN));
+        assertThrows(ExcelException.class, () -> cellHandlerRegistry.getCellHandler(cellHandlerClassList, ExcelType.DATE));
 
     }
 

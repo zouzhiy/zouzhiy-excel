@@ -31,15 +31,15 @@ import java.util.Collection;
  */
 public class MetaClass {
 
-    private final io.github.zouzhiy.excel.ibatis.reflection.ReflectorFactory reflectorFactory;
-    private final io.github.zouzhiy.excel.ibatis.reflection.Reflector reflector;
+    private final ReflectorFactory reflectorFactory;
+    private final Reflector reflector;
 
     private MetaClass(Class<?> type, io.github.zouzhiy.excel.ibatis.reflection.ReflectorFactory reflectorFactory) {
         this.reflectorFactory = reflectorFactory;
         this.reflector = reflectorFactory.findForClass(type);
     }
 
-    public static MetaClass forClass(Class<?> type, io.github.zouzhiy.excel.ibatis.reflection.ReflectorFactory reflectorFactory) {
+    public static MetaClass forClass(Class<?> type, ReflectorFactory reflectorFactory) {
         return new MetaClass(type, reflectorFactory);
     }
 
