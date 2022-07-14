@@ -594,11 +594,11 @@ public class DemoVo {
 
 非常欢迎你的加入！[提一个 Issue](https://github.com/zouzhiy/zouzhiy-excel/issues/new) 或者提交一个 Pull Request。
 
-## 6. 联系作者
+## 4. 联系作者
 
 `QQ`：`546963897`  
 `email`：`546963897@qq.com`
 
-## 7. 开源协议
+## 5. 开源协议
 
 [Apache 2.0](LICENSE) © zouzhiy
