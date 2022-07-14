@@ -20,6 +20,7 @@ class RowResultSetTest {
         RowResultSet<DemoDefault> rowResultSet = RowResultSet.newInstance(demoDefault, rowIndex, rowspan);
 
         Assertions.assertEquals(rowResultSet.getData(), demoDefault);
+        Assertions.assertEquals(rowResultSet.getRowIndex(), rowIndex);
         Assertions.assertEquals(rowResultSet.getRowspan(), rowspan);
     }
 }

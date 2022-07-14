@@ -112,6 +112,15 @@
     </dependencies>
 
     <build>
+        <resources>
+            <resource>
+                <directory>${project.basedir}</directory>
+                <targetPath>META-INF</targetPath>
+                <includes>
+                    <include>LICENSE</include>
+                </includes>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -210,8 +219,6 @@
                     <executable>C:\Program Files (x86)\GnuPG\bin\gpg.exe</executable>
                 </configuration>
             </plugin>
-
-
         </plugins>
     </build>
 

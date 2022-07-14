@@ -180,7 +180,7 @@ public class DefaultWorkbookContext implements WorkbookContext {
                 workbook = WorkbookFactory.create(workbookParameter.isXssf());
             }
         } catch (IOException ioException) {
-            throw new ExcelException("创建工作簿失败");
+            throw new ExcelException(ioException, "创建工作簿失败");
         }
 
         return workbook;

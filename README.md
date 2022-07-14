@@ -10,9 +10,11 @@ zouzhiy-excel是一款Excel导入导出的轻量级开源组件。省略了繁�
 
 1. 默认大于配置，不需要显式的标注注解。反向解析，不需要的字段或者需要自定义配置的字段才需要注解标注
 2. 支持模板导出。可以预先设置好标题，表头，数据行格式。写入的数据自动继承模板的格式
-3. 支持一对多导入导出。一个数据对象占据不固的多行多列。
+3. 支持一对多导入导出。一个数据对象占据不固定的多行多列。
 4. 支持拆分写入不同列。如：用户信息作为一个对象，可通过自定义CellHandler,实现多列写入，一列显示姓名，一列显示通信方式等。
 5. 支持自定义单元格格式，基本囊括了poi提供的style属性
+6. 支持自定义标题，表头，表尾写入
+7. 提供回调函数，可在导入导出过程中提供一些回调操作，比如:修改根据配置生成的样式、修改数据等
 
 ## 2.快速开始
 
@@ -164,6 +166,7 @@ public class ExcelDemo {
 ```
 
 #### 2.2.2 spring-boot中使用
+
 ```java
 
 @RestController
@@ -196,6 +199,7 @@ public class TestController {
                 .write(demoVoList, DemoVo.class);
 
     }
+
     @GetMapping("export/no-template2")
     public void exportDataByTemplate4(HttpServletResponse response) throws IOException {
         List<DemoVo> demoVoList = this.getList();
@@ -273,7 +277,6 @@ public class TestController {
     }
 
 
-
     private final Random random = new Random(System.currentTimeMillis());
 
     private List<DemoVo> getList() {
@@ -292,7 +295,9 @@ public class TestController {
 ```
 
 #### 2.2.3 自定义CellHandler
+
 ```java
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -327,7 +332,7 @@ public class ItemCellHandler extends AbstractCellHandler<ItemVo> {
 
         return ItemVo.builder().firstName(values[0])
                 .lastName(values[1])
-                .age((values[2] == null || "null".equals(values[2]) || values[2].length()==0) ? null : new BigDecimal(values[2]).intValue())
+                .age((values[2] == null || "null".equals(values[2]) || values[2].length() == 0) ? null : new BigDecimal(values[2]).intValue())
                 .build();
     }
 
@@ -349,6 +354,7 @@ public class ItemCellHandler extends AbstractCellHandler<ItemVo> {
 ```
 
 #### 2.2.4 一对多，一条数据占据多行
+
 ```java
 
 @Data
@@ -459,6 +465,7 @@ public class ExcelDemo {
 ```
 
 #### 2.2.5 一对多，一条数据对应多列
+
 ```java
 
 @Data
@@ -532,10 +539,10 @@ public class ItemCellHandler implements CellHandler<ItemVo> {
         Cell cellFirstName = row.createCell(columnIndex);
         Cell cellLastName = row.createCell(columnIndex + 1);
         Cell cellAge = row.createCell(columnIndex + 2);
-        if (value.getFirstName() != null    ){
+        if (value.getFirstName() != null) {
             cellFirstName.setCellValue(value.getFirstName());
         }
-        if (value.getLastName() != null){
+        if (value.getLastName() != null) {
             cellLastName.setCellValue(value.getLastName());
         }
         if (value.getAge() != null) {
@@ -560,12 +567,14 @@ public class ItemCellHandler implements CellHandler<ItemVo> {
 ```
 
 #### 2.2.6 自定义单元格格式
+
 ```java
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ExcelClass(titleStyle = @ExcelStyle(borderLeft = BorderStyle.THIN,rotation = 45, wrapText = true,font = @ExcelFont(fontHeightInPoints = 32, bold = true, italic = true)))
+@ExcelClass(titleStyle = @ExcelStyle(borderLeft = BorderStyle.THIN, rotation = 45, wrapText = true, font = @ExcelFont(fontHeightInPoints = 32, bold = true, italic = true)))
 public class DemoVo {
 
     @ExcelField(dataStyle = @ExcelStyle(font = @ExcelFont(bold = true, italic = true)), headStyle = @ExcelStyle(font = @ExcelFont(italic = true)))
@@ -590,15 +599,22 @@ public class DemoVo {
 }
 ```
 
-## 3. 参与贡献
+## 3. 下一步工作计划
+
+1. 补充注释
+2. 补齐文档
+3. 完善单sheet导入导出功能。如宽度设置，根据表头匹配等
+4. 增加多sheet支持
+
+## 4. 参与贡献
 
 非常欢迎你的加入！[提一个 Issue](https://github.com/zouzhiy/zouzhiy-excel/issues/new) 或者提交一个 Pull Request。
 
-## 4. 联系作者
+## 5. 联系作者
 
 `QQ`：`546963897`  
 `email`：`546963897@qq.com`
 
-## 5. 开源协议
+## 6. 开源协议
 
 [Apache 2.0](LICENSE) © zouzhiy

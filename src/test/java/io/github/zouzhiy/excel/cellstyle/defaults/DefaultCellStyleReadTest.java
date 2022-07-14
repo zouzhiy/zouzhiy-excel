@@ -32,7 +32,7 @@ class DefaultCellStyleReadTest {
         SheetContext sheetContext = this.getSheetContext();
 
         int i = 1;
-        while (i < 500) {
+        while (i < 50) {
             int rowspan = testRow(sheetContext, i);
             i = i + rowspan;
         }
