@@ -1,12 +1,24 @@
-# excel导入导出工具
-```text
-支持一对多导入，支持数据列合并，数据行合并
-支持自定义单元格格式
-```
+# zouzhiy-excel
 
-## 快速开始
+## 1. 项目介绍
 
-### 单独引入
+### 1.1 简介
+
+zouzhiy-excel是一款Excel导入导出的轻量级开源组件。省略了繁琐的配置，几行代码快速实现Excel导入导出。
+
+### 1.2 特性
+
+1. 默认大于配置，不需要显式的标注注解。反向解析，不需要的字段或者需要自定义配置的字段才需要注解标注
+2. 支持模板导出。可以预先设置好标题，表头，数据行格式。写入的数据自动继承模板的格式
+3. 支持一对多导入导出。一个数据对象占据不固的多行多列。
+4. 支持拆分写入不同列。如：用户信息作为一个对象，可通过自定义CellHandler,实现多列写入，一列显示姓名，一列显示通信方式等。
+5. 支持自定义单元格格式，基本囊括了poi提供的style属性
+
+## 2.快速开始
+
+### 2.1 依赖引入
+
+#### 2.1.1 单独引入
 
 ```xml
 
@@ -17,7 +29,7 @@
 </dependency>
 ```
 
-### spring boot 引入
+#### 2.1.2 spring-boot-starter
 
 ```xml
 
@@ -28,119 +40,565 @@
 </dependency>
 ```
 
-## 简单使用
+### 2.2 示例
+
+#### 2.2.1 简单导入导出
 
 ```java
 
 @Data
-@ExcelClass(titleStyle = @ExcelStyle(font = @ExcelFont(bold = true, fontHeightInPoints = 16), horizontalAlignment = StyleHorizontalAlignment.CENTER))
-public class WriteDemo {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class DemoVo {
 
-    @ExcelField(title = "name-覆盖")
     private String name;
 
-    @ExcelField(title = "title-覆盖", colspan = 2)
     private String title;
 
-    @ExcelField(title = "valueList-覆盖", colspan = 3, cellHandler = ValueListStringHandler.class)
-    private List<String> valueList;
-
-    @ExcelField(title = "boolean-覆盖", colspan = 4, dataStyle = @ExcelStyle(borderLeft = BorderStyle.DASHED, borderBottom = BorderStyle.DOUBLE), excelType = ExcelType.BOOLEAN)
-    private String booleanStr;
-
+    public static List<DemoVo> getList() {
+        Random random = new Random(System.currentTimeMillis());
+        int size = random.nextInt(5000);
+        List<DemoVo> demoVoList = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            DemoVo demoVo = DemoVo.builder()
+                    .name("name-" + random.nextInt(900))
+                    .title("title-" + random.nextInt(111))
+                    .build();
+            demoVoList.add(demoVo);
+        }
+        return demoVoList;
+    }
 }
-```
 
-```java
-import io.github.zouzhiy.excel.builder.ZouzhiyExcelFactory;
 
-import javax.annotation.Resource;
+public class ExcelDemo {
 
-class ZouzhiyExcelFactoryTest {
-    // 直接引入
-    private final ZouzhiyExcelFactory zouzhiyExcelFactory = ZouzhiyExcelFactoryBuilder.builder().build();
+    private final ZouzhiyExcelFactory zouzhiyExcelFactory = new DefaultZouzhiyExcelFactory(new Configuration());
 
-    // spring boot
-    @Resource
-    private final ZouzhiyExcelFactory zouzhiyExcelFactory;
 
     @Test
-    void read() {
-        InputStream importInputStream = this.getClass().getClassLoader().getResourceAsStream("statics\\import2.xlsx");
-
-        List<Demo1> demoList = zouzhiyExcelFactory.read(importInputStream).sheet().dataRowStartIndex(1).read(Demo1.class);
-
-        System.out.println(demoList);
-    }
-
-    @Test
-    void write() {
-        InputStream importInputStream = this.getClass().getClassLoader().getResourceAsStream("statics\\import2.xlsx");
-
-        List<Demo1> demoList = zouzhiyExcelFactory.read(importInputStream).sheet().dataRowStartIndex(1).read(Demo1.class);
-
-        zouzhiyExcelFactory.write(this.getOutputFile()).sheet().dataRowStartIndex(1).write(demoList, Demo1.class);
-
-        System.out.println(demoList);
-    }
-
-    private File getOutputFile() {
-        //noinspection ConstantConditions
+    void exportNoTemplate() {
         String rootPath = this.getClass().getResource("/").getPath();
 
-        String filePath = rootPath + File.separator + "write" + File.separator + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-ddHHmmss")) + ".xlsx";
-        File file = new File(filePath);
-        if (!file.getParentFile().exists()) {
-            file.getParentFile().mkdirs();
+        // 无标题，无表头
+        zouzhiyExcelFactory.write(new File(rootPath + File.separator + System.currentTimeMillis() + ".xlsx"))
+                .sheet()
+                .dataRowStartIndex(0)
+                .write(DemoVo.getList(), DemoVo.class);
+        // 无标题，有表头
+        zouzhiyExcelFactory.write(new File(rootPath + File.separator + System.currentTimeMillis() + ".xlsx"))
+                .sheet()
+                .dataRowStartIndex(1)
+                .write(DemoVo.getList(), DemoVo.class);
+        // 有标题，无表头
+        zouzhiyExcelFactory.write(new File(rootPath + File.separator + System.currentTimeMillis() + ".xlsx"))
+                .sheet()
+                .title("有标题无表头")
+                .titleRowStartIndex(0)
+                .headRowStartIndex(-1)
+                .dataRowStartIndex(1)
+                .write(DemoVo.getList(), DemoVo.class);
+
+        zouzhiyExcelFactory.write(new File(rootPath + File.separator + System.currentTimeMillis() + ".xlsx"))
+                .sheet()
+                .title("有标题有表头")
+                .dataRowStartIndex(2)
+                .write(DemoVo.getList(), DemoVo.class);
+    }
+
+    @Test
+    void exportWithTemplate() {
+        String exportTemplateFilePath = "template/export.xlsx";
+
+        String rootPath = this.getClass().getResource("/").getPath();
+        // 不覆盖标题，不覆盖标题表头
+        zouzhiyExcelFactory.write(new File(rootPath + File.separator + System.currentTimeMillis() + ".xlsx"))
+                .template(this.getClass().getClassLoader().getResourceAsStream(exportTemplateFilePath))
+                .sheet()
+                .titleRowStartIndex(-1)
+                .headRowStartIndex(-1)
+                .dataRowStartIndex(2)
+                .write(DemoVo.getList(), DemoVo.class);
+
+        // 覆盖标题，不覆盖标题表头
+        zouzhiyExcelFactory.write(new File(rootPath + File.separator + System.currentTimeMillis() + ".xlsx"))
+                .template(this.getClass().getClassLoader().getResourceAsStream(exportTemplateFilePath))
+                .sheet()
+                .title("覆盖标题")
+                .titleRowStartIndex(0)
+                .headRowStartIndex(-1)
+                .dataRowStartIndex(2)
+                .write(DemoVo.getList(), DemoVo.class);
+
+        // 不覆盖标题，覆盖表头
+        zouzhiyExcelFactory.write(new File(rootPath + File.separator + System.currentTimeMillis() + ".xlsx"))
+                .template(this.getClass().getClassLoader().getResourceAsStream(exportTemplateFilePath))
+                .sheet()
+                .titleRowStartIndex(-1)
+                .headRowStartIndex(1)
+                .dataRowStartIndex(2)
+                .write(DemoVo.getList(), DemoVo.class);
+
+        // 覆盖标题，覆盖标题表头
+        zouzhiyExcelFactory.write(new File(rootPath + File.separator + System.currentTimeMillis() + ".xlsx"))
+                .template(this.getClass().getClassLoader().getResourceAsStream(exportTemplateFilePath))
+                .sheet()
+                .title("覆盖标题，覆盖表头")
+                .dataRowStartIndex(2)
+                .write(DemoVo.getList(), DemoVo.class);
+    }
+
+    @Test
+    void importExcel() {
+        String inputFilePath = "template/import.xlsx";
+
+        InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(inputFilePath);
+
+        List<DemoVo> demoVoList = zouzhiyExcelFactory.read(inputStream).sheet(0).dataRowStartIndex(2).read(DemoVo.class);
+        for (DemoVo demoVo : demoVoList) {
+            System.out.println(demoVo);
         }
-        return file;
     }
 }
 ```
 
-## 单元测试覆盖率
+#### 2.2.2 spring-boot中使用
+```java
 
-|包|类|方法|行|
-|----|----|----|----|
-| Package                                       | Class, %       | Method, %       | Line, %           |
-|-----------------------------------------------|----------------|-----------------|-------------------|
-| all classes                                   | 100% (131/131) | 90.2% (726/805) | 90.1% (2235/2481) |
-|                                               |                |                 |                   |
-| Coverage Breakdown                            |                |                 |                   |
-| Package                                       | Class, %       | Method, %       | Line, %           |
-| io.github.zouzhiy.excel.builder               | 100% (6/6)     | 58.1% (43/74)   | 64.2% (97/151)    |
-| io.github.zouzhiy.excel.cellstyle.defaults    | 100% (3/3)     | 100% (13/13)    | 100% (59/59)      |
-| io.github.zouzhiy.excel.cellstyle.registry    | 100% (1/1)     | 100% (5/5)      | 100% (13/13)      |
-| io.github.zouzhiy.excel.context.defualts      | 100% (3/3)     | 100% (48/48)    | 98% (199/203)     |
-| io.github.zouzhiy.excel.enums                 | 100% (5/5)     | 100% (20/20)    | 100% (55/55)      |
-| io.github.zouzhiy.excel.exceptions            | 100% (1/1)     | 85.7% (6/7)     | 85.7% (12/14)     |
-| io.github.zouzhiy.excel.handler               | 100% (6/6)     | 100% (29/29)    | 94.3% (183/194)   |
-| io.github.zouzhiy.excel.handler.bigdecimal    | 100% (3/3)     | 100% (10/10)    | 100% (16/16)      |
-| io.github.zouzhiy.excel.handler.biginteger    | 100% (3/3)     | 100% (11/11)    | 100% (17/17)      |
-| io.github.zouzhiy.excel.handler.booleans      | 100% (3/3)     | 100% (12/12)    | 100% (17/17)      |
-| io.github.zouzhiy.excel.handler.bytes         | 100% (5/5)     | 100% (20/20)    | 100% (36/36)      |
-| io.github.zouzhiy.excel.handler.calendar      | 100% (3/3)     | 100% (13/13)    | 94.3% (33/35)     |
-| io.github.zouzhiy.excel.handler.date          | 100% (3/3)     | 100% (14/14)    | 93.8% (30/32)     |
-| io.github.zouzhiy.excel.handler.doubles       | 100% (4/4)     | 100% (16/16)    | 100% (24/24)      |
-| io.github.zouzhiy.excel.handler.floats        | 100% (3/3)     | 100% (11/11)    | 100% (17/17)      |
-| io.github.zouzhiy.excel.handler.head          | 100% (1/1)     | 60% (3/5)       | 86.7% (13/15)     |
-| io.github.zouzhiy.excel.handler.image         | 100% (4/4)     | 72.2% (13/18)   | 46.1% (35/76)     |
-| io.github.zouzhiy.excel.handler.ints          | 100% (3/3)     | 100% (11/11)    | 100% (17/17)      |
-| io.github.zouzhiy.excel.handler.list          | 100% (5/5)     | 100% (20/20)    | 88.5% (69/78)     |
-| io.github.zouzhiy.excel.handler.localdate     | 100% (3/3)     | 100% (13/13)    | 96% (24/25)       |
-| io.github.zouzhiy.excel.handler.localdatetime | 100% (3/3)     | 100% (13/13)    | 95.7% (22/23)     |
-| io.github.zouzhiy.excel.handler.localtime     | 100% (3/3)     | 100% (13/13)    | 97.1% (34/35)     |
-| io.github.zouzhiy.excel.handler.longs         | 100% (3/3)     | 100% (11/11)    | 100% (17/17)      |
-| io.github.zouzhiy.excel.handler.shorts        | 100% (3/3)     | 100% (11/11)    | 100% (17/17)      |
-| io.github.zouzhiy.excel.handler.string        | 100% (4/4)     | 100% (20/20)    | 97.4% (37/38)     |
-| io.github.zouzhiy.excel.handler.timestamp     | 100% (3/3)     | 100% (13/13)    | 95.7% (22/23)     |
-| io.github.zouzhiy.excel.metadata              | 100% (4/4)     | 75% (18/24)     | 92.9% (78/84)     |
-| io.github.zouzhiy.excel.metadata.config       | 100% (8/8)     | 96.4% (80/83)   | 97.9% (139/142)   |
-| io.github.zouzhiy.excel.metadata.parameter    | 100% (4/4)     | 81.9% (59/72)   | 85.5% (148/173)   |
-| io.github.zouzhiy.excel.metadata.result       | 100% (5/5)     | 72.3% (34/47)   | 82.9% (97/117)    |
-| io.github.zouzhiy.excel.parsing               | 100% (1/1)     | 100% (9/9)      | 96.1% (73/76)     |
-| io.github.zouzhiy.excel.read.defaults         | 100% (8/8)     | 95.1% (39/41)   | 86.8% (249/287)   |
-| io.github.zouzhiy.excel.read.registry         | 100% (3/3)     | 100% (15/15)    | 92.3% (36/39)     |
-| io.github.zouzhiy.excel.utils                 | 100% (2/2)     | 85.7% (12/14)   | 90.1% (64/71)     |
-| io.github.zouzhiy.excel.write.defaults        | 100% (6/6)     | 97.1% (33/34)   | 97.1% (200/206)   |
-| io.github.zouzhiy.excel.write.registry        | 100% (3/3)     | 100% (15/15)    | 92.3% (36/39)     |
+@RestController
+@RequestMapping("test")
+public class TestController {
+
+    @Resource
+    private ZouzhiyExcelFactory zouzhiyExcelFactory;
+
+    @PostMapping("import")
+    public List<DemoVo> importFile(MultipartFile multipartFile) throws IOException {
+        return zouzhiyExcelFactory
+                .read(multipartFile.getInputStream())
+                .sheet()
+                .dataRowStartIndex(2)
+                .read(DemoVo.class);
+    }
+
+    @GetMapping("export/no-template1")
+    public void exportDataByNoTemplate(HttpServletResponse response) throws IOException {
+        List<DemoVo> demoVoList = Collections.emptyList();
+
+        response.addHeader("Content-Disposition", "attachment; filename*=utf-8''" + "export.xlsx");
+        zouzhiyExcelFactory
+                .write(response.getOutputStream())
+                .sheet()
+                .title("export")
+                .titleRowStartIndex(0)
+                .dataRowStartIndex(2)
+                .write(demoVoList, DemoVo.class);
+
+    }
+    @GetMapping("export/no-template2")
+    public void exportDataByTemplate4(HttpServletResponse response) throws IOException {
+        List<DemoVo> demoVoList = this.getList();
+
+        response.addHeader("Content-Disposition", "attachment; filename*=utf-8''" + "export.xlsx");
+        zouzhiyExcelFactory
+                .write(response.getOutputStream())
+                .sheet()
+                .title("export")
+                .titleRowStartIndex(0)
+                .dataRowStartIndex(2)
+                .write(demoVoList, DemoVo.class);
+
+    }
+
+    @GetMapping("export/template1")
+    public void exportDataByTemplate1(HttpServletResponse response) throws IOException {
+        List<DemoVo> demoVoList = this.getList();
+
+        String exportTemplateFilePath = "template/export/export1.xlsx";
+        InputStream exportTemplateInputStream = this.getClass().getClassLoader().getResourceAsStream(exportTemplateFilePath);
+
+        response.addHeader("Content-Disposition", "attachment; filename*=utf-8''" + "export.xlsx");
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        zouzhiyExcelFactory
+                .write(response.getOutputStream())
+                .template(exportTemplateInputStream)
+                .sheet()
+                .titleRowStartIndex(-1)
+                .headRowStartIndex(-1)
+                .dataRowStartIndex(2)
+                .write(demoVoList, DemoVo.class);
+
+    }
+
+    @GetMapping("export/template2")
+    public void exportDataByTemplate2(HttpServletResponse response) throws IOException {
+        List<DemoVo> demoVoList = this.getList();
+
+        String exportTemplateFilePath = "template/export/export2.xls";
+        InputStream exportTemplateInputStream = this.getClass().getClassLoader().getResourceAsStream(exportTemplateFilePath);
+
+        response.addHeader("Content-Disposition", "attachment; filename*=utf-8''" + "import.xls");
+        response.setContentType("application/vnd.ms-excel");
+        zouzhiyExcelFactory
+                .write(response.getOutputStream())
+                .template(exportTemplateInputStream)
+                .sheet()
+                .titleRowStartIndex(-1)
+                .headRowStartIndex(-1)
+                .dataRowStartIndex(2)
+                .write(demoVoList, DemoVo.class);
+
+    }
+
+
+    @GetMapping("export/template3")
+    public void exportDataByTemplate3(HttpServletResponse response) throws IOException {
+        List<DemoVo> demoVoList = Collections.emptyList();
+
+        String exportTemplateFilePath = "template/export/export2.xls";
+        InputStream exportTemplateInputStream = this.getClass().getClassLoader().getResourceAsStream(exportTemplateFilePath);
+
+        response.addHeader("Content-Disposition", "attachment; filename*=utf-8''" + "import.xls");
+        response.setContentType("application/vnd.ms-excel");
+        zouzhiyExcelFactory
+                .write(response.getOutputStream())
+                .template(exportTemplateInputStream)
+                .sheet()
+                .titleRowStartIndex(-1)
+                .headRowStartIndex(-1)
+                .dataRowStartIndex(2)
+                .write(demoVoList, DemoVo.class);
+
+    }
+
+
+
+    private final Random random = new Random(System.currentTimeMillis());
+
+    private List<DemoVo> getList() {
+        int size = random.nextInt(5000);
+        List<DemoVo> demoVoList = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            DemoVo demoVo = DemoVo.builder()
+                    .name("name-" + random.nextInt(900))
+                    .title("title-" + random.nextInt(111))
+                    .build();
+            demoVoList.add(demoVo);
+        }
+        return demoVoList;
+    }
+}
+```
+
+#### 2.2.3 自定义CellHandler
+```java
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class ItemVo {
+
+    private final static Random RANDOM = new Random(System.currentTimeMillis());
+
+    private String firstName;
+
+    private String lastName;
+
+    private Integer age;
+
+    public static ItemVo newInstance() {
+        return ItemVo
+                .builder()
+                .firstName(RANDOM.nextBoolean() ? null : "firstName-" + RANDOM.nextDouble())
+                .lastName(RANDOM.nextBoolean() ? null : "lastName-" + RANDOM.nextDouble())
+                .age(RANDOM.nextBoolean() ? null : RANDOM.nextInt(100))
+                .build();
+    }
+}
+
+
+public class ItemCellHandler extends AbstractCellHandler<ItemVo> {
+
+    @Override
+    protected ItemVo getCellValue(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResult firstCellResult) {
+        String value = firstCellResult.getStringValue();
+        String[] values = value.split(",", -1);
+
+        return ItemVo.builder().firstName(values[0])
+                .lastName(values[1])
+                .age((values[2] == null || "null".equals(values[2]) || values[2].length()==0) ? null : new BigDecimal(values[2]).intValue())
+                .build();
+    }
+
+    @Override
+    protected void setCellValue(RowContext rowContext, ExcelFieldConfig excelFieldConfig, Cell cell, ItemVo value) {
+        cell.setCellValue(String.format("%s,%s,%s", value.getFirstName(), value.getLastName(), value.getAge()));
+    }
+
+    @Override
+    public ExcelType getExcelType() {
+        return ExcelType.STRING;
+    }
+
+    @Override
+    protected ItemVo getBlankValue() {
+        return ItemVo.builder().build();
+    }
+}
+```
+
+#### 2.2.4 一对多，一条数据占据多行
+```java
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class DemoVo {
+
+    private final static Random random = new Random(System.currentTimeMillis());
+
+    private String name;
+
+    private String title;
+
+    @ExcelField(cellHandler = ListStringStringSplitHandler.class)
+    private List<String> valueList;
+}
+
+
+public class ExcelDemo {
+
+    private final ZouzhiyExcelFactory zouzhiyExcelFactory = new DefaultZouzhiyExcelFactory(new Configuration());
+
+    @Test
+    void exportNoTemplate() {
+        String rootPath = this.getClass().getResource("/").getPath();
+
+        // 无标题，无表头
+        zouzhiyExcelFactory.write(new File(rootPath + File.separator + System.currentTimeMillis() + ".xlsx"))
+                .sheet()
+                .dataRowStartIndex(0)
+                .write(DemoVo.getList(), DemoVo.class);
+        // 无标题，有表头
+        zouzhiyExcelFactory.write(new File(rootPath + File.separator + System.currentTimeMillis() + ".xlsx"))
+                .sheet()
+                .dataRowStartIndex(1)
+                .write(DemoVo.getList(), DemoVo.class);
+        // 有标题，无表头
+        zouzhiyExcelFactory.write(new File(rootPath + File.separator + System.currentTimeMillis() + ".xlsx"))
+                .sheet()
+                .title("有标题无表头")
+                .titleRowStartIndex(0)
+                .headRowStartIndex(-1)
+                .dataRowStartIndex(1)
+                .write(DemoVo.getList(), DemoVo.class);
+
+        zouzhiyExcelFactory.write(new File(rootPath + File.separator + System.currentTimeMillis() + ".xlsx"))
+                .sheet()
+                .title("有标题有表头")
+                .dataRowStartIndex(2)
+                .write(DemoVo.getList(), DemoVo.class);
+    }
+
+    @Test
+    void exportWithTemplate() {
+        String exportTemplateFilePath = "template/export.xlsx";
+
+        String rootPath = this.getClass().getResource("/").getPath();
+        // 不覆盖标题，不覆盖标题表头
+        zouzhiyExcelFactory.write(new File(rootPath + File.separator + System.currentTimeMillis() + ".xlsx"))
+                .template(this.getClass().getClassLoader().getResourceAsStream(exportTemplateFilePath))
+                .sheet()
+                .titleRowStartIndex(-1)
+                .headRowStartIndex(-1)
+                .dataRowStartIndex(2)
+                .write(DemoVo.getList(), DemoVo.class);
+
+        // 覆盖标题，不覆盖标题表头
+        zouzhiyExcelFactory.write(new File(rootPath + File.separator + System.currentTimeMillis() + ".xlsx"))
+                .template(this.getClass().getClassLoader().getResourceAsStream(exportTemplateFilePath))
+                .sheet()
+                .title("覆盖标题")
+                .titleRowStartIndex(0)
+                .headRowStartIndex(-1)
+                .dataRowStartIndex(2)
+                .write(DemoVo.getList(), DemoVo.class);
+
+        // 不覆盖标题，覆盖表头
+        zouzhiyExcelFactory.write(new File(rootPath + File.separator + System.currentTimeMillis() + ".xlsx"))
+                .template(this.getClass().getClassLoader().getResourceAsStream(exportTemplateFilePath))
+                .sheet()
+                .titleRowStartIndex(-1)
+                .headRowStartIndex(1)
+                .dataRowStartIndex(2)
+                .write(DemoVo.getList(), DemoVo.class);
+
+        // 覆盖标题，覆盖标题表头
+        zouzhiyExcelFactory.write(new File(rootPath + File.separator + System.currentTimeMillis() + ".xlsx"))
+                .template(this.getClass().getClassLoader().getResourceAsStream(exportTemplateFilePath))
+                .sheet()
+                .title("覆盖标题，覆盖表头")
+                .dataRowStartIndex(2)
+                .write(DemoVo.getList(), DemoVo.class);
+    }
+
+    @Test
+    void importExcel() {
+        String inputFilePath = "template/import.xlsx";
+
+        InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(inputFilePath);
+
+        List<DemoVo> demoVoList = zouzhiyExcelFactory.read(inputStream).sheet(0).dataRowStartIndex(2).read(DemoVo.class);
+        for (DemoVo demoVo : demoVoList) {
+            System.out.println(demoVo);
+        }
+    }
+}
+```
+
+#### 2.2.5 一对多，一条数据对应多列
+```java
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class ItemVo {
+
+    private final static Random RANDOM = new Random(System.currentTimeMillis());
+
+    private String firstName;
+
+    private String lastName;
+
+    private Integer age;
+
+    public static ItemVo newInstance() {
+        return ItemVo
+                .builder()
+                .firstName(RANDOM.nextBoolean() ? null : "firstName-" + RANDOM.nextDouble())
+                .lastName(RANDOM.nextBoolean() ? null : "lastName-" + RANDOM.nextDouble())
+                .age(RANDOM.nextBoolean() ? null : RANDOM.nextInt(100))
+                .build();
+    }
+}
+
+
+public class ItemCellHandler implements CellHandler<ItemVo> {
+
+
+    @Override
+    public Class<ItemVo> getJavaType() {
+        return ItemVo.class;
+    }
+
+    @Override
+    public ExcelType getExcelType() {
+        return ExcelType.STRING;
+    }
+
+    @Override
+    public ItemVo read(SheetContext sheetContext, ExcelFieldConfig excelFieldConfig, CellResultSet cellResultSet) {
+        if (cellResultSet == null) {
+            return null;
+        }
+
+        if (cellResultSet.isNone()) {
+            return null;
+        }
+        List<CellResult> cellResultList = cellResultSet.getCellResultListList().get(0);
+        CellResult cellResultFirstName = cellResultList.size() > 0 ? cellResultList.get(0) : CellResult.none();
+        CellResult cellResultSecondName = cellResultList.size() > 1 ? cellResultList.get(1) : CellResult.none();
+        CellResult cellResultAge = cellResultList.size() > 2 ? cellResultList.get(2) : CellResult.none();
+
+        CellHandler<String> stringStringHandler = sheetContext.getConfiguration().getCellHandlerRegistry().getCellHandler(StringStringHandler.class);
+
+        String firstName = stringStringHandler.read(sheetContext, excelFieldConfig, CellResultSet.firstCellResult(cellResultFirstName));
+        String secondName = stringStringHandler.read(sheetContext, excelFieldConfig, CellResultSet.firstCellResult(cellResultSecondName));
+        CellHandler<Integer> integerCellHandler = sheetContext.getConfiguration().getCellHandlerRegistry().getCellHandler(IntegerNumberHandler.class);
+        Integer age = integerCellHandler.read(sheetContext, excelFieldConfig, CellResultSet.firstCellResult(cellResultAge));
+
+        return ItemVo.builder().firstName(firstName).lastName(secondName).age(age).build();
+    }
+
+    @Override
+    public void write(RowContext rowContext, Integer columnIndex, ExcelFieldConfig excelFieldConfig, ItemVo value) {
+        if (value == null) {
+            return;
+        }
+        Row row = rowContext.getRowList().get(0);
+        Cell cellFirstName = row.createCell(columnIndex);
+        Cell cellLastName = row.createCell(columnIndex + 1);
+        Cell cellAge = row.createCell(columnIndex + 2);
+        if (value.getFirstName() != null    ){
+            cellFirstName.setCellValue(value.getFirstName());
+        }
+        if (value.getLastName() != null){
+            cellLastName.setCellValue(value.getLastName());
+        }
+        if (value.getAge() != null) {
+            cellAge.setCellValue(value.getAge());
+        }
+
+        SheetContext sheetContext = rowContext.getSheetContext();
+        CellStyle cellStyle = sheetContext.getDataCellStyle(excelFieldConfig, this.getDefaultExcelFormat());
+        cellFirstName.setCellStyle(cellStyle);
+        cellLastName.setCellStyle(cellStyle);
+        cellAge.setCellStyle(cellStyle);
+
+        int rowspan = rowContext.getRowspan();
+        int rowIndex = row.getRowNum();
+        RegionUtils.addMergedRegionIfPresent(sheetContext, cellStyle, rowIndex, rowIndex + rowspan - 1, columnIndex, columnIndex);
+        RegionUtils.addMergedRegionIfPresent(sheetContext, cellStyle, rowIndex, rowIndex + rowspan - 1, columnIndex + 1, columnIndex + 1);
+        RegionUtils.addMergedRegionIfPresent(sheetContext, cellStyle, rowIndex, rowIndex + rowspan - 1, columnIndex + 2, columnIndex + 2);
+    }
+}
+
+
+```
+
+#### 2.2.6 自定义单元格格式
+```java
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@ExcelClass(titleStyle = @ExcelStyle(borderLeft = BorderStyle.THIN,rotation = 45, wrapText = true,font = @ExcelFont(fontHeightInPoints = 32, bold = true, italic = true)))
+public class DemoVo {
+
+    @ExcelField(dataStyle = @ExcelStyle(font = @ExcelFont(bold = true, italic = true)), headStyle = @ExcelStyle(font = @ExcelFont(italic = true)))
+    private String name;
+
+    @ExcelField(dataStyle = @ExcelStyle(font = @ExcelFont(bold = true, italic = true, color = Font.COLOR_RED)), headStyle = @ExcelStyle(font = @ExcelFont(italic = true)))
+    private String title;
+
+    public static List<DemoVo> getList() {
+        Random random = new Random(System.currentTimeMillis());
+        int size = random.nextInt(5000);
+        List<DemoVo> demoVoList = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            DemoVo demoVo = DemoVo.builder()
+                    .name("name-" + random.nextInt(900))
+                    .title("title-" + random.nextInt(111))
+                    .build();
+            demoVoList.add(demoVo);
+        }
+        return demoVoList;
+    }
+}
+```
+
+## 3. 参与贡献
+
+非常欢迎你的加入！[提一个 Issue](https://github.com/zouzhiy/zouzhiy-excel/issues/new) 或者提交一个 Pull Request。
+
+## 6. 联系作者
+
+`QQ`：`546963897`  
+`email`：`546963897@qq.com`
+
+## 7. 开源协议
+
+[Apache 2.0](LICENSE) © zouzhiy
