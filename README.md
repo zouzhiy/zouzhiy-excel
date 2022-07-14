@@ -27,7 +27,7 @@ zouzhiy-excel是一款Excel导入导出的轻量级开源组件。省略了繁�
 <dependency>
     <groupId>io.github.zouzhiy</groupId>
     <artifactId>zouzhiy-excel</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
@@ -38,7 +38,7 @@ zouzhiy-excel是一款Excel导入导出的轻量级开源组件。省略了繁�
 <dependency>
     <groupId>io.github.zouzhiy</groupId>
     <artifactId>zouzhiy-excel-boot-starter</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
