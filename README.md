@@ -27,7 +27,7 @@ zouzhiy-excel是一款Excel导入导出的轻量级工具。省略了繁琐的�
 <dependency>
     <groupId>io.github.zouzhiy</groupId>
     <artifactId>zouzhiy-excel</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
 </dependency>
 ```
 
@@ -38,7 +38,7 @@ zouzhiy-excel是一款Excel导入导出的轻量级工具。省略了繁琐的�
 <dependency>
     <groupId>io.github.zouzhiy</groupId>
     <artifactId>zouzhiy-excel-boot-starter</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
 </dependency>
 ```
 
@@ -81,6 +81,7 @@ public class ExcelDemo {
 
     @Test
     void exportNoTemplate() {
+        //noinspection ConstantConditions
         String rootPath = this.getClass().getResource("/").getPath();
 
         // 无标题，无表头
@@ -113,6 +114,7 @@ public class ExcelDemo {
     void exportWithTemplate() {
         String exportTemplateFilePath = "template/export.xlsx";
 
+        //noinspection ConstantConditions
         String rootPath = this.getClass().getResource("/").getPath();
         // 不覆盖标题，不覆盖标题表头
         zouzhiyExcelFactory.write(new File(rootPath + File.separator + System.currentTimeMillis() + ".xlsx"))
@@ -177,7 +179,7 @@ public class TestController {
     private ZouzhiyExcelFactory zouzhiyExcelFactory;
 
     @PostMapping("import")
-    public List<DemoVo> importFile(MultipartFile multipartFile) throws IOException {
+    public List<DemoVo> importFile(MultipartFile multipartFile) {
         return zouzhiyExcelFactory
                 .read(multipartFile.getInputStream())
                 .sheet()
@@ -186,7 +188,7 @@ public class TestController {
     }
 
     @GetMapping("export/no-template1")
-    public void exportDataByNoTemplate(HttpServletResponse response) throws IOException {
+    public void exportDataByNoTemplate(HttpServletResponse response) {
         List<DemoVo> demoVoList = Collections.emptyList();
 
         response.addHeader("Content-Disposition", "attachment; filename*=utf-8''" + "export.xlsx");
@@ -201,7 +203,7 @@ public class TestController {
     }
 
     @GetMapping("export/no-template2")
-    public void exportDataByTemplate4(HttpServletResponse response) throws IOException {
+    public void exportDataByTemplate4(HttpServletResponse response) {
         List<DemoVo> demoVoList = this.getList();
 
         response.addHeader("Content-Disposition", "attachment; filename*=utf-8''" + "export.xlsx");
@@ -216,7 +218,7 @@ public class TestController {
     }
 
     @GetMapping("export/template1")
-    public void exportDataByTemplate1(HttpServletResponse response) throws IOException {
+    public void exportDataByTemplate1(HttpServletResponse response) {
         List<DemoVo> demoVoList = this.getList();
 
         String exportTemplateFilePath = "template/export/export1.xlsx";
@@ -236,7 +238,7 @@ public class TestController {
     }
 
     @GetMapping("export/template2")
-    public void exportDataByTemplate2(HttpServletResponse response) throws IOException {
+    public void exportDataByTemplate2(HttpServletResponse response) {
         List<DemoVo> demoVoList = this.getList();
 
         String exportTemplateFilePath = "template/export/export2.xls";
@@ -257,7 +259,7 @@ public class TestController {
 
 
     @GetMapping("export/template3")
-    public void exportDataByTemplate3(HttpServletResponse response) throws IOException {
+    public void exportDataByTemplate3(HttpServletResponse response) {
         List<DemoVo> demoVoList = Collections.emptyList();
 
         String exportTemplateFilePath = "template/export/export2.xls";
@@ -380,6 +382,7 @@ public class ExcelDemo {
 
     @Test
     void exportNoTemplate() {
+        //noinspection ConstantConditions
         String rootPath = this.getClass().getResource("/").getPath();
 
         // 无标题，无表头
@@ -412,6 +415,7 @@ public class ExcelDemo {
     void exportWithTemplate() {
         String exportTemplateFilePath = "template/export.xlsx";
 
+        //noinspection ConstantConditions
         String rootPath = this.getClass().getResource("/").getPath();
         // 不覆盖标题，不覆盖标题表头
         zouzhiyExcelFactory.write(new File(rootPath + File.separator + System.currentTimeMillis() + ".xlsx"))
