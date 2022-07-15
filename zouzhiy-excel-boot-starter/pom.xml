@@ -7,7 +7,7 @@
     <groupId>io.github.zouzhiy</groupId>
     <artifactId>zouzhiy-excel-boot-starter</artifactId>
     <name>zouzhiy-excel-boot-starter</name>
-    <version>1.1.1</version>
+    <version>1.1.2-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <description>zouzhiy-excel spring-boot启动器</description>
@@ -50,7 +50,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
-        <zouzhiy-excel.version>1.1.1</zouzhiy-excel.version>
+        <zouzhiy-excel.version>1.1.2-SNAPSHOT</zouzhiy-excel.version>
         <spring-boot.version>2.5.3</spring-boot.version>
     </properties>
 
