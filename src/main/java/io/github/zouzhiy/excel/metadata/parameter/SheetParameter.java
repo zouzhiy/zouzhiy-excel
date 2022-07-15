@@ -25,6 +25,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * sheet读写配置
+ *
  * @author zouzhiy
  * @since 2022/7/2
  */
@@ -34,26 +36,65 @@ import java.util.List;
 @EqualsAndHashCode
 public class SheetParameter {
 
+    /**
+     * sheet下标
+     */
     private Integer sheetIndex;
-
+    /**
+     * sheet名称
+     */
     private String sheetName;
 
+    /**
+     * sheet标题
+     */
     private String title;
 
+    /**
+     * 标题起始行下标
+     * -1 时表示不存在标题行
+     * 若不设置，则当{@link SheetParameter#headRowStartIndex}大于0时取0，反之取-1
+     */
     private Integer titleRowStartIndex;
 
+    /**
+     * 标题起始列
+     * 默认：0
+     */
     private Integer titleColumnStartIndex;
-
+    /**
+     * 表头起始行下标
+     * -1 时表示不存在表头行
+     * 若不设置，则计算得：{@link SheetParameter#dataRowStartIndex}-1
+     */
     private Integer headRowStartIndex;
 
+    /**
+     * 表头起始列
+     * 默认：0
+     */
     private Integer headColumnStartIndex;
 
+    /**
+     * 数据起始行
+     * 默认：0
+     */
     private Integer dataRowStartIndex;
 
+    /**
+     * 数据起始列
+     * 默认：0
+     */
     private Integer dataColumnStartIndex;
 
+    /**
+     * sheet读取回调。{@link SheetReadConsumer}
+     */
     private List<SheetReadConsumer<?>> sheetReadConsumerList;
 
+    /**
+     * sheet写入回调。{@link SheetWriteConsumer}
+     */
     private List<SheetWriteConsumer<?>> sheetWriteConsumerList;
 
     private SheetParameter(Integer sheetIndex, String sheetName
@@ -75,6 +116,11 @@ public class SheetParameter {
         this.sheetWriteConsumerList = sheetWriteConsumerList;
     }
 
+    /**
+     * 默认对象 无标题 无标题。sheet取第一个
+     *
+     * @return sheet读写配置
+     */
     public static SheetParameter empty() {
         return new SheetParameterBuilder().sheet(0).dataRowStartIndex(0).dataColumnStartIndex(0).build();
     }
@@ -173,6 +219,11 @@ public class SheetParameter {
             return this;
         }
 
+        /**
+         * 通过判断，取值创建配置对象，避免出现非法配置
+         *
+         * @return 配置对象
+         */
         public SheetParameter build() {
             return new SheetParameter(sheetIndex, sheetName, title
                     , this.getTitleRowStartIndex()
@@ -185,6 +236,12 @@ public class SheetParameter {
                     , this.getSheetWriteConsumerList());
         }
 
+        /**
+         * 若主动配置了值，则取配置值
+         * 否则根据 {@link #getHeadRowStartIndex}的值做判断，取0或者-1
+         *
+         * @return 标题行下标
+         */
         private Integer getTitleRowStartIndex() {
             if (titleRowStartIndex != null) {
                 return titleRowStartIndex;
@@ -199,6 +256,12 @@ public class SheetParameter {
             return titleColumnStartIndex == null ? 0 : titleColumnStartIndex;
         }
 
+        /**
+         * 若主动配置了值，则取配置值
+         * 否则根据 {@link #getDataRowStartIndex}的值减1
+         *
+         * @return 标题行下标
+         */
         private Integer getHeadRowStartIndex() {
             if (headRowStartIndex != null) {
                 return headRowStartIndex;

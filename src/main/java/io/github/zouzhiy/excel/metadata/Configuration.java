@@ -34,38 +34,61 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
+ * 全局配置信息
+ *
  * @author zouzhiy
  * @since 2022/7/2
  */
 public class Configuration {
-
+    /**
+     * {@link io.github.zouzhiy.excel.handler.CellHandler} 注册查询管理器
+     */
     @Getter
     private final CellHandlerRegistry cellHandlerRegistry = new CellHandlerRegistry(this);
-
+    /**
+     * {@link io.github.zouzhiy.excel.write.RowTitleWrite} 注册查询管理器
+     */
     @Getter
     private final RowTitleWriteRegistry rowTitleWriteRegistry = new RowTitleWriteRegistry(this);
-
+    /**
+     * {@link io.github.zouzhiy.excel.write.RowHeadWrite} 注册查询管理器
+     */
     @Getter
     private final RowHeadWriteRegistry rowHeadWriteRegistry = new RowHeadWriteRegistry(this);
-
+    /**
+     * {@link io.github.zouzhiy.excel.write.RowFootWrite} 注册查询管理器
+     */
     @Getter
     private final RowFootWriteRegistry rowFootWriteRegistry = new RowFootWriteRegistry(this);
-
+    /**
+     * {@link io.github.zouzhiy.excel.read.RowTitleRead} 注册查询管理器
+     */
     @Getter
     private final RowTitleReadRegistry rowTitleReadRegistry = new RowTitleReadRegistry(this);
-
+    /**
+     * {@link io.github.zouzhiy.excel.read.RowHeadRead} 注册查询管理器
+     */
     @Getter
     private final RowHeadReadRegistry rowHeadReadRegistry = new RowHeadReadRegistry(this);
 
+    /**
+     * {@link io.github.zouzhiy.excel.read.RowFootRead} 注册查询管理器
+     */
     @Getter
     private final RowFootReadRegistry rowFootReadRegistry = new RowFootReadRegistry(this);
-
+    /**
+     * {@link io.github.zouzhiy.excel.cellstyle.RowStyleRead} 注册查询管理器
+     */
     @Getter
     private final RowStyleReadRegistry rowStyleReadRegistry = new RowStyleReadRegistry(this);
-
+    /**
+     * 注解配置解析器
+     */
     @Getter
     private final ExcelAnnotationParse excelAnnotationParse = new ExcelAnnotationParse(this);
-
+    /**
+     * {@link io.github.zouzhiy.excel.ibatis.reflection.Reflector} 创建工厂，提供缓存的能力
+     */
     @Getter
     @Setter
     private ReflectorFactory reflectorFactory = new DefaultReflectorFactory();

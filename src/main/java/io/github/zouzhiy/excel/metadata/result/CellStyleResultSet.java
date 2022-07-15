@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 单元格样式结果集
+ *
  * @author zouzhiy
  * @since 2022/7/2
  */
@@ -34,10 +36,21 @@ public class CellStyleResultSet {
     private CellStyleResultSet() {
     }
 
+    /**
+     * 空
+     *
+     * @return 空结果集
+     */
     public static CellStyleResultSet empty() {
         return new CellStyleResultSet();
     }
 
+    /**
+     * 新增结果
+     *
+     * @param excelFieldConfig 字段配置信息
+     * @param cellStyle        单元格样式
+     */
     public void cellStyleResult(ExcelFieldConfig excelFieldConfig, CellStyle cellStyle) {
         cellStyleResultList.add(CellStyleResult.newInstance(excelFieldConfig, cellStyle));
     }

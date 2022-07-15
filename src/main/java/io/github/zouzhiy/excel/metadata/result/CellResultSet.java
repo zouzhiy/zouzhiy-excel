@@ -24,7 +24,10 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * @author zouzhiy
+ * 多个单元格值读取结果
+ * 为跨行跨列数据读取提供支持
+ * * @author zouzhiy
+ *
  * @since 2022/7/2
  */
 @ToString
@@ -32,17 +35,32 @@ import java.util.List;
 public class CellResultSet {
 
     /**
-     * 第一层List<同一个row不同col>
+     * List<每一行的值List<同一行下不同列的值>>
+     * row1col1, row2col2
+     * row2col1, row2cole2
+     * <p>
+     * 每一行的col数量必须一致
      */
     @Getter
     List<List<CellResult>> cellResultListList;
 
+    /**
+     * 空值
+     *
+     * @return list长度为0
+     */
     public static CellResultSet none() {
         CellResultSet cellResultSet = new CellResultSet();
         cellResultSet.cellResultListList = Collections.emptyList();
         return cellResultSet;
     }
 
+    /**
+     * 直接创建新对象
+     *
+     * @param cellResultListList 单元格结果二维列表
+     * @return 多个单元格值读取结果
+     */
     public static CellResultSet newInstance(List<List<CellResult>> cellResultListList) {
         CellResultSet.validated(cellResultListList);
         CellResultSet cellResultSet = new CellResultSet();
@@ -50,6 +68,12 @@ public class CellResultSet {
         return cellResultSet;
     }
 
+    /**
+     * 一般情况下的结果，不存在合并单元格。则只有一行一列
+     *
+     * @param cellResult 单个单元格值
+     * @return 包装后的多个结果值
+     */
     public static CellResultSet firstCellResult(CellResult cellResult) {
         CellResultSet cellResultSet = new CellResultSet();
         List<List<CellResult>> cellResultListList = new ArrayList<>(1);
@@ -61,10 +85,21 @@ public class CellResultSet {
         return cellResultSet;
     }
 
+    /**
+     * 返回结果集的单元格类型。
+     * 以第一个单元格类型为准。
+     *
+     * @return 单元格类型
+     */
     public ExcelType getExcelType() {
         return this.getFirstCellResult().getExcelType();
     }
 
+    /**
+     * 结果为空 对应的是单元格为null
+     *
+     * @return 是否为空
+     */
     public boolean isNone() {
         if (cellResultListList == null || cellResultListList.isEmpty()) {
             return true;
@@ -77,6 +112,12 @@ public class CellResultSet {
         return true;
     }
 
+    /**
+     * 获取结果集的第一个单元格值。
+     * 若数据不跨行跨列，则此结果即为实际的读取值
+     *
+     * @return 单元格值
+     */
     public CellResult getFirstCellResult() {
         if (cellResultListList == null || cellResultListList.isEmpty()) {
             throw new ExcelException("cellResultListList 空");
@@ -90,6 +131,7 @@ public class CellResultSet {
     }
 
     /**
+     * 校验结果集是否合法
      * 每一个row的col要相等
      */
     private static void validated(List<List<CellResult>> cellResultListList) {

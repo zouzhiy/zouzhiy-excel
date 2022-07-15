@@ -29,21 +29,57 @@ import java.util.List;
 @Getter
 public class WorkbookParameter {
 
+    /**
+     * 输入文件名称。（导入文件或者导出时的模板文件）
+     */
     private final String inputFileName;
+    /**
+     * 输入文件绝对路径。（导入文件或者导出时的模板文件）
+     */
     private final String inputFilePath;
+    /**
+     * 输入文件。（导入文件或者导出时的模板文件）
+     */
     private final File inputFile;
 
+    /**
+     * 输入流。（导入流或者导出时的模板流）
+     */
     private final InputStream inputStream;
 
+    /**
+     * 导出文件名称
+     */
     private final String outputFileName;
+    /**
+     * 导出文件绝对路径
+     */
     private final String outputFilePath;
+    /**
+     * 导出文件
+     */
     private final File outputFile;
+    /**
+     * 导出流
+     */
     private final OutputStream outputStream;
 
+    /**
+     * 是否xlsx.默认取True.
+     * 会根据输入、输出文件名称后缀判断。也可以直接赋值
+     * 但两者不可冲突，否则抛出异常
+     */
     private final boolean xssf;
 
+    /**
+     * sheet配置列表。
+     * 预留多sheet支持才采用列表的形式存储
+     */
     private final List<SheetParameter> sheetParameterList;
 
+    /**
+     * 单元格类型处理回调 {@link CellStyleConsumer}
+     */
     private final List<CellStyleConsumer> cellStyleConsumerList;
 
     public SheetParameter getSheetParameter() {

@@ -26,10 +26,17 @@ import lombok.ToString;
 @EqualsAndHashCode
 public class RowResultSet<T> {
 
+    /**
+     * 行数据
+     */
     private final T data;
-
+    /**
+     * 行号
+     */
     private final int rowIndex;
-
+    /**
+     * 纵向所跨的行数
+     */
     private final int rowspan;
 
     private RowResultSet(T data, int rowIndex, int rowspan) {

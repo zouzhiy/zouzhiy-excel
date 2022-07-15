@@ -18,14 +18,20 @@ import lombok.Getter;
 import org.apache.poi.ss.usermodel.CellStyle;
 
 /**
+ * 单元格样式信息
+ *
  * @author zouzhiy
  * @since 2022/7/2
  */
 @Getter
 public class CellStyleResult {
-
+    /**
+     * 单元格对应的字段
+     */
     private final ExcelFieldConfig excelFieldConfig;
-
+    /**
+     * 单元格样式信息
+     */
     private final CellStyle cellStyle;
 
     private CellStyleResult(ExcelFieldConfig excelFieldConfig, CellStyle cellStyle) {
@@ -33,6 +39,11 @@ public class CellStyleResult {
         this.cellStyle = cellStyle;
     }
 
+    /**
+     * @param excelFieldConfig 字段配置信息
+     * @param cellStyle        单元格样式
+     * @return 样式信息对象
+     */
     public static CellStyleResult newInstance(ExcelFieldConfig excelFieldConfig, CellStyle cellStyle) {
         return new CellStyleResult(excelFieldConfig, cellStyle);
     }

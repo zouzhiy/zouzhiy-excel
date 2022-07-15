@@ -23,6 +23,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
+ * 字体样式。对应{@link org.apache.poi.ss.usermodel.Font}的属性字段
+ *
  * @author zouzhiy
  * @since 2022/7/2
  */

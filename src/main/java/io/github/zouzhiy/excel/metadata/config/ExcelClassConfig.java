@@ -37,6 +37,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * 配置信息 {@link io.github.zouzhiy.excel.annotation.ExcelClass}
+ *
  * @author zouzhiy
  * @since 2022/7/2
  */

@@ -20,6 +20,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
+ * 合并单元格跨行数，跨列数
+ *
  * @author zouzhiy
  * @since 2022/7/2
  */
@@ -59,10 +61,26 @@ public class CellSpan {
         this.colspan = colspan;
     }
 
+    /**
+     * 直接创建
+     *
+     * @param rowspan 纵跨的行数
+     * @param colspan 横跨的列数
+     * @return 对象
+     */
     public static CellSpan newInstance(int rowspan, int colspan) {
         return new CellSpan(rowspan, colspan);
     }
 
+    /**
+     * 根据边界计算
+     *
+     * @param firstRow 起始行
+     * @param lastRow  终止行
+     * @param firstCol 起始列
+     * @param lastCol  终止列
+     * @return 合并单元格跨行数，跨列数
+     */
     public static CellSpan newInstance(int firstRow, int lastRow, int firstCol, int lastCol) {
         return new CellSpan(lastRow - firstRow + 1, lastCol - firstCol + 1);
     }
