@@ -42,18 +42,12 @@ public class DefaultWorkbookContext implements WorkbookContext {
     private final Configuration configuration;
 
     private final WorkbookParameter workbookParameter;
-
-    private Workbook workbook;
-
-    private FormulaEvaluator formulaEvaluator;
-
-    private DataFormat dataFormat;
-
-    private CellStyle titleCellStyle = null;
-
     private final Map<String, CellStyle> headCellStyleMap = new HashMap<>(32);
-
     private final Map<String, CellStyle> dataCellStyleMap = new HashMap<>(32);
+    private Workbook workbook;
+    private FormulaEvaluator formulaEvaluator;
+    private DataFormat dataFormat;
+    private CellStyle titleCellStyle = null;
 
     public DefaultWorkbookContext(Configuration configuration, WorkbookParameter workbookParameter) {
         this.configuration = configuration;

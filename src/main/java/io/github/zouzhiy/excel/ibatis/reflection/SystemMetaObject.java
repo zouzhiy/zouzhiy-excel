@@ -33,11 +33,11 @@ public final class SystemMetaObject {
         // Prevent Instantiation of Static Class
     }
 
-    private static class NullObject {
-    }
-
     public static MetaObject forObject(Object object) {
         return MetaObject.forObject(object, DEFAULT_OBJECT_FACTORY, DEFAULT_OBJECT_WRAPPER_FACTORY, new DefaultReflectorFactory());
+    }
+
+    private static class NullObject {
     }
 
 }

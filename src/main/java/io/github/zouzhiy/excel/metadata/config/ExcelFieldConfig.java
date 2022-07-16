@@ -38,6 +38,9 @@ public class ExcelFieldConfig {
     private final String title = "";
 
     @Builder.Default
+    private final double width = -1D;
+
+    @Builder.Default
     private final String propertyName = "";
 
     @Builder.Default
@@ -85,6 +88,7 @@ public class ExcelFieldConfig {
         return ExcelFieldConfig
                 .builder()
                 .title(excelField.title().length() == 0 ? propertyName : excelField.title())
+                .width(excelField.width())
                 .propertyName(propertyName)
                 .javaType(javaType)
                 .excelType(excelField.excelType())

@@ -33,13 +33,13 @@ public class RowStyleReadRegistry {
 
     private final Map<Class<? extends RowStyleRead>, RowStyleRead> rowStyleReadMap = new ConcurrentHashMap<>(16);
 
-    public Configuration getConfiguration() {
-        return configuration;
-    }
-
     public RowStyleReadRegistry(Configuration configuration) {
         this.configuration = configuration;
         register(new DefaultRowStyleRead());
+    }
+
+    public Configuration getConfiguration() {
+        return configuration;
     }
 
     public void register(RowStyleRead rowStyleRead) {

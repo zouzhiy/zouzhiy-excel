@@ -18,11 +18,13 @@ import io.github.zouzhiy.excel.cellstyle.SheetCellStyleRead;
 import io.github.zouzhiy.excel.cellstyle.defaults.DefaultSheetCellStyleRead;
 import io.github.zouzhiy.excel.context.SheetContext;
 import io.github.zouzhiy.excel.metadata.config.ExcelClassConfig;
+import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
 import io.github.zouzhiy.excel.metadata.parameter.SheetParameter;
 import io.github.zouzhiy.excel.write.*;
 import io.github.zouzhiy.excel.write.registry.RowFootWriteRegistry;
 import io.github.zouzhiy.excel.write.registry.RowHeadWriteRegistry;
 import io.github.zouzhiy.excel.write.registry.RowTitleWriteRegistry;
+import org.apache.poi.ss.usermodel.Sheet;
 
 import java.util.List;
 
@@ -69,6 +71,7 @@ public class DefaultSheetWrite implements SheetWrite {
         this.writeHead(itemList);
         this.writeData(itemList);
         this.writeFoot(itemList);
+        this.setColumnWidth();
 
         //noinspection unchecked
         sheetWriteConsumerList.forEach(item -> ((SheetWriteConsumer<T>) item).afterWrite(sheetContext, itemList));
@@ -178,6 +181,51 @@ public class DefaultSheetWrite implements SheetWrite {
 
         //noinspection unchecked
         sheetWriteConsumerList.forEach(item -> ((SheetWriteConsumer<T>) item).afterWriteFoot(sheetContext, itemList));
+    }
+
+    private void setColumnWidth() {
+        if (sheetContext.getExcelClassConfig().getAutoSizeColumn()) {
+            this.autoSizeColumn();
+            return;
+        }
+        if (sheetContext.hasInputStream()) {
+            return;
+        }
+        SheetParameter sheetParameter = sheetContext.getSheetParameter();
+        ExcelClassConfig excelClassConfig = sheetContext.getExcelClassConfig();
+        List<ExcelFieldConfig> excelFieldConfigList = excelClassConfig.getItemList();
+
+        Sheet sheet = sheetContext.getSheet();
+        Integer curColIndex = sheetParameter.getHeadColumnStartIndex();
+        for (ExcelFieldConfig excelFieldConfig : excelFieldConfigList) {
+            int colspan = excelFieldConfig.getColspan();
+            double width = excelFieldConfig.getWidth();
+            if (Double.compare(width, -1) == 0) {
+                curColIndex += colspan;
+                continue;
+            }
+            int perWidth = ((Double) ((width * 256) / colspan)).intValue();
+            for (int i = 0; i < colspan; i++) {
+                sheet.setColumnWidth(curColIndex, perWidth);
+                curColIndex++;
+            }
+        }
+    }
+
+    private void autoSizeColumn() {
+        SheetParameter sheetParameter = sheetContext.getSheetParameter();
+        ExcelClassConfig excelClassConfig = sheetContext.getExcelClassConfig();
+        List<ExcelFieldConfig> excelFieldConfigList = excelClassConfig.getItemList();
+
+        Sheet sheet = sheetContext.getSheet();
+        Integer curColIndex = sheetParameter.getHeadColumnStartIndex();
+        for (ExcelFieldConfig excelFieldConfig : excelFieldConfigList) {
+            int colspan = excelFieldConfig.getColspan();
+            for (int i = 0; i < colspan; i++) {
+                sheet.autoSizeColumn(curColIndex);
+                curColIndex++;
+            }
+        }
     }
 
     private SheetCellStyleRead getSheetCellStyleRead() {

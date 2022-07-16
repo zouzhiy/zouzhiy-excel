@@ -38,6 +38,15 @@ public @interface ExcelField {
      */
     String title() default "";
 
+
+    /**
+     * 列宽
+     *
+     * @return 列宽值
+     */
+    double width() default -1.0;
+
+
     /**
      * 单元格类型。
      * <pre>

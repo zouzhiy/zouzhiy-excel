@@ -34,10 +34,8 @@ public class ExcelAnnotationParse {
 
     @Getter
     private final Configuration configuration;
-
-    private boolean configCacheEnabled = true;
-
     private final Map<Class<?>, ExcelClassConfig> excelClassConfigMap = new ConcurrentHashMap<>(32);
+    private boolean configCacheEnabled = true;
 
     public ExcelAnnotationParse(Configuration configuration) {
         this.configuration = configuration;

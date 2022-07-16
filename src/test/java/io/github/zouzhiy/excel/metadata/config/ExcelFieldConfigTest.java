@@ -152,6 +152,7 @@ class ExcelFieldConfigTest {
 
 
         Mockito.when(excelField.title()).thenReturn("");
+        Mockito.when(excelField.width()).thenReturn(random.nextDouble());
         Mockito.when(excelField.excelType()).thenReturn(ExcelType.values()[random.nextInt(ExcelType.values().length)]);
         Mockito.when(excelField.cellHandler()).thenReturn(new Class[]{
                 StringStringHandler.class,
@@ -168,6 +169,7 @@ class ExcelFieldConfigTest {
         ExcelFieldConfig excelFieldConfig = ExcelFieldConfig.buildByExcelField(excelField, propertyName, javaType);
 
         Assertions.assertEquals(excelFieldConfig.getTitle(), propertyName);
+        Assertions.assertEquals(excelFieldConfig.getWidth(), excelField.width());
         Assertions.assertEquals(excelFieldConfig.getPropertyName(), propertyName);
         Assertions.assertEquals(excelFieldConfig.getJavaType(), javaType);
         Assertions.assertEquals(excelFieldConfig.getExcelType(), excelField.excelType());
@@ -262,6 +264,7 @@ class ExcelFieldConfigTest {
 
 
         Mockito.when(excelField.title()).thenReturn("" + random.nextDouble());
+        Mockito.when(excelField.width()).thenReturn(random.nextDouble());
         Mockito.when(excelField.excelType()).thenReturn(ExcelType.values()[random.nextInt(ExcelType.values().length)]);
         //noinspection unchecked
         Mockito.when(excelField.cellHandler()).thenReturn(new Class[]{
@@ -280,6 +283,7 @@ class ExcelFieldConfigTest {
         ExcelFieldConfig excelFieldConfig = ExcelFieldConfig.buildByExcelField(excelField, propertyName, javaType);
 
         Assertions.assertEquals(excelFieldConfig.getTitle(), excelField.title());
+        Assertions.assertEquals(excelFieldConfig.getWidth(), excelField.width());
         Assertions.assertEquals(excelFieldConfig.getPropertyName(), propertyName);
         Assertions.assertEquals(excelFieldConfig.getJavaType(), javaType);
         Assertions.assertEquals(excelFieldConfig.getExcelType(), excelField.excelType());

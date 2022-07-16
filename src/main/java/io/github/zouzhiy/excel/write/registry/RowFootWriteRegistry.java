@@ -33,13 +33,13 @@ public class RowFootWriteRegistry {
 
     private final Map<Class<? extends RowFootWrite>, RowFootWrite> rowFootWriteMap = new ConcurrentHashMap<>(16);
 
-    public Configuration getConfiguration() {
-        return configuration;
-    }
-
     public RowFootWriteRegistry(Configuration configuration) {
         this.configuration = configuration;
         register(new DefaultRowFootWrite());
+    }
+
+    public Configuration getConfiguration() {
+        return configuration;
     }
 
     public void register(RowFootWrite rowFootWrite) {

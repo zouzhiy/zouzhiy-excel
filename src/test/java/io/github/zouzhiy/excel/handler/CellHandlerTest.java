@@ -26,33 +26,24 @@ import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 @ExtendWith(MockitoExtension.class)
 abstract class CellHandlerTest {
 
+    protected static MockedStatic<RegionUtils> regionUtilsMockedStatic;
     protected final Random random = new Random(System.currentTimeMillis());
-
     @Mock
     protected SheetContext sheetContext;
-
     @Mock
     protected ExcelFieldConfig excelFieldConfig;
-
     @Mock
     protected CellResultSet cellResultSet;
-
     @Mock
     protected RowContext rowContext;
-
     @Mock
     protected Row row;
-
     @Mock
     protected Cell cell;
-
     @Mock
     protected CellStyle cellStyle;
-
     @Mock
     protected CellSpan cellSpan;
-
-    protected static MockedStatic<RegionUtils> regionUtilsMockedStatic;
 
     @BeforeAll
     static void init() {

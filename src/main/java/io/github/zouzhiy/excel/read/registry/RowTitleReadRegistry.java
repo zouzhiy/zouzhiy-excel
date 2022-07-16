@@ -33,13 +33,13 @@ public class RowTitleReadRegistry {
 
     private final Map<Class<? extends RowTitleRead>, RowTitleRead> rowTitleReadMap = new ConcurrentHashMap<>(16);
 
-    public Configuration getConfiguration() {
-        return configuration;
-    }
-
     public RowTitleReadRegistry(Configuration configuration) {
         this.configuration = configuration;
         register(new DefaultRowTitleRead());
+    }
+
+    public Configuration getConfiguration() {
+        return configuration;
     }
 
     public void register(RowTitleRead rowTitleRead) {

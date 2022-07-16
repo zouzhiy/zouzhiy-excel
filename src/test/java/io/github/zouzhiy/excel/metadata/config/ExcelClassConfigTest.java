@@ -50,6 +50,7 @@ class ExcelClassConfigTest {
         assertEquals(excelClassConfig.getTitleFormat(), "@");
         assertEquals(excelClassConfig.getTitleStyle(), ExcelStyleConfig.getDefaultExcelStyleConfigTitle());
         assertEquals(excelClassConfig.getRowStyleRead(), DefaultRowStyleRead.class);
+        assertEquals(excelClassConfig.getAutoSizeColumn(), false);
         assertTrue(excelClassConfig.getItemList().isEmpty());
 
         assertEquals(excelClassConfig.getItemList().getClass(), Collections.emptyList().getClass());
@@ -68,6 +69,7 @@ class ExcelClassConfigTest {
         assertEquals(excelClassConfig.getTitleFormat(), "@");
         assertEquals(excelClassConfig.getTitleStyle(), ExcelStyleConfig.getDefaultExcelStyleConfigTitle());
         assertEquals(excelClassConfig.getRowStyleRead(), DefaultRowStyleRead.class);
+        assertEquals(excelClassConfig.getAutoSizeColumn(), false);
         assertTrue(excelClassConfig.getItemList().isEmpty());
     }
 
@@ -85,6 +87,7 @@ class ExcelClassConfigTest {
         assertEquals(excelClassConfig.getTitleFormat(), "@");
         assertEquals(excelClassConfig.getTitleStyle(), ExcelStyleConfig.getDefaultExcelStyleConfigTitle());
         assertEquals(excelClassConfig.getRowStyleRead(), DefaultRowStyleRead.class);
+        assertEquals(excelClassConfig.getAutoSizeColumn(), false);
         assertEquals(excelClassConfig.getItemList().size(), 1);
     }
 
@@ -155,6 +158,7 @@ class ExcelClassConfigTest {
         Mockito.when(excelClass.rowStyleRead()).thenReturn(rowStyleReadClass);
         Mockito.when(excelClass.titleFormat()).thenReturn("" + random.nextDouble());
         Mockito.when(excelClass.titleStyle()).thenReturn(excelStyle);
+        Mockito.when(excelClass.autoSizeColumn()).thenReturn(random.nextBoolean());
 
         ExcelClassConfig excelClassConfig = ExcelClassConfig.buildByExcelClass(excelClass, Collections.emptyList());
 
@@ -167,6 +171,7 @@ class ExcelClassConfigTest {
         assertEquals(excelClassConfig.getTitleFormat(), excelClass.titleFormat());
         assertEquals(excelClassConfig.getTitleStyle(), ExcelStyleConfig.buildByExcelStyle(excelClass.titleStyle()));
         assertEquals(excelClassConfig.getRowStyleRead(), excelClass.rowStyleRead());
+        assertEquals(excelClassConfig.getAutoSizeColumn(), excelClass.autoSizeColumn());
         assertEquals(excelClassConfig.getItemList().size(), 0);
     }
 

@@ -58,11 +58,11 @@ import java.util.Random;
 @ExcelClass
 public class Demo {
 
+    private final static Random random = new Random(System.currentTimeMillis());
+
     static {
         ImageHttpServer.getInstance().start();
     }
-
-    private final static Random random = new Random(System.currentTimeMillis());
 
     @ExcelField(excelType = ExcelType.BOOLEAN)
     private BigDecimal bigDecimalBoolean = nextBoolean() ? null : nextBoolean() ? null : BigDecimal.valueOf(random.nextInt(1));
@@ -95,6 +95,128 @@ public class Demo {
 
     @ExcelField(excelType = ExcelType.STRING, cellHandler = ByteArrayBoxStringHandler.class)
     private Byte[] boxBytes;
+    @ExcelField(excelType = ExcelType.STRING, cellHandler = ByteArrayStringHandler.class)
+    private byte[] unboxBytes = "ttt".getBytes(StandardCharsets.UTF_8);
+    @ExcelField(excelType = ExcelType.BOOLEAN)
+    private Byte byteBoolean = nextBoolean() ? null : nextBoolean() ? null : (byte) 1;
+    @ExcelField(excelType = ExcelType.NUMERIC)
+    private Byte byteNumber = nextBoolean() ? null : (byte) 1;
+    @ExcelField(excelType = ExcelType.STRING)
+    private Byte byteString = nextBoolean() ? null : (byte) 1;
+    @ExcelField(excelType = ExcelType.DATE)
+    private Calendar calendarDate = nextBoolean() ? null : Calendar.getInstance();
+    @ExcelField(excelType = ExcelType.NUMERIC)
+    private Calendar calendarNumber = nextBoolean() ? null : Calendar.getInstance();
+    @ExcelField(excelType = ExcelType.STRING)
+    private Calendar calendarString = nextBoolean() ? null : Calendar.getInstance();
+    @ExcelField(excelType = ExcelType.DATE)
+    private Date dateDate = nextBoolean() ? null : Calendar.getInstance().getTime();
+    @ExcelField(excelType = ExcelType.NUMERIC)
+    private Date dateNumber = nextBoolean() ? null : Calendar.getInstance().getTime();
+    @ExcelField(excelType = ExcelType.STRING)
+    private Date dateString = nextBoolean() ? null : Calendar.getInstance().getTime();
+    @ExcelField(excelType = ExcelType.BOOLEAN)
+    private double unboxDoubleBoolean = random.nextInt(1) * 1.0;
+    @ExcelField(excelType = ExcelType.DATE)
+    private double unboxDoubleDate = DateUtil.getExcelDate(Calendar.getInstance().getTime());
+    @ExcelField(excelType = ExcelType.NUMERIC)
+    private double unboxDoubleNumber = random.nextDouble();
+    @ExcelField(excelType = ExcelType.STRING)
+    private double unboxDoubleString = random.nextDouble();
+    @ExcelField(excelType = ExcelType.BOOLEAN)
+    private Double boxDoubleBoolean = nextBoolean() ? null : random.nextInt(1) * 1.0;
+    @ExcelField(excelType = ExcelType.DATE)
+    private Double boxDoubleDate = nextBoolean() ? null : DateUtil.getExcelDate(Calendar.getInstance().getTime());
+    @ExcelField(excelType = ExcelType.NUMERIC)
+    private Double boxDoubleNumber = nextBoolean() ? null : random.nextDouble();
+    @ExcelField(excelType = ExcelType.STRING)
+    private Double boxDoubleString = nextBoolean() ? null : random.nextDouble();
+    @ExcelField(excelType = ExcelType.BOOLEAN)
+    private float unboxFloatBoolean = random.nextInt(1) * 1.0f;
+    @ExcelField(excelType = ExcelType.NUMERIC)
+    private float unboxFloatNumber = random.nextFloat();
+    @ExcelField(excelType = ExcelType.STRING)
+    private float unboxFloatString = random.nextFloat();
+    @ExcelField(excelType = ExcelType.BOOLEAN)
+    private Float boxFloatBoolean = nextBoolean() ? null : random.nextInt(1) * 1.0f;
+    @ExcelField(excelType = ExcelType.NUMERIC)
+    private Float boxFloatNumber = nextBoolean() ? null : random.nextFloat();
+    @ExcelField(excelType = ExcelType.STRING)
+    private Float boxFloatString = nextBoolean() ? null : random.nextFloat();
+    @ExcelField(cellHandler = ImageUrlCellHandler.class)
+    private String imageUrl = "http://localhost:18080/jpg1.jpg";
+    @ExcelField(excelType = ExcelType.NONE, cellHandler = ImageByteCellHandler.class)
+    private byte[] imageByte;
+    @ExcelField(cellHandler = ImageFileCellHandler.class)
+    private File imageFile;
+    @ExcelField(excelType = ExcelType.BOOLEAN)
+    private int unboxIntegerBoolean = random.nextInt(1);
+    @ExcelField(excelType = ExcelType.NUMERIC)
+    private int unboxIntegerNumber = random.nextInt();
+    @ExcelField(excelType = ExcelType.STRING)
+    private int unboxIntegerString = random.nextInt();
+    @ExcelField(excelType = ExcelType.BOOLEAN)
+    private Integer boxIntegerBoolean = nextBoolean() ? null : random.nextInt(1);
+    @ExcelField(excelType = ExcelType.NUMERIC)
+    private Integer boxIntegerNumber = nextBoolean() ? null : random.nextInt();
+    @ExcelField(excelType = ExcelType.STRING)
+    private Integer boxIntegerString = nextBoolean() ? null : random.nextInt();
+    @ExcelField(excelType = ExcelType.DATE)
+    private LocalDate localDateDate = nextBoolean() ? null : LocalDate.now();
+    @ExcelField(excelType = ExcelType.NUMERIC)
+    private LocalDate localDateNumber = nextBoolean() ? null : LocalDate.now();
+    @ExcelField(excelType = ExcelType.STRING)
+    private LocalDate localDateString = nextBoolean() ? null : LocalDate.now();
+    @ExcelField(excelType = ExcelType.DATE)
+    private LocalDateTime localDateTimeDate = nextBoolean() ? null : LocalDateTime.now();
+    @ExcelField(excelType = ExcelType.NUMERIC)
+    private LocalDateTime localDateTimeNumber = nextBoolean() ? null : LocalDateTime.now();
+    @ExcelField(excelType = ExcelType.STRING)
+    private LocalDateTime localDateTimeString = nextBoolean() ? null : LocalDateTime.now();
+    @ExcelField(excelType = ExcelType.DATE)
+    private LocalTime localTimeDate = nextBoolean() ? null : LocalTime.now();
+    @ExcelField(excelType = ExcelType.NUMERIC)
+    private LocalTime localTimeNumber = nextBoolean() ? null : LocalTime.now();
+    @ExcelField(excelType = ExcelType.STRING)
+    private LocalTime localTimeString = nextBoolean() ? null : LocalTime.now();
+    @ExcelField(excelType = ExcelType.BOOLEAN)
+    private long unboxLongBoolean = random.nextInt(1) * 1L;
+    @ExcelField(excelType = ExcelType.NUMERIC)
+    private long unboxLongNumber = random.nextInt() * 1L;
+    @ExcelField(excelType = ExcelType.STRING)
+    private long unboxLongString = random.nextInt() * 1L;
+    @ExcelField(excelType = ExcelType.BOOLEAN)
+    private Long boxLongBoolean = nextBoolean() ? null : random.nextInt(1) * 1L;
+    @ExcelField(excelType = ExcelType.NUMERIC)
+    private Long boxLongNumber = nextBoolean() ? null : random.nextInt() * 1L;
+    @ExcelField(excelType = ExcelType.STRING)
+    private Long boxLongString = nextBoolean() ? null : random.nextInt() * 1L;
+    @ExcelField(excelType = ExcelType.BOOLEAN)
+    private short unboxShortBoolean = (short) random.nextInt(1);
+    @ExcelField(excelType = ExcelType.NUMERIC)
+    private short unboxShortNumber = (short) random.nextInt(Short.MAX_VALUE);
+    @ExcelField(excelType = ExcelType.STRING)
+    private short unboxShortString = (short) random.nextInt(Short.MAX_VALUE);
+    @ExcelField(excelType = ExcelType.BOOLEAN)
+    private Short boxShortBoolean = nextBoolean() ? null : (short) random.nextInt(1);
+    @ExcelField(excelType = ExcelType.NUMERIC)
+    private Short boxShortNumber = nextBoolean() ? null : (short) random.nextInt(Short.MAX_VALUE);
+    @ExcelField(excelType = ExcelType.STRING)
+    private Short boxShortString = nextBoolean() ? null : (short) random.nextInt(Short.MAX_VALUE);
+    @ExcelField(excelType = ExcelType.BOOLEAN)
+    private String stringBoolean = nextBoolean() ? null : String.valueOf(nextBoolean());
+    @ExcelField(excelType = ExcelType.DATE)
+    private String stringDate = nextBoolean() ? null : LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    @ExcelField(excelType = ExcelType.STRING, sort = 2)
+    private String stringString = nextBoolean() ? null : "12334";
+    @ExcelField(excelType = ExcelType.NUMERIC, sort = 1)
+    private String stringNumber = nextBoolean() ? null : String.valueOf(random.nextDouble());
+    @ExcelField(excelType = ExcelType.DATE)
+    private Timestamp timestampDate = nextBoolean() ? null : new Timestamp(System.currentTimeMillis());
+    @ExcelField(excelType = ExcelType.NUMERIC)
+    private Timestamp timestampNumber = nextBoolean() ? null : new Timestamp(System.currentTimeMillis());
+    @ExcelField(excelType = ExcelType.STRING)
+    private Timestamp timestampString = nextBoolean() ? null : new Timestamp(System.currentTimeMillis());
 
     {
         byte[] bytes = "ttt".getBytes(StandardCharsets.UTF_8);
@@ -104,70 +226,6 @@ public class Demo {
         }
         boxBytes = newBytes;
     }
-
-    @ExcelField(excelType = ExcelType.STRING, cellHandler = ByteArrayStringHandler.class)
-    private byte[] unboxBytes = "ttt".getBytes(StandardCharsets.UTF_8);
-
-    @ExcelField(excelType = ExcelType.BOOLEAN)
-    private Byte byteBoolean = nextBoolean() ? null : nextBoolean() ? null : (byte) 1;
-    @ExcelField(excelType = ExcelType.NUMERIC)
-    private Byte byteNumber = nextBoolean() ? null : (byte) 1;
-    @ExcelField(excelType = ExcelType.STRING)
-    private Byte byteString = nextBoolean() ? null : (byte) 1;
-
-    @ExcelField(excelType = ExcelType.DATE)
-    private Calendar calendarDate = nextBoolean() ? null : Calendar.getInstance();
-    @ExcelField(excelType = ExcelType.NUMERIC)
-    private Calendar calendarNumber = nextBoolean() ? null : Calendar.getInstance();
-    @ExcelField(excelType = ExcelType.STRING)
-    private Calendar calendarString = nextBoolean() ? null : Calendar.getInstance();
-
-
-    @ExcelField(excelType = ExcelType.DATE)
-    private Date dateDate = nextBoolean() ? null : Calendar.getInstance().getTime();
-    @ExcelField(excelType = ExcelType.NUMERIC)
-    private Date dateNumber = nextBoolean() ? null : Calendar.getInstance().getTime();
-    @ExcelField(excelType = ExcelType.STRING)
-    private Date dateString = nextBoolean() ? null : Calendar.getInstance().getTime();
-
-    @ExcelField(excelType = ExcelType.BOOLEAN)
-    private double unboxDoubleBoolean = random.nextInt(1) * 1.0;
-    @ExcelField(excelType = ExcelType.DATE)
-    private double unboxDoubleDate = DateUtil.getExcelDate(Calendar.getInstance().getTime());
-    @ExcelField(excelType = ExcelType.NUMERIC)
-    private double unboxDoubleNumber = random.nextDouble();
-    @ExcelField(excelType = ExcelType.STRING)
-    private double unboxDoubleString = random.nextDouble();
-
-    @ExcelField(excelType = ExcelType.BOOLEAN)
-    private Double boxDoubleBoolean = nextBoolean() ? null : random.nextInt(1) * 1.0;
-    @ExcelField(excelType = ExcelType.DATE)
-    private Double boxDoubleDate = nextBoolean() ? null : DateUtil.getExcelDate(Calendar.getInstance().getTime());
-    @ExcelField(excelType = ExcelType.NUMERIC)
-    private Double boxDoubleNumber = nextBoolean() ? null : random.nextDouble();
-    @ExcelField(excelType = ExcelType.STRING)
-    private Double boxDoubleString = nextBoolean() ? null : random.nextDouble();
-
-
-    @ExcelField(excelType = ExcelType.BOOLEAN)
-    private float unboxFloatBoolean = random.nextInt(1) * 1.0f;
-    @ExcelField(excelType = ExcelType.NUMERIC)
-    private float unboxFloatNumber = random.nextFloat();
-    @ExcelField(excelType = ExcelType.STRING)
-    private float unboxFloatString = random.nextFloat();
-
-    @ExcelField(excelType = ExcelType.BOOLEAN)
-    private Float boxFloatBoolean = nextBoolean() ? null : random.nextInt(1) * 1.0f;
-    @ExcelField(excelType = ExcelType.NUMERIC)
-    private Float boxFloatNumber = nextBoolean() ? null : random.nextFloat();
-    @ExcelField(excelType = ExcelType.STRING)
-    private Float boxFloatString = nextBoolean() ? null : random.nextFloat();
-
-    @ExcelField(cellHandler = ImageUrlCellHandler.class)
-    private String imageUrl = "http://localhost:18080/jpg1.jpg";
-
-    @ExcelField(excelType = ExcelType.NONE, cellHandler = ImageByteCellHandler.class)
-    private byte[] imageByte;
 
     {
         try {
@@ -180,9 +238,6 @@ public class Demo {
             e.printStackTrace();
         }
     }
-
-    @ExcelField(cellHandler = ImageFileCellHandler.class)
-    private File imageFile;
 
     {
         try {
@@ -206,88 +261,6 @@ public class Demo {
             e.printStackTrace();
         }
     }
-
-    @ExcelField(excelType = ExcelType.BOOLEAN)
-    private int unboxIntegerBoolean = random.nextInt(1);
-    @ExcelField(excelType = ExcelType.NUMERIC)
-    private int unboxIntegerNumber = random.nextInt();
-    @ExcelField(excelType = ExcelType.STRING)
-    private int unboxIntegerString = random.nextInt();
-
-    @ExcelField(excelType = ExcelType.BOOLEAN)
-    private Integer boxIntegerBoolean = nextBoolean() ? null : random.nextInt(1);
-    @ExcelField(excelType = ExcelType.NUMERIC)
-    private Integer boxIntegerNumber = nextBoolean() ? null : random.nextInt();
-    @ExcelField(excelType = ExcelType.STRING)
-    private Integer boxIntegerString = nextBoolean() ? null : random.nextInt();
-
-
-    @ExcelField(excelType = ExcelType.DATE)
-    private LocalDate localDateDate = nextBoolean() ? null : LocalDate.now();
-    @ExcelField(excelType = ExcelType.NUMERIC)
-    private LocalDate localDateNumber = nextBoolean() ? null : LocalDate.now();
-    @ExcelField(excelType = ExcelType.STRING)
-    private LocalDate localDateString = nextBoolean() ? null : LocalDate.now();
-
-    @ExcelField(excelType = ExcelType.DATE)
-    private LocalDateTime localDateTimeDate = nextBoolean() ? null : LocalDateTime.now();
-    @ExcelField(excelType = ExcelType.NUMERIC)
-    private LocalDateTime localDateTimeNumber = nextBoolean() ? null : LocalDateTime.now();
-    @ExcelField(excelType = ExcelType.STRING)
-    private LocalDateTime localDateTimeString = nextBoolean() ? null : LocalDateTime.now();
-
-    @ExcelField(excelType = ExcelType.DATE)
-    private LocalTime localTimeDate = nextBoolean() ? null : LocalTime.now();
-    @ExcelField(excelType = ExcelType.NUMERIC)
-    private LocalTime localTimeNumber = nextBoolean() ? null : LocalTime.now();
-    @ExcelField(excelType = ExcelType.STRING)
-    private LocalTime localTimeString = nextBoolean() ? null : LocalTime.now();
-
-    @ExcelField(excelType = ExcelType.BOOLEAN)
-    private long unboxLongBoolean = random.nextInt(1) * 1L;
-    @ExcelField(excelType = ExcelType.NUMERIC)
-    private long unboxLongNumber = random.nextInt() * 1L;
-    @ExcelField(excelType = ExcelType.STRING)
-    private long unboxLongString = random.nextInt() * 1L;
-
-    @ExcelField(excelType = ExcelType.BOOLEAN)
-    private Long boxLongBoolean = nextBoolean() ? null : random.nextInt(1) * 1L;
-    @ExcelField(excelType = ExcelType.NUMERIC)
-    private Long boxLongNumber = nextBoolean() ? null : random.nextInt() * 1L;
-    @ExcelField(excelType = ExcelType.STRING)
-    private Long boxLongString = nextBoolean() ? null : random.nextInt() * 1L;
-
-
-    @ExcelField(excelType = ExcelType.BOOLEAN)
-    private short unboxShortBoolean = (short) random.nextInt(1);
-    @ExcelField(excelType = ExcelType.NUMERIC)
-    private short unboxShortNumber = (short) random.nextInt(Short.MAX_VALUE);
-    @ExcelField(excelType = ExcelType.STRING)
-    private short unboxShortString = (short) random.nextInt(Short.MAX_VALUE);
-
-    @ExcelField(excelType = ExcelType.BOOLEAN)
-    private Short boxShortBoolean = nextBoolean() ? null : (short) random.nextInt(1);
-    @ExcelField(excelType = ExcelType.NUMERIC)
-    private Short boxShortNumber = nextBoolean() ? null : (short) random.nextInt(Short.MAX_VALUE);
-    @ExcelField(excelType = ExcelType.STRING)
-    private Short boxShortString = nextBoolean() ? null : (short) random.nextInt(Short.MAX_VALUE);
-
-    @ExcelField(excelType = ExcelType.BOOLEAN)
-    private String stringBoolean = nextBoolean() ? null : String.valueOf(nextBoolean());
-    @ExcelField(excelType = ExcelType.DATE)
-    private String stringDate = nextBoolean() ? null : LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-    @ExcelField(excelType = ExcelType.STRING, sort = 2)
-    private String stringString = nextBoolean() ? null : "12334";
-    @ExcelField(excelType = ExcelType.NUMERIC, sort = 1)
-    private String stringNumber = nextBoolean() ? null : String.valueOf(random.nextDouble());
-
-    @ExcelField(excelType = ExcelType.DATE)
-    private Timestamp timestampDate = nextBoolean() ? null : new Timestamp(System.currentTimeMillis());
-    @ExcelField(excelType = ExcelType.NUMERIC)
-    private Timestamp timestampNumber = nextBoolean() ? null : new Timestamp(System.currentTimeMillis());
-    @ExcelField(excelType = ExcelType.STRING)
-    private Timestamp timestampString = nextBoolean() ? null : new Timestamp(System.currentTimeMillis());
-
 
     private boolean nextBoolean() {
         return false;

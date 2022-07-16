@@ -33,12 +33,21 @@ import java.util.concurrent.TimeUnit;
 public class ImageHttpServer {
 
     private final static ImageHttpServer IMAGE_HTTP_SERVER = new ImageHttpServer();
+    private boolean start = false;
 
     public static ImageHttpServer getInstance() {
         return IMAGE_HTTP_SERVER;
     }
 
-    private boolean start = false;
+    public static void main(String[] args) {
+        ImageHttpServer.getInstance().start();
+
+        try {
+            TimeUnit.MINUTES.sleep(10);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void start() {
         if (start) {
@@ -75,16 +84,6 @@ public class ImageHttpServer {
             httpExchange.sendResponseHeaders(200, bytes.length);
             outputStream.write(bytes);
             outputStream.close();
-        }
-    }
-
-    public static void main(String[] args) {
-        ImageHttpServer.getInstance().start();
-
-        try {
-            TimeUnit.MINUTES.sleep(10);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
     }
 }

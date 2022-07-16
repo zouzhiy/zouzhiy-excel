@@ -33,13 +33,13 @@ public class RowTitleWriteRegistry {
 
     private final Map<Class<? extends RowTitleWrite>, RowTitleWrite> rowTitleWriteMap = new ConcurrentHashMap<>(16);
 
-    public Configuration getConfiguration() {
-        return configuration;
-    }
-
     public RowTitleWriteRegistry(Configuration configuration) {
         this.configuration = configuration;
         register(new DefaultRowTitleWrite());
+    }
+
+    public Configuration getConfiguration() {
+        return configuration;
     }
 
     public void register(RowTitleWrite rowTitleWrite) {

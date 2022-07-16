@@ -88,6 +88,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public class CellHandlerRegistry {
 
     private final ConcurrentHashMap<Class<?>, ExcelType> standardMapping = new ConcurrentHashMap<>(32);
+    private final Map<Class<?>, CellHandler<?>> allCellHandlerMap = new ConcurrentHashMap<>();
+    private final Map<Class<?>, List<CellHandler<?>>> cellHandlerListMap = new ConcurrentHashMap<>();
+    @Getter
+    private final Configuration configuration;
 
     {
         standardMapping.put(BigDecimal.class, ExcelType.NUMERIC);
@@ -121,13 +125,6 @@ public class CellHandlerRegistry {
         standardMapping.put(URL.class, ExcelType.STRING);
         standardMapping.put(List.class, ExcelType.STRING);
     }
-
-    private final Map<Class<?>, CellHandler<?>> allCellHandlerMap = new ConcurrentHashMap<>();
-
-    private final Map<Class<?>, List<CellHandler<?>>> cellHandlerListMap = new ConcurrentHashMap<>();
-
-    @Getter
-    private final Configuration configuration;
 
     public CellHandlerRegistry(Configuration configuration) {
         this.configuration = configuration;

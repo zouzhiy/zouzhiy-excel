@@ -19,6 +19,10 @@ import java.util.Map;
 import java.util.function.Function;
 
 public class MapUtil {
+    private MapUtil() {
+        super();
+    }
+
     /**
      * A temporary workaround for Java 8 specific performance issue JDK-8161372 .<br>
      * This class should be removed once we drop Java 8 support.
@@ -31,9 +35,5 @@ public class MapUtil {
             return value;
         }
         return map.computeIfAbsent(key, mappingFunction);
-    }
-
-    private MapUtil() {
-        super();
     }
 }

@@ -74,9 +74,10 @@ public class ExcelClassConfig {
 
     @Builder.Default
     private final Class<? extends RowStyleRead> rowStyleRead = DefaultRowStyleRead.class;
-
     @Builder.Default
     private final List<ExcelFieldConfig> itemList = Collections.emptyList();
+    @Builder.Default
+    private Boolean autoSizeColumn = false;
 
     public static ExcelClassConfig getDefaultExcelClassConfig(List<ExcelFieldConfig> itemList) {
         return ExcelClassConfig.builder()
@@ -95,6 +96,7 @@ public class ExcelClassConfig {
                 .titleStyle(ExcelStyleConfig.buildByExcelStyle(excelClass.titleStyle()))
                 .rowStyleRead(excelClass.rowStyleRead())
                 .titleFormat(excelClass.titleFormat())
+                .autoSizeColumn(excelClass.autoSizeColumn())
                 .itemList(excelFieldConfigList)
                 .build();
     }

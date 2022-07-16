@@ -82,14 +82,6 @@ public class WorkbookParameter {
      */
     private final List<CellStyleConsumer> cellStyleConsumerList;
 
-    public SheetParameter getSheetParameter() {
-        return this.sheetParameterList.get(0);
-    }
-
-    public static WorkbookParameterBuilder builder() {
-        return new WorkbookParameterBuilder();
-    }
-
     private WorkbookParameter(String inputFileName, String inputFilePath, File inputFile
             , InputStream inputStream
             , String outputFileName, String outputFilePath, File outputFile
@@ -108,6 +100,14 @@ public class WorkbookParameter {
         this.xssf = xssf;
         this.sheetParameterList = sheetParameterList;
         this.cellStyleConsumerList = cellStyleConsumerList;
+    }
+
+    public static WorkbookParameterBuilder builder() {
+        return new WorkbookParameterBuilder();
+    }
+
+    public SheetParameter getSheetParameter() {
+        return this.sheetParameterList.get(0);
     }
 
     public static class WorkbookParameterBuilder {

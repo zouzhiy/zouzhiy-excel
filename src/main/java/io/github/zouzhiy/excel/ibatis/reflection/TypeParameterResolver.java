@@ -23,6 +23,10 @@ import java.util.Arrays;
  */
 public class TypeParameterResolver {
 
+    private TypeParameterResolver() {
+        super();
+    }
+
     /**
      * Resolve field type.
      *
@@ -218,10 +222,6 @@ public class TypeParameterResolver {
             }
         }
         return noChange ? parentType : new ParameterizedTypeImpl((Class<?>) parentType.getRawType(), null, newParentArgs);
-    }
-
-    private TypeParameterResolver() {
-        super();
     }
 
     static class ParameterizedTypeImpl implements ParameterizedType {

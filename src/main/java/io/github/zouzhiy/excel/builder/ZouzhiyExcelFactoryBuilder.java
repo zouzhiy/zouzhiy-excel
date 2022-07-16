@@ -36,16 +36,16 @@ public class ZouzhiyExcelFactoryBuilder {
 
     private final Configuration configuration;
 
+    private ZouzhiyExcelFactoryBuilder(Configuration configuration) {
+        this.configuration = configuration;
+    }
+
     public static ZouzhiyExcelFactoryBuilder builder() {
         return builder(new Configuration());
     }
 
     public static ZouzhiyExcelFactoryBuilder builder(Configuration configuration) {
         return new ZouzhiyExcelFactoryBuilder(configuration);
-    }
-
-    private ZouzhiyExcelFactoryBuilder(Configuration configuration) {
-        this.configuration = configuration;
     }
 
     public ZouzhiyExcelFactoryBuilder register(CellHandler<?> cellHandler) {

@@ -114,4 +114,10 @@ public @interface ExcelClass {
      */
     ExcelStyle titleStyle() default @ExcelStyle(font = @ExcelFont(fontHeightInPoints = 16, bold = true), horizontalAlignment = StyleHorizontalAlignment.CENTER);
 
+    /**
+     * 是否自动调整列宽，优先级最高，包括比模板的优先级更高
+     *
+     * @return 是否自动调整列宽
+     */
+    boolean autoSizeColumn() default false;
 }

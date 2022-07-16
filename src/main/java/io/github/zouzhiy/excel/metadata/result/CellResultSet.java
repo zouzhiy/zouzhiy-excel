@@ -86,6 +86,22 @@ public class CellResultSet {
     }
 
     /**
+     * 校验结果集是否合法
+     * 每一个row的col要相等
+     */
+    private static void validated(List<List<CellResult>> cellResultListList) {
+        Integer preSize = null;
+        for (List<CellResult> cellResultList : cellResultListList) {
+            int size = cellResultList.size();
+            if (preSize == null) {
+                preSize = size;
+            } else if (preSize != size) {
+                throw new ExcelException("cellResultListList 数据不符合预期");
+            }
+        }
+    }
+
+    /**
      * 返回结果集的单元格类型。
      * 以第一个单元格类型为准。
      *
@@ -128,22 +144,6 @@ public class CellResultSet {
         }
 
         return cellResultList.get(0);
-    }
-
-    /**
-     * 校验结果集是否合法
-     * 每一个row的col要相等
-     */
-    private static void validated(List<List<CellResult>> cellResultListList) {
-        Integer preSize = null;
-        for (List<CellResult> cellResultList : cellResultListList) {
-            int size = cellResultList.size();
-            if (preSize == null) {
-                preSize = size;
-            } else if (preSize != size) {
-                throw new ExcelException("cellResultListList 数据不符合预期");
-            }
-        }
     }
 
 }

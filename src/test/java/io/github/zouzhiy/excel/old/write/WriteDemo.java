@@ -30,20 +30,20 @@ import java.util.List;
  * @since 2022/7/2
  */
 @Data
-@ExcelClass(titleStyle = @ExcelStyle(font = @ExcelFont(bold = true, fontHeightInPoints = 16), horizontalAlignment = StyleHorizontalAlignment.CENTER))
+@ExcelClass(autoSizeColumn = true, titleStyle = @ExcelStyle(font = @ExcelFont(bold = true, fontHeightInPoints = 16), horizontalAlignment = StyleHorizontalAlignment.CENTER))
 public class WriteDemo {
 
 
-    @ExcelField(title = "name-覆盖")
+    @ExcelField(title = "name-覆盖", width = 8.36)
     private String name;
 
-    @ExcelField(title = "title-覆盖", colspan = 2)
+    @ExcelField(title = "title-覆盖", width = 8.36 * 2, colspan = 2)
     private String title;
 
-    @ExcelField(title = "valueList-覆盖", colspan = 3, cellHandler = ValueListStringHandler.class)
+    @ExcelField(title = "valueList-覆盖", width = 8.36 * 3, colspan = 3, cellHandler = ValueListStringHandler.class)
     private List<String> valueList;
 
-    @ExcelField(title = "boolean-覆盖", colspan = 4, dataStyle = @ExcelStyle(borderLeft = BorderStyle.DASHED, borderBottom = BorderStyle.DOUBLE), excelType = ExcelType.BOOLEAN)
+    @ExcelField(title = "boolean-覆盖", width = 8.36 * 4, colspan = 4, dataStyle = @ExcelStyle(borderLeft = BorderStyle.DASHED, borderBottom = BorderStyle.DOUBLE), excelType = ExcelType.BOOLEAN)
     private String booleanStr;
 
 }

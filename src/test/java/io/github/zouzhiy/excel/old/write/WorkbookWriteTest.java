@@ -47,13 +47,25 @@ import java.util.stream.Stream;
 class WorkbookWriteTest {
 
     @Test
-    void write() {
+    void writeWithTemplate() {
         WorkbookParameter workbookParameter = this.getWorkbookParameterWithTemplate();
         ZouzhiyExcelFactory zouzhiyExcelFactory = ZouzhiyExcelFactoryBuilder.builder().register(new ValueListStringHandler()).build();
         WorkbookWrite workbookWrite = zouzhiyExcelFactory.getWorkbookWrite(workbookParameter, WriteDemo.class);
 
         List<WriteDemo> writeDemoList = this.listWriteDemo();
         workbookWrite.write(writeDemoList);
+        assert true;
+    }
+
+    @Test
+    void writeWithNoTemplate() {
+        ZouzhiyExcelFactory zouzhiyExcelFactory = ZouzhiyExcelFactoryBuilder.builder().register(new ValueListStringHandler()).build();
+
+        zouzhiyExcelFactory.write(this.getOutputFile()).sheet()
+                .title("测试")
+                .dataRowStartIndex(2)
+                .write(this.listWriteDemo(), WriteDemo.class);
+
         assert true;
     }
 
@@ -216,65 +228,8 @@ class WorkbookWriteTest {
                 .title("测试title-覆盖")
                 .dataRowStartIndex(2).dataColumnStartIndex(0)
                 .sheetWriteConsumer(new SheetWriteConsumer<WriteDemo>() {
-                    @Override
-                    public void beforeWrite(SheetContext sheetContext, List<WriteDemo> dataList) {
-                        System.out.println("beforeWrite---------------------------------------");
-
-                    }
-
-                    @Override
-                    public void beforeWriteTitle(SheetContext sheetContext, List<WriteDemo> dataList) {
-                        System.out.println("beforeWriteTitle---------------------------------------");
-                    }
-
-                    @Override
-                    public void afterWriteTitle(SheetContext sheetContext, List<WriteDemo> dataList) {
-                        System.out.println("afterWriteTitle---------------------------------------");
-
-                    }
-
-                    @Override
-                    public void beforeWriteHead(SheetContext sheetContext, List<WriteDemo> dataList) {
-                        System.out.println("beforeWriteHead---------------------------------------");
-
-                    }
-
-                    @Override
-                    public void afterWriteHead(SheetContext sheetContext, List<WriteDemo> dataList) {
-                        System.out.println("afterWriteHead---------------------------------------");
-
-                    }
-
-                    @Override
-                    public void beforeWriteData(SheetContext sheetContext, List<WriteDemo> dataList) {
-                        System.out.println("beforeWriteData---------------------------------------");
-
-                    }
-
-                    @Override
-                    public void afterWriteData(SheetContext sheetContext, List<WriteDemo> dataList) {
-                        System.out.println("afterWriteData---------------------------------------");
-
-                    }
-
-                    @Override
-                    public void beforeWriteFoot(SheetContext sheetContext, List<WriteDemo> dataList) {
-                        dataList.add(new WriteDemo());
-                        System.out.println("beforeWriteFoot---------------------------------------");
-
-                    }
-
-                    @Override
-                    public void afterWriteFoot(SheetContext sheetContext, List<WriteDemo> dataList) {
-                        System.out.println("afterWriteFoot---------------------------------------");
-
-                    }
-
-                    @Override
-                    public void afterWrite(SheetContext sheetContext, List<WriteDemo> dataList) {
-                        System.out.println("afterWrite---------------------------------------");
-                    }
-                }).build();
+                })
+                .build();
 
         String exportTemplateFileName = "template2.xlsx";
         String exportTemplateFilePath = "statics/" + exportTemplateFileName;
@@ -287,6 +242,7 @@ class WorkbookWriteTest {
                 .sheetParameter(sheetParameter)
                 .build();
     }
+
 
     private WorkbookParameter getWorkbookReadParameter() {
 
@@ -336,5 +292,17 @@ class WorkbookWriteTest {
                 .sheetParameter(sheetParameter)
                 .input(importFileInputStream)
                 .build();
+    }
+
+    private File getOutputFile() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HHmmss");
+        String outputFileName = simpleDateFormat.format(new Date()) + ".xlsx";
+        URL url = this.getClass().getResource("/");
+
+        assert url != null;
+        String filePath = url.getFile();
+        String outputFilePath = filePath + File.separator + "output" + File.separator + outputFileName;
+
+        return new File(outputFilePath);
     }
 }

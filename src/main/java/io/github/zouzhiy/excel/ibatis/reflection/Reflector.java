@@ -44,9 +44,8 @@ public class Reflector {
     private final Map<String, Invoker> getMethods = new HashMap<>();
     private final Map<String, Class<?>> setTypes = new HashMap<>();
     private final Map<String, Class<?>> getTypes = new HashMap<>();
-    private Constructor<?> defaultConstructor;
-
     private final Map<String, String> caseInsensitivePropertyMap = new HashMap<>();
+    private Constructor<?> defaultConstructor;
 
     public Reflector(Class<?> clazz) {
         type = clazz;
@@ -66,6 +65,45 @@ public class Reflector {
         }
         for (String propName : writablePropertyNames) {
             caseInsensitivePropertyMap.put(propName.toUpperCase(Locale.ENGLISH), propName);
+        }
+    }
+
+    /**
+     * Checks whether can control member accessible.
+     *
+     * @return If can control member accessible, it return {@literal true}
+     * @since 3.5.0
+     */
+    public static boolean canControlMemberAccessible() {
+        try {
+            SecurityManager securityManager = System.getSecurityManager();
+            if (null != securityManager) {
+                securityManager.checkPermission(new ReflectPermission("suppressAccessChecks"));
+            }
+        } catch (SecurityException e) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Class.isRecord() alternative for Java 15 and older.
+     */
+    private static boolean isRecord(Class<?> clazz) {
+        try {
+            return isRecordMethodHandle != null && (boolean) isRecordMethodHandle.invokeExact(clazz);
+        } catch (Throwable e) {
+            throw new ExcelException("Failed to invoke 'Class.isRecord()'.", e);
+        }
+    }
+
+    private static MethodHandle getIsRecordMethodHandle() {
+        MethodHandles.Lookup lookup = MethodHandles.lookup();
+        MethodType mt = MethodType.methodType(boolean.class);
+        try {
+            return lookup.findVirtual(Class.class, "isRecord", mt);
+        } catch (NoSuchMethodException | IllegalAccessException e) {
+            return null;
         }
     }
 
@@ -306,33 +344,13 @@ public class Reflector {
     private String getSignature(Method method) {
         StringBuilder sb = new StringBuilder();
         Class<?> returnType = method.getReturnType();
-        if (returnType != null) {
-            sb.append(returnType.getName()).append('#');
-        }
+        sb.append(returnType.getName()).append('#');
         sb.append(method.getName());
         Class<?>[] parameters = method.getParameterTypes();
         for (int i = 0; i < parameters.length; i++) {
             sb.append(i == 0 ? ':' : ',').append(parameters[i].getName());
         }
         return sb.toString();
-    }
-
-    /**
-     * Checks whether can control member accessible.
-     *
-     * @return If can control member accessible, it return {@literal true}
-     * @since 3.5.0
-     */
-    public static boolean canControlMemberAccessible() {
-        try {
-            SecurityManager securityManager = System.getSecurityManager();
-            if (null != securityManager) {
-                securityManager.checkPermission(new ReflectPermission("suppressAccessChecks"));
-            }
-        } catch (SecurityException e) {
-            return false;
-        }
-        return true;
     }
 
     /**
@@ -440,26 +458,5 @@ public class Reflector {
 
     public String findPropertyName(String name) {
         return caseInsensitivePropertyMap.get(name.toUpperCase(Locale.ENGLISH));
-    }
-
-    /**
-     * Class.isRecord() alternative for Java 15 and older.
-     */
-    private static boolean isRecord(Class<?> clazz) {
-        try {
-            return isRecordMethodHandle != null && (boolean) isRecordMethodHandle.invokeExact(clazz);
-        } catch (Throwable e) {
-            throw new ExcelException("Failed to invoke 'Class.isRecord()'.", e);
-        }
-    }
-
-    private static MethodHandle getIsRecordMethodHandle() {
-        MethodHandles.Lookup lookup = MethodHandles.lookup();
-        MethodType mt = MethodType.methodType(boolean.class);
-        try {
-            return lookup.findVirtual(Class.class, "isRecord", mt);
-        } catch (NoSuchMethodException | IllegalAccessException e) {
-            return null;
-        }
     }
 }
