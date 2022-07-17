@@ -19,10 +19,18 @@ import io.github.zouzhiy.excel.metadata.result.CellResultSet;
 import java.util.List;
 
 /**
+ * 表尾读取
+ *
  * @author zouzhiy
  * @since 2022/7/2
  */
 public interface RowFootRead extends RowRead {
+    /**
+     * 表尾信息读取
+     *
+     * @param sheetContext sheet 上下文
+     * @return 表尾单元格值列表
+     */
     List<CellResultSet> read(SheetContext sheetContext);
 
 }

@@ -22,6 +22,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * RowHeadWrite 注册管理
+ *
  * @author zouzhiy
  * @since 2022/7/2
  */
@@ -38,14 +40,30 @@ public class RowHeadWriteRegistry {
         register(new DefaultRowHeadWrite());
     }
 
+    /**
+     * 全家配置信息
+     *
+     * @return Configuration
+     */
     public Configuration getConfiguration() {
         return configuration;
     }
 
+    /**
+     * 注册
+     *
+     * @param rowHeadWrite 实例
+     */
     public void register(RowHeadWrite rowHeadWrite) {
         rowHeadWriteMap.put(rowHeadWrite.getClass(), rowHeadWrite);
     }
 
+    /**
+     * 根据 class 查找已注册的实例对象
+     *
+     * @param rowHeadWriteClazz class
+     * @return 返回已注册的实例对象
+     */
     public RowHeadWrite getMappingRowWrite(Class<? extends RowHeadWrite> rowHeadWriteClazz) {
         RowHeadWrite rowHeadWrite = rowHeadWriteMap.get(rowHeadWriteClazz);
         if (rowHeadWrite == null) {

@@ -17,11 +17,19 @@ import io.github.zouzhiy.excel.context.SheetContext;
 import io.github.zouzhiy.excel.metadata.result.CellResultSet;
 
 /**
+ * 标题行读取
+ *
  * @author zouzhiy
  * @since 2022/7/2
  */
 public interface RowTitleRead extends RowRead {
 
+    /**
+     * 读取标题值
+     *
+     * @param sheetContext sheet 上下文
+     * @return 标题单元格值
+     */
     CellResultSet read(SheetContext sheetContext);
 
 }

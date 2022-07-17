@@ -20,27 +20,31 @@ import java.util.List;
 
 /**
  * sheet读取
+ *
  * @author zouzhiy
  * @since 2022/7/2
  */
 public interface SheetWrite {
 
     /**
-     * sheet读取配置上下文
+     * sheet配置上下文
+     *
      * @return SheetContext
      */
     SheetContext getSheetContext();
 
     /**
      * 对象配置，即对象数据转成excel表格的描述定义
+     *
      * @return ExcelClassConfig
      */
     ExcelClassConfig getExcelClassConfig();
 
     /**
      * 数据写入shhet中
+     *
      * @param itemList 数据列表
-     * @param <T> 对象类型
+     * @param <T>      对象类型
      */
     <T> void write(List<T> itemList);
 

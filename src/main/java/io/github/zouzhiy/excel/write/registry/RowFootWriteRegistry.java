@@ -38,14 +38,30 @@ public class RowFootWriteRegistry {
         register(new DefaultRowFootWrite());
     }
 
+    /**
+     * 全家配置信息
+     *
+     * @return Configuration
+     */
     public Configuration getConfiguration() {
         return configuration;
     }
 
+    /**
+     * 注册
+     *
+     * @param rowFootWrite 实例
+     */
     public void register(RowFootWrite rowFootWrite) {
         rowFootWriteMap.put(rowFootWrite.getClass(), rowFootWrite);
     }
 
+    /**
+     * 根据 class 查找已注册的实例对象
+     *
+     * @param rowFootWriteClazz class
+     * @return 返回已注册的实例对象
+     */
     public RowFootWrite getMappingRowWrite(Class<? extends RowFootWrite> rowFootWriteClazz) {
         RowFootWrite rowFootWrite = rowFootWriteMap.get(rowFootWriteClazz);
         if (rowFootWrite == null) {

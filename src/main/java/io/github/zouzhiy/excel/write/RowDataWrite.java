@@ -16,13 +16,22 @@ package io.github.zouzhiy.excel.write;
 import io.github.zouzhiy.excel.context.SheetContext;
 
 /**
+ * 数据行写入
+ *
  * @author zouzhiy
  * @since 2022/7/2
  */
 public interface RowDataWrite extends RowWrite {
 
+
     /**
-     * 影响行数
+     * 数据行写入
+     *
+     * @param sheetContext sheet上下文信息
+     * @param item         需要写入的数据
+     * @param rowIndex     数据写入起始行。可能会占用多行
+     * @param <T>          数据泛型
+     * @return 影响的行数，即 item 占用了多少行。
      */
     <T> int write(SheetContext sheetContext, T item, int rowIndex);
 }

@@ -11,27 +11,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.zouzhiy.excel.write;
-
-import io.github.zouzhiy.excel.context.SheetContext;
-
-import java.util.List;
-
 /**
- * 标题行写入
+ * Excel 读
  *
  * @author zouzhiy
- * @since 2022/7/2
+ * @since 2022/7/17
  */
-public interface RowTitleWrite extends RowWrite {
-
-
-    /**
-     * 标题行写入
-     *
-     * @param sheetContext sheet上下文信息
-     * @param dataList     数据列表
-     * @return 影响的行数，即标题占用多少行
-     */
-    int write(SheetContext sheetContext, List<?> dataList);
-}
+package io.github.zouzhiy.excel.read;

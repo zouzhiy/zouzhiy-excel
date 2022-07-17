@@ -19,6 +19,7 @@ import io.github.zouzhiy.excel.metadata.Configuration;
 import io.github.zouzhiy.excel.metadata.config.ExcelClassConfig;
 import io.github.zouzhiy.excel.metadata.config.ExcelFieldConfig;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -27,28 +28,41 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
+ * 注解配置解析
+ *
  * @author zouzhiy
  * @since 2022/7/2
  */
 public class ExcelAnnotationParse {
 
+    /**
+     * 全局配置
+     */
     @Getter
     private final Configuration configuration;
+    /**
+     * 缓存map
+     */
     private final Map<Class<?>, ExcelClassConfig> excelClassConfigMap = new ConcurrentHashMap<>(32);
+
+    /**
+     * 是否启用缓存
+     */
+    @Setter
+    @Getter
     private boolean configCacheEnabled = true;
 
     public ExcelAnnotationParse(Configuration configuration) {
         this.configuration = configuration;
     }
 
-    public boolean isConfigCacheEnabled() {
-        return configCacheEnabled;
-    }
 
-    public void setConfigCacheEnabled(boolean configCacheEnabled) {
-        this.configCacheEnabled = configCacheEnabled;
-    }
-
+    /**
+     * 解析目标对象的配置信息
+     *
+     * @param clazz 目标对象
+     * @return 配置信息
+     */
     public ExcelClassConfig findForClass(Class<?> clazz) {
         if (configCacheEnabled) {
             // synchronized (type) removed see issue #461

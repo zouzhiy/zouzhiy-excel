@@ -18,11 +18,20 @@ import io.github.zouzhiy.excel.context.SheetContext;
 import java.util.List;
 
 /**
+ * 表头行写入
+ *
  * @author zouzhiy
  * @since 2022/7/2
  */
 public interface RowHeadWrite extends RowWrite {
 
+    /**
+     * 表头行写入
+     *
+     * @param sheetContext sheet上下文信息
+     * @param dataList     数据列表
+     * @return 影响的行数，即表头占用多少行
+     */
     int write(SheetContext sheetContext, List<?> dataList);
 
 }

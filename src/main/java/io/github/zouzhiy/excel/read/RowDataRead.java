@@ -17,13 +17,19 @@ import io.github.zouzhiy.excel.context.SheetContext;
 import io.github.zouzhiy.excel.metadata.result.RowResultSet;
 
 /**
+ * 数据行读取
+ *
  * @author zouzhiy
  * @since 2022/7/2
  */
 public interface RowDataRead extends RowRead {
 
     /**
-     * 返回影响的行数
+     * @param sheetContext sheet上下文
+     * @param clazz        目标对象
+     * @param rowIndex     读取行起始位置
+     * @param <T>          对象类型
+     * @return 单行数据对象
      */
     <T> RowResultSet<T> read(SheetContext sheetContext, Class<T> clazz, int rowIndex);
 

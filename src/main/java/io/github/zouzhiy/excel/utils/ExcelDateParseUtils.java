@@ -34,6 +34,9 @@ public class ExcelDateParseUtils {
 
     private final static Map<String, DateTimeFormatter> DATE_TIME_FORMATTER_MAP = new ConcurrentHashMap<>(16);
 
+    /**
+     * 可能的日期格式类型
+     */
     private final static String[] PATTERNS = new String[]{
             "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm", "yyyy-MM-dd HH", "yyyy-MM-dd", "yyyy-MM"
             , "yyyy/MM/dd HH:mm:ss", "yyyy/MM/dd HH:mm", "yyyy/MM/dd HH", "yyyy/MM/dd", "yyyy/MM"
@@ -44,10 +47,23 @@ public class ExcelDateParseUtils {
 
     };
 
+    /**
+     * 字符串解析日期
+     *
+     * @param str 字符
+     * @return 解析出的日期
+     */
     public static LocalDateTime parseDateTime(String str) {
         return parseDateTimeWithPosition(str.replaceAll("\\s+", " ").trim());
     }
 
+    /**
+     * 字符串解析日期
+     *
+     * @param str     字符
+     * @param pattern 指定的解析格式，为空或 null 时，使用可能的格式遍历解析
+     * @return 解析出的日期
+     */
     public static LocalDateTime parseDateTime(String str, String pattern) {
         if (pattern == null || pattern.trim().length() == 0) {
             return parseDateTime(str);

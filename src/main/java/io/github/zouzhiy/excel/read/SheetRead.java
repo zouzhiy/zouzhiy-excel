@@ -19,15 +19,33 @@ import io.github.zouzhiy.excel.metadata.config.ExcelClassConfig;
 import java.util.List;
 
 /**
+ * sheet读取
+ *
  * @author zouzhiy
  * @since 2022/7/2
  */
 public interface SheetRead {
-
+    /**
+     * sheet配置上下文
+     *
+     * @return SheetContext
+     */
     SheetContext getSheetContext();
 
+    /**
+     * 对象配置，即对象数据与excel表格对应关系的描述
+     *
+     * @return ExcelClassConfig
+     */
     ExcelClassConfig getExcelClassConfig();
 
+    /**
+     * 读取数据
+     *
+     * @param clazz 目标对象class
+     * @param <T>   对象泛型
+     * @return 读取的的数据列表
+     */
     <T> List<T> read(Class<T> clazz);
 
 }

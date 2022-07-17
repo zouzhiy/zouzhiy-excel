@@ -19,15 +19,34 @@ import io.github.zouzhiy.excel.metadata.config.ExcelClassConfig;
 import java.util.List;
 
 /**
+ * workbook读取
+ * 从输入流读取到{@link org.apache.poi.ss.usermodel.Workbook}
+ *
  * @author zouzhiy
  * @since 2022/7/2
  */
 public interface WorkbookRead extends AutoCloseable {
-
+    /**
+     * workbook读取参数及配置上下文
+     *
+     * @return WorkbookContext
+     */
     WorkbookContext getWorkbookContext();
 
+    /**
+     * 对象配置，即对象数据与excel表格对应关系的描述
+     *
+     * @return ExcelClassConfig
+     */
     ExcelClassConfig getExcelClassConfig();
 
+    /**
+     * 读取数据
+     *
+     * @param clazz 目标对象class
+     * @param <T>   对象泛型
+     * @return 读取的的数据列表
+     */
     <T> List<T> read(Class<T> clazz);
 
 }
