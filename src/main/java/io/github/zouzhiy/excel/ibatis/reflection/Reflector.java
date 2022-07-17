@@ -36,7 +36,7 @@ import java.util.Map.Entry;
  */
 public class Reflector {
 
-    private static final MethodHandle isRecordMethodHandle = getIsRecordMethodHandle();
+    private static final MethodHandle IS_RECORD_METHOD_HANDLE = getIsRecordMethodHandle();
     private final Class<?> type;
     private final String[] readablePropertyNames;
     private final String[] writablePropertyNames;
@@ -91,7 +91,7 @@ public class Reflector {
      */
     private static boolean isRecord(Class<?> clazz) {
         try {
-            return isRecordMethodHandle != null && (boolean) isRecordMethodHandle.invokeExact(clazz);
+            return IS_RECORD_METHOD_HANDLE != null && (boolean) IS_RECORD_METHOD_HANDLE.invokeExact(clazz);
         } catch (Throwable e) {
             throw new ExcelException("Failed to invoke 'Class.isRecord()'.", e);
         }

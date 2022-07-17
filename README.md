@@ -4,7 +4,9 @@
 
 ### 1.1 简介
 
-zouzhiy-excel是一款Excel导入导出的轻量级工具。省略了繁琐的配置，几行代码快速实现Excel导入导出。
+zouzhiy-excel是一款Excel导入导出的轻量级工具。省略了繁琐的配置，几行代码快速实现Excel导入导出。  
+仓库地址： https://github.com/zouzhiy/zouzhiy-excel  
+国内镜像地址： https://gitee.com/zouzhiy/zouzhiy-excel
 
 ### 1.2 特性
 
