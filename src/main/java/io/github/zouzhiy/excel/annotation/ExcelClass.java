@@ -71,7 +71,7 @@ public @interface ExcelClass {
 
     /**
      * 标题读取，复杂标题可通过实现{@link RowTitleRead}处理。
-     * 读取结果可根据{@link io.github.zouzhiy.excel.callback.SheetReadConsumer#acceptReadTitle(SheetContext, CellResultSet)}回调获取
+     * 读取结果可根据{@link io.github.zouzhiy.excel.callback.SheetReadConsumer#afterReadTitle(SheetContext, CellResultSet)}回调获取
      *
      * @return RowTitleRead对象的Class
      */
@@ -79,7 +79,7 @@ public @interface ExcelClass {
 
     /**
      * 表头读取，复杂标题可通过实现{@link RowHeadRead}处理。
-     * 读取结果可根据{@link io.github.zouzhiy.excel.callback.SheetReadConsumer#acceptReadHead(SheetContext, List)}回调获取
+     * 读取结果可根据{@link io.github.zouzhiy.excel.callback.SheetReadConsumer#afterReadHead(SheetContext, List)}回调获取
      *
      * @return RowHeadRead对象的Class
      */
@@ -87,7 +87,7 @@ public @interface ExcelClass {
 
     /**
      * 表尾读取，默认是空实现。需要可通过实现{@link RowFootRead}处理。
-     * 读取结果可根据{@link io.github.zouzhiy.excel.callback.SheetReadConsumer#acceptReadFoot(SheetContext, List)}回调获取
+     * 读取结果可根据{@link io.github.zouzhiy.excel.callback.SheetReadConsumer#afterReadFoot(SheetContext, List)}回调获取
      *
      * @return RowFootRead对象的Class
      */

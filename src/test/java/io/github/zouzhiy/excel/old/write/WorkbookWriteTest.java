@@ -263,22 +263,22 @@ class WorkbookWriteTest {
                     }
 
                     @Override
-                    public void acceptReadTitle(SheetContext sheetContext, CellResultSet titleCellResultSet) {
+                    public void afterReadTitle(SheetContext sheetContext, CellResultSet titleCellResultSet) {
                         System.out.println("acceptReadTitle--------------------------------");
                     }
 
                     @Override
-                    public void acceptReadHead(SheetContext sheetContext, List<CellResultSet> headCellResultSetList) {
+                    public void afterReadHead(SheetContext sheetContext, List<CellResultSet> headCellResultSetList) {
                         System.out.println("acceptReadHead--------------------------------");
                     }
 
                     @Override
-                    public void acceptReadData(SheetContext sheetContext, List<WriteDemo> dataList) {
+                    public void afterReadData(SheetContext sheetContext, List<WriteDemo> dataList) {
                         System.out.println("acceptReadData--------------------------------");
                     }
 
                     @Override
-                    public void acceptReadFoot(SheetContext sheetContext, List<CellResultSet> footCellResultSetList) {
+                    public void afterReadFoot(SheetContext sheetContext, List<CellResultSet> footCellResultSetList) {
                         System.out.println("acceptReadFoot--------------------------------");
                     }
 

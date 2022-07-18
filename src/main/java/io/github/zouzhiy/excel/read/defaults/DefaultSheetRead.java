@@ -80,7 +80,7 @@ public class DefaultSheetRead implements SheetRead {
 
         Integer titleRowIndex = sheetParameter.getTitleRowStartIndex();
         if (titleRowIndex == -1) {
-            sheetReadConsumerList.forEach(item -> item.acceptReadTitle(sheetContext, CellResultSet.none()));
+            sheetReadConsumerList.forEach(item -> item.afterReadTitle(sheetContext, CellResultSet.none()));
             return null;
         }
         Class<? extends RowTitleRead> rowTitleReadClazz = excelClassConfig.getRowTitleRead();
@@ -90,7 +90,7 @@ public class DefaultSheetRead implements SheetRead {
         RowTitleRead rowTitleRead = this.getSheetContext().getConfiguration().getRowTitleReadRegistry().getMappingRowRead(rowTitleReadClazz);
         CellResultSet titleCellResultSet = rowTitleRead.read(sheetContext);
 
-        sheetReadConsumerList.forEach(item -> item.acceptReadTitle(sheetContext, titleCellResultSet));
+        sheetReadConsumerList.forEach(item -> item.afterReadTitle(sheetContext, titleCellResultSet));
 
         return titleCellResultSet;
     }
@@ -111,7 +111,7 @@ public class DefaultSheetRead implements SheetRead {
         RowHeadRead rowHeadRead = this.getSheetContext().getConfiguration().getRowHeadReadRegistry().getMappingRowRead(rowHeadReadClazz);
         List<CellResultSet> headCellResultSetList = rowHeadRead.read(sheetContext);
 
-        sheetReadConsumerList.forEach(item -> item.acceptReadHead(sheetContext, headCellResultSetList));
+        sheetReadConsumerList.forEach(item -> item.afterReadHead(sheetContext, headCellResultSetList));
 
         return headCellResultSetList;
     }
@@ -136,7 +136,7 @@ public class DefaultSheetRead implements SheetRead {
         }
 
         //noinspection unchecked
-        sheetReadConsumerList.forEach(item -> ((SheetReadConsumer<T>) item).acceptReadData(sheetContext, dataList));
+        sheetReadConsumerList.forEach(item -> ((SheetReadConsumer<T>) item).afterReadData(sheetContext, dataList));
 
         return dataList;
     }
@@ -148,7 +148,7 @@ public class DefaultSheetRead implements SheetRead {
 
         Integer headRowIndex = sheetParameter.getHeadRowStartIndex();
         if (headRowIndex == -1) {
-            sheetReadConsumerList.forEach(item -> item.acceptReadFoot(sheetContext, Collections.emptyList()));
+            sheetReadConsumerList.forEach(item -> item.afterReadFoot(sheetContext, Collections.emptyList()));
             return Collections.emptyList();
         }
         Class<? extends RowFootRead> rowFootReadClazz = excelClassConfig.getRowFootRead();
@@ -158,7 +158,7 @@ public class DefaultSheetRead implements SheetRead {
         RowFootRead rowFootRead = this.getSheetContext().getConfiguration().getRowFootReadRegistry().getMappingRowRead(rowFootReadClazz);
         List<CellResultSet> footCellResultSetList = rowFootRead.read(sheetContext);
 
-        sheetReadConsumerList.forEach(item -> item.acceptReadFoot(sheetContext, footCellResultSetList));
+        sheetReadConsumerList.forEach(item -> item.afterReadFoot(sheetContext, footCellResultSetList));
 
         return footCellResultSetList;
     }

@@ -19,26 +19,66 @@ import io.github.zouzhiy.excel.metadata.result.CellResultSet;
 import java.util.List;
 
 /**
+ * sheet读取回调
+ *
  * @author zouzhiy
  * @since 2022/7/2
  */
 public interface SheetReadConsumer<T> {
 
+    /**
+     * 读取前
+     *
+     * @param sheetContext 上下文
+     */
     default void beforeRead(SheetContext sheetContext) {
     }
 
-    default void acceptReadTitle(SheetContext sheetContext, CellResultSet titleCellResultSet) {
+    /**
+     * 读取标题后
+     *
+     * @param sheetContext       上下文
+     * @param titleCellResultSet 读取到的标题值
+     */
+    default void afterReadTitle(SheetContext sheetContext, CellResultSet titleCellResultSet) {
     }
 
-    default void acceptReadHead(SheetContext sheetContext, List<CellResultSet> headCellResultSetList) {
+    /**
+     * 读取表头后
+     *
+     * @param sheetContext          上下文
+     * @param headCellResultSetList 读取到的表头值
+     */
+    default void afterReadHead(SheetContext sheetContext, List<CellResultSet> headCellResultSetList) {
     }
 
-    default void acceptReadData(SheetContext sheetContext, List<T> dataList) {
+    /**
+     * 读取数据后
+     *
+     * @param sheetContext 上下文
+     * @param dataList     读取到的数据列表
+     */
+    default void afterReadData(SheetContext sheetContext, List<T> dataList) {
     }
 
-    default void acceptReadFoot(SheetContext sheetContext, List<CellResultSet> footCellResultSetList) {
+    /**
+     * 读取表尾后
+     *
+     * @param sheetContext          上下文
+     * @param footCellResultSetList 读取到的表尾值
+     */
+    default void afterReadFoot(SheetContext sheetContext, List<CellResultSet> footCellResultSetList) {
     }
 
+    /**
+     * 读取 Sheeth 后
+     *
+     * @param sheetContext          上下文
+     * @param titleCellResultSet    标题值
+     * @param headCellResultSetList 表头值
+     * @param dataList              数据列表
+     * @param footCellResultSetList 表尾值
+     */
     default void afterRead(SheetContext sheetContext, CellResultSet titleCellResultSet, List<CellResultSet> headCellResultSetList, List<T> dataList, List<CellResultSet> footCellResultSetList) {
     }
 }
