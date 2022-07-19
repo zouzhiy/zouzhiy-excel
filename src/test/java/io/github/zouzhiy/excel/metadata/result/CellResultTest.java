@@ -173,7 +173,7 @@ class CellResultTest {
         assertEquals(cellResult.getColspan(), cellSpan.getColspan());
 
         assertEquals(cellResult.getStringValue(), stringValue);
-        assertThrows(NumberFormatException.class, cellResult::getNumberValue);
+        assertThrows(ExcelException.class, cellResult::getNumberValue);
         assertEquals(cellResult.getBooleanValue(), Boolean.parseBoolean(stringValue));
         assertThrows(ExcelException.class, () -> cellResult.getDateValue(null));
 

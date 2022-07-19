@@ -3,6 +3,7 @@ package io.github.zouzhiy.excel.handler;
 import io.github.zouzhiy.excel.enums.ExcelType;
 import io.github.zouzhiy.excel.handler.bytes.ByteArrayStringHandler;
 import io.github.zouzhiy.excel.metadata.result.CellResult;
+import io.github.zouzhiy.excel.metadata.result.CellResultSet;
 import io.github.zouzhiy.excel.utils.RegionUtils;
 import org.apache.poi.ss.usermodel.Row;
 import org.junit.jupiter.api.Assertions;
@@ -28,6 +29,12 @@ class ByteArrayStringHandlerTest extends CellHandlerTest {
     @Override
     void getExcelType() {
         Assertions.assertEquals(cellHandler.getExcelType(), ExcelType.STRING);
+    }
+
+    @Test
+    void readNone0() {
+        byte[] result = cellHandler.read(sheetContext, excelFieldConfig, CellResultSet.none());
+        Assertions.assertNull(result);
     }
 
     @Test
