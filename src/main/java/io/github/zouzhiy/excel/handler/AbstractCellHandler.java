@@ -50,8 +50,11 @@ public abstract class AbstractCellHandler<T> implements CellHandler<T> {
         if (cellResultSet == null) {
             return null;
         }
+        if (cellResultSet.isNone()) {
+            return null;
+        }
         CellResult firstCellResult = cellResultSet.getFirstCellResult();
-        if (cellResultSet.isNone() || firstCellResult.isNone()) {
+        if (firstCellResult.isNone()) {
             return null;
         } else if (firstCellResult.isBlank() && !this.getExcelType().equals(ExcelType.NONE)) {
             return this.getBlankValue();

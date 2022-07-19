@@ -59,6 +59,9 @@ import io.github.zouzhiy.excel.handler.localtime.LocalTimeStringHandler;
 import io.github.zouzhiy.excel.handler.longs.LongBooleanHandler;
 import io.github.zouzhiy.excel.handler.longs.LongNumberHandler;
 import io.github.zouzhiy.excel.handler.longs.LongStringHandler;
+import io.github.zouzhiy.excel.handler.objects.ObjectBooleanHandler;
+import io.github.zouzhiy.excel.handler.objects.ObjectNumberHandler;
+import io.github.zouzhiy.excel.handler.objects.ObjectStringHandler;
 import io.github.zouzhiy.excel.handler.shorts.ShortBooleanHandler;
 import io.github.zouzhiy.excel.handler.shorts.ShortNumberHandler;
 import io.github.zouzhiy.excel.handler.shorts.ShortStringHandler;
@@ -124,6 +127,7 @@ public class CellHandlerRegistry {
         standardMapping.put(Timestamp.class, ExcelType.DATE);
         standardMapping.put(URL.class, ExcelType.STRING);
         standardMapping.put(List.class, ExcelType.STRING);
+        standardMapping.put(Object.class, ExcelType.STRING);
     }
 
     public CellHandlerRegistry(Configuration configuration) {
@@ -187,6 +191,10 @@ public class CellHandlerRegistry {
         register(new LongBooleanHandler());
         register(new LongNumberHandler());
         register(new LongStringHandler());
+
+        register(new ObjectBooleanHandler());
+        register(new ObjectStringHandler());
+        register(new ObjectNumberHandler());
 
         register(new ShortBooleanHandler());
         register(new ShortNumberHandler());

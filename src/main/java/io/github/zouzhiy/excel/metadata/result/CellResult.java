@@ -14,6 +14,7 @@
 package io.github.zouzhiy.excel.metadata.result;
 
 import io.github.zouzhiy.excel.enums.ExcelType;
+import io.github.zouzhiy.excel.exceptions.ExcelException;
 import io.github.zouzhiy.excel.metadata.CellSpan;
 import io.github.zouzhiy.excel.utils.ExcelDateParseUtils;
 import lombok.EqualsAndHashCode;
@@ -300,7 +301,11 @@ public class CellResult {
         BigDecimal bigDecimal;
         switch (excelType) {
             case STRING:
-                bigDecimal = stringValue.trim().length() == 0 ? null : new BigDecimal(stringValue);
+                try {
+                    bigDecimal = stringValue.trim().length() == 0 ? null : new BigDecimal(stringValue);
+                } catch (NumberFormatException e) {
+                    throw new ExcelException(e, "非数字字符：%s", stringValue);
+                }
                 break;
             case BOOLEAN:
                 bigDecimal = booleanValue ? TRUE_VALUE_BIG_DECIMAL : FALSE_VALUE_BIG_DECIMAL;
