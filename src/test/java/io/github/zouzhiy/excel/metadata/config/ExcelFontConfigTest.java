@@ -16,6 +16,19 @@ class ExcelFontConfigTest {
 
     private final Random random = new Random(System.currentTimeMillis());
 
+    static void mockExcelFont(ExcelFont excelFont, Random random) {
+        Mockito.when(excelFont.fontName()).thenReturn("" + random.nextDouble());
+        Mockito.when(excelFont.fontHeight()).thenReturn((short) random.nextInt(Short.MAX_VALUE));
+        Mockito.when(excelFont.fontHeightInPoints()).thenReturn((short) random.nextInt(Short.MAX_VALUE));
+        Mockito.when(excelFont.italic()).thenReturn(random.nextBoolean());
+        Mockito.when(excelFont.strikeout()).thenReturn(random.nextBoolean());
+        Mockito.when(excelFont.color()).thenReturn((short) random.nextInt(Short.MAX_VALUE));
+        Mockito.when(excelFont.typeOffset()).thenReturn(FontTypeOffset.values()[random.nextInt(FontTypeOffset.values().length)]);
+        Mockito.when(excelFont.underline()).thenReturn(FontUnderline.values()[random.nextInt(FontUnderline.values().length)]);
+        Mockito.when(excelFont.charset()).thenReturn(FontCharset.values()[random.nextInt(FontCharset.values().length)]);
+        Mockito.when(excelFont.bold()).thenReturn(random.nextBoolean());
+    }
+
     @Test
     void getDefaultExcelFontConfig() {
         ExcelFontConfig excelFontConfig = ExcelFontConfig.builder().build();
@@ -84,16 +97,7 @@ class ExcelFontConfigTest {
     void buildByExcelFont() {
         ExcelFont excelFont = Mockito.mock(ExcelFont.class);
 
-        Mockito.when(excelFont.fontName()).thenReturn("" + random.nextDouble());
-        Mockito.when(excelFont.fontHeight()).thenReturn((short) random.nextInt(Short.MAX_VALUE));
-        Mockito.when(excelFont.fontHeightInPoints()).thenReturn((short) random.nextInt(Short.MAX_VALUE));
-        Mockito.when(excelFont.italic()).thenReturn(random.nextBoolean());
-        Mockito.when(excelFont.strikeout()).thenReturn(random.nextBoolean());
-        Mockito.when(excelFont.color()).thenReturn((short) random.nextInt(Short.MAX_VALUE));
-        Mockito.when(excelFont.typeOffset()).thenReturn(FontTypeOffset.values()[random.nextInt(FontTypeOffset.values().length)]);
-        Mockito.when(excelFont.underline()).thenReturn(FontUnderline.values()[random.nextInt(FontUnderline.values().length)]);
-        Mockito.when(excelFont.charset()).thenReturn(FontCharset.values()[random.nextInt(FontCharset.values().length)]);
-        Mockito.when(excelFont.bold()).thenReturn(random.nextBoolean());
+        mockExcelFont(excelFont, random);
 
         ExcelFontConfig excelFontConfig = ExcelFontConfig.buildByExcelFont(excelFont);
 

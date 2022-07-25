@@ -2,13 +2,10 @@ package io.github.zouzhiy.excel.metadata.config;
 
 import io.github.zouzhiy.excel.annotation.ExcelFont;
 import io.github.zouzhiy.excel.annotation.ExcelStyle;
-import io.github.zouzhiy.excel.enums.FontTypeOffset;
 import io.github.zouzhiy.excel.enums.StyleHorizontalAlignment;
 import io.github.zouzhiy.excel.enums.StyleVerticalAlignment;
-import org.apache.poi.common.usermodel.fonts.FontCharset;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
-import org.apache.poi.ss.usermodel.FontUnderline;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -16,9 +13,34 @@ import org.mockito.Mockito;
 
 import java.util.Random;
 
+import static io.github.zouzhiy.excel.metadata.config.ExcelFontConfigTest.mockExcelFont;
+
 class ExcelStyleConfigTest {
 
     private final Random random = new Random(System.currentTimeMillis());
+
+    static void mockExcelStyle(ExcelStyle excelStyle, Random random) {
+        Mockito.when(excelStyle.hidden()).thenReturn(random.nextBoolean());
+        Mockito.when(excelStyle.locked()).thenReturn(random.nextBoolean());
+        Mockito.when(excelStyle.quotePrefix()).thenReturn(random.nextBoolean());
+        Mockito.when(excelStyle.horizontalAlignment()).thenReturn(StyleHorizontalAlignment.values()[random.nextInt(StyleHorizontalAlignment.values().length)]);
+        Mockito.when(excelStyle.wrapText()).thenReturn(random.nextBoolean());
+        Mockito.when(excelStyle.verticalAlignment()).thenReturn(StyleVerticalAlignment.values()[random.nextInt(StyleVerticalAlignment.values().length)]);
+        Mockito.when(excelStyle.rotation()).thenReturn((short) random.nextInt(Short.MAX_VALUE));
+        Mockito.when(excelStyle.indent()).thenReturn((short) random.nextInt(Short.MAX_VALUE));
+        Mockito.when(excelStyle.borderLeft()).thenReturn(BorderStyle.values()[random.nextInt(BorderStyle.values().length)]);
+        Mockito.when(excelStyle.borderRight()).thenReturn(BorderStyle.values()[random.nextInt(BorderStyle.values().length)]);
+        Mockito.when(excelStyle.borderTop()).thenReturn(BorderStyle.values()[random.nextInt(BorderStyle.values().length)]);
+        Mockito.when(excelStyle.borderBottom()).thenReturn(BorderStyle.values()[random.nextInt(BorderStyle.values().length)]);
+        Mockito.when(excelStyle.leftBorderColor()).thenReturn((short) random.nextInt(Short.MAX_VALUE));
+        Mockito.when(excelStyle.rightBorderColor()).thenReturn((short) random.nextInt(Short.MAX_VALUE));
+        Mockito.when(excelStyle.topBorderColor()).thenReturn((short) random.nextInt(Short.MAX_VALUE));
+        Mockito.when(excelStyle.bottomBorderColor()).thenReturn((short) random.nextInt(Short.MAX_VALUE));
+        Mockito.when(excelStyle.fillPattern()).thenReturn(FillPatternType.values()[random.nextInt(FillPatternType.values().length)]);
+        Mockito.when(excelStyle.fillBackgroundColor()).thenReturn((short) random.nextInt(Short.MAX_VALUE));
+        Mockito.when(excelStyle.fillForegroundColor()).thenReturn((short) random.nextInt(Short.MAX_VALUE));
+        Mockito.when(excelStyle.shrinkToFit()).thenReturn(random.nextBoolean());
+    }
 
     @Test
     void getDefaultExcelStyleConfig() {
@@ -134,39 +156,10 @@ class ExcelStyleConfigTest {
         ExcelStyle excelStyle = Mockito.mock(ExcelStyle.class);
 
         ExcelFont excelFont = Mockito.mock(ExcelFont.class);
-
-        Mockito.when(excelFont.fontName()).thenReturn("" + random.nextDouble());
-        Mockito.when(excelFont.fontHeight()).thenReturn((short) random.nextInt(Short.MAX_VALUE));
-        Mockito.when(excelFont.fontHeightInPoints()).thenReturn((short) random.nextInt(Short.MAX_VALUE));
-        Mockito.when(excelFont.italic()).thenReturn(random.nextBoolean());
-        Mockito.when(excelFont.strikeout()).thenReturn(random.nextBoolean());
-        Mockito.when(excelFont.color()).thenReturn((short) random.nextInt(Short.MAX_VALUE));
-        Mockito.when(excelFont.typeOffset()).thenReturn(FontTypeOffset.values()[random.nextInt(FontTypeOffset.values().length)]);
-        Mockito.when(excelFont.underline()).thenReturn(FontUnderline.values()[random.nextInt(FontUnderline.values().length)]);
-        Mockito.when(excelFont.charset()).thenReturn(FontCharset.values()[random.nextInt(FontCharset.values().length)]);
-        Mockito.when(excelFont.bold()).thenReturn(random.nextBoolean());
+        mockExcelFont(excelFont, random);
 
         Mockito.when(excelStyle.font()).thenReturn(excelFont);
-        Mockito.when(excelStyle.hidden()).thenReturn(random.nextBoolean());
-        Mockito.when(excelStyle.locked()).thenReturn(random.nextBoolean());
-        Mockito.when(excelStyle.quotePrefix()).thenReturn(random.nextBoolean());
-        Mockito.when(excelStyle.horizontalAlignment()).thenReturn(StyleHorizontalAlignment.values()[random.nextInt(StyleHorizontalAlignment.values().length)]);
-        Mockito.when(excelStyle.wrapText()).thenReturn(random.nextBoolean());
-        Mockito.when(excelStyle.verticalAlignment()).thenReturn(StyleVerticalAlignment.values()[random.nextInt(StyleVerticalAlignment.values().length)]);
-        Mockito.when(excelStyle.rotation()).thenReturn((short) random.nextInt(Short.MAX_VALUE));
-        Mockito.when(excelStyle.indent()).thenReturn((short) random.nextInt(Short.MAX_VALUE));
-        Mockito.when(excelStyle.borderLeft()).thenReturn(BorderStyle.values()[random.nextInt(BorderStyle.values().length)]);
-        Mockito.when(excelStyle.borderRight()).thenReturn(BorderStyle.values()[random.nextInt(BorderStyle.values().length)]);
-        Mockito.when(excelStyle.borderTop()).thenReturn(BorderStyle.values()[random.nextInt(BorderStyle.values().length)]);
-        Mockito.when(excelStyle.borderBottom()).thenReturn(BorderStyle.values()[random.nextInt(BorderStyle.values().length)]);
-        Mockito.when(excelStyle.leftBorderColor()).thenReturn((short) random.nextInt(Short.MAX_VALUE));
-        Mockito.when(excelStyle.rightBorderColor()).thenReturn((short) random.nextInt(Short.MAX_VALUE));
-        Mockito.when(excelStyle.topBorderColor()).thenReturn((short) random.nextInt(Short.MAX_VALUE));
-        Mockito.when(excelStyle.bottomBorderColor()).thenReturn((short) random.nextInt(Short.MAX_VALUE));
-        Mockito.when(excelStyle.fillPattern()).thenReturn(FillPatternType.values()[random.nextInt(FillPatternType.values().length)]);
-        Mockito.when(excelStyle.fillBackgroundColor()).thenReturn((short) random.nextInt(Short.MAX_VALUE));
-        Mockito.when(excelStyle.fillForegroundColor()).thenReturn((short) random.nextInt(Short.MAX_VALUE));
-        Mockito.when(excelStyle.shrinkToFit()).thenReturn(random.nextBoolean());
+        mockExcelStyle(excelStyle, random);
 
         ExcelStyleConfig excelStyleConfig = ExcelStyleConfig.buildByExcelStyle(excelStyle);
 
