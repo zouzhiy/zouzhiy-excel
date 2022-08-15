@@ -15,6 +15,7 @@ package io.github.zouzhiy.excel.read.defaults;
 
 import io.github.zouzhiy.excel.context.SheetContext;
 import io.github.zouzhiy.excel.enums.ExcelType;
+import io.github.zouzhiy.excel.error.ErrorContext;
 import io.github.zouzhiy.excel.exceptions.ExcelException;
 import io.github.zouzhiy.excel.handler.CellHandler;
 import io.github.zouzhiy.excel.handler.CellHandlerRegistry;
@@ -42,7 +43,6 @@ import java.util.List;
  * @since 2022/7/2
  */
 public class DefaultRowDataRead implements RowDataRead {
-
 
     @Override
     public <T> RowResultSet<T> read(SheetContext sheetContext, Class<T> clazz, int rowIndex) {
@@ -80,22 +80,27 @@ public class DefaultRowDataRead implements RowDataRead {
         String propertyName = excelFieldConfig.getPropertyName();
         boolean hasSetter = metaClass.hasSetter(propertyName);
         if (!hasSetter) {
+            ErrorContext.instance().error(sheetContext.getSheet().getSheetName(), cellResultSet.getFirstRowIndex(), cellResultSet.getFirstColIndex(), String.format("属性%s的set方法不存在", propertyName));
             throw new ExcelException("没有对应的set方法");
         }
         Invoker invoker = metaClass.getSetInvoker(propertyName);
         Class<?> javaType = invoker.getType();
         ExcelType excelType;
-        if (cellResultSet != null && !cellResultSet.isNone() && excelFieldConfig.getExcelType().equals(ExcelType.BLANK)) {
+        if (!cellResultSet.isNone() && excelFieldConfig.getExcelType().equals(ExcelType.BLANK)) {
             excelType = cellResultSet.getExcelType();
         } else {
             excelType = excelFieldConfig.getExcelType();
         }
         CellHandler<?> cellHandler = this.getCellHandler(sheetContext, cellHandlerClazz, javaType, excelType);
 
-        Object object = cellHandler.read(sheetContext, excelFieldConfig, cellResultSet);
         try {
+            Object object = cellHandler.read(sheetContext, excelFieldConfig, cellResultSet);
             invoker.invoke(item, new Object[]{object});
+        } catch (ExcelException excelException) {
+            ErrorContext.instance().error(sheetContext.getSheet().getSheetName(), cellResultSet.getFirstRowIndex(), cellResultSet.getFirstColIndex(), excelException.getMessage());
+            throw excelException;
         } catch (IllegalAccessException | InvocationTargetException e) {
+            ErrorContext.instance().error(sheetContext.getSheet().getSheetName(), cellResultSet.getFirstRowIndex(), cellResultSet.getFirstColIndex(), String.format("属性%s的set赋值失败", propertyName));
             throw new ExcelException("set失败");
         }
     }
