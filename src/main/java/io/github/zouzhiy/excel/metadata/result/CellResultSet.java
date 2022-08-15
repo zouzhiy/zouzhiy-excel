@@ -85,6 +85,7 @@ public class CellResultSet {
         return cellResultSet;
     }
 
+
     /**
      * 校验结果集是否合法
      * 每一个row的col要相等
@@ -144,6 +145,40 @@ public class CellResultSet {
         }
 
         return cellResultList.get(0);
+    }
+
+    /**
+     * 获取结果集中的第一个单元格行下标
+     *
+     * @return 第一个单元格行下标
+     */
+    public int getFirstRowIndex() {
+        if (cellResultListList == null || cellResultListList.isEmpty()) {
+            return -1;
+        }
+        List<CellResult> cellResultList = cellResultListList.get(0);
+        if (cellResultList == null || cellResultList.isEmpty()) {
+            return -1;
+        }
+
+        return cellResultList.get(0).getRowIndex();
+    }
+
+    /**
+     * 获取结果集中的第一个单元格列下标
+     *
+     * @return 第一个单元格列下标
+     */
+    public int getFirstColIndex() {
+        if (cellResultListList == null || cellResultListList.isEmpty()) {
+            return -1;
+        }
+        List<CellResult> cellResultList = cellResultListList.get(0);
+        if (cellResultList == null || cellResultList.isEmpty()) {
+            return -1;
+        }
+
+        return cellResultList.get(0).getColumnIndex();
     }
 
 }

@@ -16,6 +16,7 @@ package io.github.zouzhiy.excel.read.defaults;
 import io.github.zouzhiy.excel.context.WorkbookContext;
 import io.github.zouzhiy.excel.context.defualts.DefaultSheetContext;
 import io.github.zouzhiy.excel.context.defualts.DefaultWorkbookContext;
+import io.github.zouzhiy.excel.error.ErrorContext;
 import io.github.zouzhiy.excel.metadata.Configuration;
 import io.github.zouzhiy.excel.metadata.config.ExcelClassConfig;
 import io.github.zouzhiy.excel.metadata.parameter.SheetParameter;
@@ -58,9 +59,16 @@ public class DefaultWorkbookRead implements WorkbookRead {
 
     @Override
     public <T> List<T> read(Class<T> clazz) {
-        List<T> dataList = read(clazz, 0);
-        this.close();
-        return dataList;
+        try {
+            ErrorContext errorContext = ErrorContext.store();
+            errorContext.workbookName(this.getWorkbookContext().getWorkbookParameter().getInputFileName());
+            List<T> dataList = read(clazz, 0);
+            this.close();
+            return dataList;
+        } finally {
+            ErrorContext.remove();
+        }
+
     }
 
     private <T> List<T> read(Class<T> clazz, @SuppressWarnings("SameParameterValue") int sheetIndex) {

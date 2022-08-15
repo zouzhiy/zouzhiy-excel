@@ -14,6 +14,7 @@
 package io.github.zouzhiy.excel.read.defaults;
 
 import io.github.zouzhiy.excel.context.SheetContext;
+import io.github.zouzhiy.excel.error.ErrorContext;
 import io.github.zouzhiy.excel.exceptions.ExcelException;
 import io.github.zouzhiy.excel.metadata.CellSpan;
 import io.github.zouzhiy.excel.metadata.MergedRegion;
@@ -103,6 +104,7 @@ public class DefaultCellDataRead implements CellDataRead {
                 break;
             case ERROR:
             default:
+                ErrorContext.instance().error(cell.getSheet().getSheetName(), cell.getRowIndex(), cell.getColumnIndex(), "读取单元格值失败");
                 throw new ExcelException("读取单元格值失败。" + cell.getRowIndex() + cell.getColumnIndex());
         }
 
